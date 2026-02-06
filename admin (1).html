@@ -1,0 +1,2138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Al-Fanous Admin Panel</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .font-playfair {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: linear-gradient(180deg, #451a03 0%, #78350f 50%, #451a03 100%);
+            transition: width 0.3s ease;
+        }
+        
+        .sidebar-link {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sidebar-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, #fbbf24, #f59e0b);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .sidebar-link:hover::before,
+        .sidebar-link.active::before {
+            transform: scaleY(1);
+        }
+        
+        .sidebar-link:hover,
+        .sidebar-link.active {
+            background: rgba(251, 191, 36, 0.15);
+        }
+        
+        /* Cards */
+        .stat-card {
+            background: white;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #f59e0b, #fbbf24, #f59e0b);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        /* Charts Container */
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+        
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .data-table th {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #78350f;
+            font-weight: 600;
+            padding: 16px;
+            text-align: left;
+        }
+        
+        .data-table td {
+            padding: 16px;
+            border-bottom: 1px solid #fef3c7;
+        }
+        
+        .data-table tr:hover td {
+            background: #fffbeb;
+        }
+        
+        /* Modal */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .modal.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 24px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal.open .modal-content {
+            transform: scale(1) translateY(0);
+        }
+        
+        /* Toggle Switch */
+        .toggle {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: #d1d5db;
+            border-radius: 13px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .toggle.active {
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+        }
+        
+        .toggle::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .toggle.active::after {
+            transform: translateX(24px);
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #fef3c7;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #f59e0b, #d97706);
+            border-radius: 4px;
+        }
+        
+        /* Tabs */
+        .tab-btn {
+            position: relative;
+            padding: 12px 24px;
+            color: #78350f;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .tab-btn.active::after {
+            transform: scaleX(1);
+        }
+        
+        .tab-btn.active {
+            color: #d97706;
+        }
+        
+        /* Image Upload Box */
+        .upload-box {
+            border: 2px dashed #d4a574;
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fffbeb;
+        }
+        
+        .upload-box:hover {
+            border-color: #f59e0b;
+            background: #fef3c7;
+        }
+        
+        .upload-box.dragover {
+            border-color: #f59e0b;
+            background: #fde68a;
+            transform: scale(1.02);
+        }
+        
+        /* Status Badge */
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .badge-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .badge-danger {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .badge-info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        /* Action Buttons */
+        .btn-action {
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-action:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Progress Ring */
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+        
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.5s ease;
+        }
+        
+        /* Notification Badge */
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            background: #ef4444;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse-badge 2s infinite;
+        }
+        
+        @keyframes pulse-badge {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        /* Login Screen */
+        .login-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #451a03 0%, #78350f 50%, #451a03 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-container::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4a574' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        .login-card {
+            background: white;
+            border-radius: 24px;
+            padding: 48px;
+            width: 90%;
+            max-width: 420px;
+            position: relative;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+        }
+        
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #f59e0b, #fbbf24, #f59e0b);
+            border-radius: 24px 24px 0 0;
+        }
+        
+        /* Floating Lanterns */
+        .floating-lantern {
+            position: absolute;
+            font-size: 40px;
+            animation: float-lantern 6s ease-in-out infinite;
+            opacity: 0.3;
+        }
+        
+        @keyframes float-lantern {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        
+        /* Page Transitions */
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Responsive Sidebar */
+        @media (max-width: 1024px) {
+            .sidebar {
+                position: fixed;
+                left: -280px;
+                z-index: 100;
+            }
+            
+            .sidebar.open {
+                left: 0;
+            }
+            
+            .sidebar-overlay {
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 99;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+            
+            .sidebar-overlay.open {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+        
+        /* Mini Progress Bars */
+        .mini-progress {
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .mini-progress-bar {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 1s ease;
+        }
+    </style>
+</head>
+<body class="bg-amber-50">
+    
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard" class="">
+        <!-- Sidebar Overlay (Mobile) -->
+        <div id="sidebarOverlay" class="sidebar-overlay lg:hidden"></div>
+        
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar fixed left-0 top-0 bottom-0 w-72 z-50 flex flex-col">
+            <!-- Logo -->
+            <div class="p-6 border-b border-amber-800/30">
+                <div class="flex items-center gap-3">
+                    <span class="text-4xl">🥐</span>
+                    <div>
+                        <h1 class="font-playfair text-xl font-bold text-amber-100">Al-Fanous</h1>
+                        <span class="text-amber-400 text-xs">Admin Panel</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigation -->
+            <nav class="flex-1 py-6 overflow-y-auto">
+                <div class="px-4 mb-3">
+                    <span class="text-amber-500/60 text-xs font-semibold uppercase tracking-wider">Main Menu</span>
+                </div>
+                
+                <a href="#" class="sidebar-link active flex items-center gap-3 px-6 py-3 text-amber-100" data-page="analytics">
+                    <span class="text-xl">📊</span>
+                    <span>Analytics</span>
+                </a>
+                
+                <a href="#" class="sidebar-link flex items-center gap-3 px-6 py-3 text-amber-100" data-page="management">
+                    <span class="text-xl">⚙️</span>
+                    <span>Management</span>
+                </a>
+                
+                <div class="px-4 mt-6 mb-3">
+                    <span class="text-amber-500/60 text-xs font-semibold uppercase tracking-wider">Quick Access</span>
+                </div>
+                
+                <a href="#" class="sidebar-link flex items-center gap-3 px-6 py-3 text-amber-100" data-page="products">
+                    <span class="text-xl">🥮</span>
+                    <span>Products</span>
+                    <span class="ml-auto bg-amber-600 text-xs px-2 py-1 rounded-full">24</span>
+                </a>
+                
+                <a href="#" class="sidebar-link flex items-center gap-3 px-6 py-3 text-amber-100" data-page="orders">
+                    <span class="text-xl">📦</span>
+                    <span>Orders</span>
+                    <span id="pendingOrdersBadge" class="ml-auto bg-red-500 text-xs px-2 py-1 rounded-full flex items-center justify-center" style="min-width: 24px;">0</span>
+                </a>
+                
+                <a href="#" class="sidebar-link flex items-center gap-3 px-6 py-3 text-amber-100" data-page="media">
+                    <span class="text-xl">🖼️</span>
+                    <span>Media Library</span>
+                </a>
+                
+                <a href="#" class="sidebar-link flex items-center gap-3 px-6 py-3 text-amber-100" data-page="settings">
+                    <span class="text-xl">🔧</span>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            
+            <!-- User Profile -->
+            <div class="p-4 border-t border-amber-800/30">
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-amber-800/30">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white font-bold">
+                        A
+                    </div>
+                    <div class="flex-1">
+                        <div class="text-amber-100 font-medium text-sm">Admin User</div>
+                        <div class="text-amber-400 text-xs">Super Admin</div>
+                    </div>
+                    <a href="index.html" id="logoutBtn" class="text-amber-400 hover:text-white transition" title="Back to Website">
+                        🌐
+                    </a>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="lg:ml-72 min-h-screen">
+            <!-- Top Header -->
+            <header class="bg-white shadow-sm sticky top-0 z-40">
+                <div class="flex items-center justify-between px-6 py-4">
+                    <div class="flex items-center gap-4">
+                        <button id="menuToggle" class="lg:hidden text-2xl text-amber-800">☰</button>
+                        <div>
+                            <h2 id="pageTitle" class="font-playfair text-2xl font-bold text-amber-900">Analytics Dashboard</h2>
+                            <p class="text-stone-500 text-sm">Welcome back! Here's what's happening today.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-4">
+                        <!-- Search -->
+                        <div class="hidden md:block relative">
+                            <input type="text" placeholder="Search..." 
+                                class="pl-10 pr-4 py-2 border border-stone-200 rounded-xl focus:outline-none focus:border-amber-500 w-64">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400">🔍</span>
+                        </div>
+                        
+                        <!-- Notifications -->
+                        <button class="relative p-2 text-2xl hover:bg-amber-50 rounded-xl transition">
+                            🔔
+                            <span class="notification-badge">3</span>
+                        </button>
+                        
+                        <!-- View Site -->
+                        <a href="index.html" target="_blank" class="hidden sm:flex items-center gap-2 px-4 py-2 bg-amber-100 text-amber-800 rounded-xl hover:bg-amber-200 transition">
+                            <span>👁️</span>
+                            <span class="font-medium">View Site</span>
+                        </a>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Analytics Page -->
+            <div id="analyticsPage" class="page active p-6">
+                <!-- Stats Cards -->
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="stat-card p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-3xl">💰</span>
+                            <span class="text-green-500 text-sm font-semibold bg-green-50 px-2 py-1 rounded-full">Live</span>
+                        </div>
+                        <div class="text-3xl font-bold text-amber-900" id="totalRevenue">$0.00</div>
+                        <div class="text-stone-500 text-sm mt-1">Total Revenue</div>
+                        <div class="mini-progress mt-3">
+                            <div class="mini-progress-bar bg-gradient-to-r from-green-400 to-green-500" style="width: 75%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-3xl">📦</span>
+                            <span class="text-green-500 text-sm font-semibold bg-green-50 px-2 py-1 rounded-full">Live</span>
+                        </div>
+                        <div class="text-3xl font-bold text-amber-900" id="totalOrders">0</div>
+                        <div class="text-stone-500 text-sm mt-1">Total Orders</div>
+                        <div class="mini-progress mt-3">
+                            <div class="mini-progress-bar bg-gradient-to-r from-blue-400 to-blue-500" style="width: 65%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-3xl">👥</span>
+                            <span class="text-green-500 text-sm font-semibold bg-green-50 px-2 py-1 rounded-full">Live</span>
+                        </div>
+                        <div class="text-3xl font-bold text-amber-900" id="totalCustomers">0</div>
+                        <div class="text-stone-500 text-sm mt-1">Total Customers</div>
+                        <div class="mini-progress mt-3">
+                            <div class="mini-progress-bar bg-gradient-to-r from-purple-400 to-purple-500" style="width: 85%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-3xl">⭐</span>
+                            <span class="text-amber-500 text-sm font-semibold bg-amber-50 px-2 py-1 rounded-full">4.9/5</span>
+                        </div>
+                        <div class="text-3xl font-bold text-amber-900">4.9</div>
+                        <div class="text-stone-500 text-sm mt-1">Avg. Rating</div>
+                        <div class="mini-progress mt-3">
+                            <div class="mini-progress-bar bg-gradient-to-r from-amber-400 to-amber-500" style="width: 98%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Charts Row -->
+                <div class="grid lg:grid-cols-3 gap-6 mb-8">
+                    <!-- Revenue Chart -->
+                    <div class="lg:col-span-2 bg-white rounded-2xl p-6 shadow-sm">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="font-playfair text-xl font-bold text-amber-900">Revenue Overview</h3>
+                            <select class="px-4 py-2 border border-stone-200 rounded-xl text-sm focus:outline-none focus:border-amber-500">
+                                <option>Last 7 Days</option>
+                                <option>Last 30 Days</option>
+                                <option>Last 90 Days</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Top Products -->
+                    <div class="bg-white rounded-2xl p-6 shadow-sm">
+                        <h3 class="font-playfair text-xl font-bold text-amber-900 mb-6">Top Products</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-4">
+                                <span class="text-3xl">🥮</span>
+                                <div class="flex-1">
+                                    <div class="font-medium text-amber-900">Baklava Royale</div>
+                                    <div class="text-sm text-stone-500">324 sold</div>
+                                </div>
+                                <div class="text-green-600 font-semibold">$3,888</div>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <span class="text-3xl">🥐</span>
+                                <div class="flex-1">
+                                    <div class="font-medium text-amber-900">Golden Croissant</div>
+                                    <div class="text-sm text-stone-500">256 sold</div>
+                                </div>
+                                <div class="text-green-600 font-semibold">$1,664</div>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <span class="text-3xl">🧁</span>
+                                <div class="flex-1">
+                                    <div class="font-medium text-amber-900">Rose Petal Muffin</div>
+                                    <div class="text-sm text-stone-500">198 sold</div>
+                                </div>
+                                <div class="text-green-600 font-semibold">$1,584</div>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <span class="text-3xl">🍪</span>
+                                <div class="flex-1">
+                                    <div class="font-medium text-amber-900">Ma'amoul Legacy</div>
+                                    <div class="text-sm text-stone-500">167 sold</div>
+                                </div>
+                                <div class="text-green-600 font-semibold">$1,503</div>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <span class="text-3xl">🍩</span>
+                                <div class="flex-1">
+                                    <div class="font-medium text-amber-900">Saffron Ring</div>
+                                    <div class="text-sm text-stone-500">145 sold</div>
+                                </div>
+                                <div class="text-green-600 font-semibold">$1,087</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Orders & Traffic -->
+                <div class="grid lg:grid-cols-2 gap-6 mb-8">
+                    <!-- Recent Orders -->
+                    <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+                        <div class="p-6 border-b border-stone-100">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-playfair text-xl font-bold text-amber-900">Recent Orders <span class="text-sm font-normal text-stone-500">(<span id="ordersCount">0</span> total)</span></h3>
+                                <a href="#" class="text-amber-600 text-sm hover:text-amber-700 view-all-orders">View All →</a>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Customer</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recentOrdersBody">
+                                    <tr>
+                                        <td colspan="5" class="text-center py-8 text-stone-500">
+                                            <span class="text-4xl block mb-2">📭</span>
+                                            No orders yet. Orders placed on the website will appear here.
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Traffic Sources -->
+                    <div class="bg-white rounded-2xl p-6 shadow-sm">
+                        <h3 class="font-playfair text-xl font-bold text-amber-900 mb-6">Traffic Sources</h3>
+                        <div class="chart-container" style="height: 250px;">
+                            <canvas id="trafficChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="bg-gradient-to-r from-amber-600 to-amber-700 rounded-2xl p-8 text-white">
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                        <div>
+                            <h3 class="font-playfair text-2xl font-bold">Quick Actions</h3>
+                            <p class="text-amber-100 mt-2">Manage your store efficiently with these shortcuts</p>
+                        </div>
+                        <div class="flex flex-wrap gap-4">
+                            <button id="quickAddProduct" class="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-xl font-medium hover:bg-white/30 transition flex items-center gap-2">
+                                <span>➕</span> Add Product
+                            </button>
+                            <button id="quickNewOffer" class="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-xl font-medium hover:bg-white/30 transition flex items-center gap-2">
+                                <span>📢</span> New Offer
+                            </button>
+                            <button id="quickExport" class="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-xl font-medium hover:bg-white/30 transition flex items-center gap-2">
+                                <span>📤</span> Export Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Orders Page -->
+            <div id="ordersPage" class="page p-6">
+                <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+                    <div class="p-6 border-b border-stone-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div>
+                            <h3 class="font-playfair text-xl font-bold text-amber-900">All Customer Orders</h3>
+                            <p class="text-stone-500 text-sm mt-1">Manage and track orders from the website</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <select id="orderStatusFilter" class="px-4 py-2 border border-stone-200 rounded-xl focus:outline-none focus:border-amber-500">
+                                <option value="all">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="preparing">Preparing</option>
+                                <option value="delivered">Delivered</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                            <button id="refreshOrders" class="bg-amber-100 text-amber-800 px-4 py-2 rounded-xl font-medium hover:bg-amber-200 transition flex items-center gap-2">
+                                <span>🔄</span> Refresh
+                            </button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="allOrdersBody">
+                                <tr>
+                                    <td colspan="6" class="text-center py-8 text-stone-500">
+                                        <span class="text-4xl block mb-2">📭</span>
+                                        No orders yet. Orders placed on the website will appear here.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Management Page -->
+            <div id="managementPage" class="page p-6">
+                <!-- Management Tabs -->
+                <div class="bg-white rounded-2xl shadow-sm mb-6">
+                    <div class="flex overflow-x-auto border-b border-stone-100">
+                        <button class="tab-btn active" data-tab="general">🏠 General Info</button>
+                        <button class="tab-btn" data-tab="products">🥮 Products</button>
+                        <button class="tab-btn" data-tab="packages">🎁 Packages</button>
+                        <button class="tab-btn" data-tab="gallery">🖼️ Gallery</button>
+                        <button class="tab-btn" data-tab="seo">🔍 SEO</button>
+                    </div>
+                </div>
+                
+                <!-- General Info Tab -->
+                <div id="generalTab" class="tab-content">
+                    <div class="grid lg:grid-cols-2 gap-6">
+                        <!-- Basic Info -->
+                        <div class="bg-white rounded-2xl p-6 shadow-sm">
+                            <h3 class="font-playfair text-xl font-bold text-amber-900 mb-6">Basic Information</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-stone-600 mb-2">Business Name</label>
+                                    <input type="text" value="Al-Fanous Pastry Museum" 
+                                        class="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:border-amber-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-stone-600 mb-2">Tagline</label>
+                                    <input type="text" value="Where Tradition Meets Artistry" 
+                                        class="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:border-amber-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-stone-600 mb-2">Description</label>
+                                    <textarea rows="4" class="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:border-amber-500">Step into a world where every pastry tells a story. Discover centuries of culinary heritage, preserved and celebrated in our exquisite collection.</textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-stone-600 mb-2">Email</label>
+                                    <input type="email" value="info@alfanous.com" 
+                                        class="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:border-amber-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-stone-600 mb-2">Phone</label>
+                                    <input type="tel" value="+1 (555) 123-4567" 
+                                        class="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:border-amber-500">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Location & Hours -->
+                        <div class="space-y-6">
+                            <div class="bg-white rounded-2xl p-6 shadow-sm">
+                                <h3 class="font-playfair text-xl font-bold text-amber-900 mb-6">Location</h3>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-stone-600 mb-2">Address</label>
+                                        <input type="text" value="123 Heritage Lane, Old Town" 
+                                            class="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:border-amber-500">
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-stone-600 mb-2">City</label>
+                                            <input type="text" value="Damascus" 
+                                                class="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:border-amber-500">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-stone-600 mb-2">Country</label>
+                                            <input type="text" value="Syria" 
+                                                class="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:border-amber-500">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white rounded-2xl p-6 shadow-sm">
+                                <h3 class="font-playfair text-xl font-bold text-amber-900 mb-6">Operating Hours</h3>
+                                <div class="space-y-3">
+                                    <div class="flex items-center justify-between p-3 bg-amber-50 rounded-xl">
+                                        <span class="font-medium text-amber-900">Monday - Friday</span>
+                                        <span class="text-stone-600">9:00 AM - 9:00 PM</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-amber-50 rounded-xl">
+                                        <span class="font-medium text-amber-900">Saturday</span>
+                                        <span class="text-stone-600">10:00 AM - 10:00 PM</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-amber-50 rounded-xl">
+                                        <span class="font-medium text-amber-900">Sunday</span>
+                                        <span class="text-stone-600">11:00 AM - 8:00 PM</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Logo & Branding -->
+                        <div class="bg-white rounded-2xl p-6 shadow-sm">
+                            <h3 class="font-playfair text-xl font-bold text-amber-900 mb-6">Logo & Branding</h3>
+                            <div class="upload-box" id="logoUpload">
+                                <span class="text-5xl block mb-3">🖼️</span>
+                                <p class="text-stone-600 font-medium">Drop your logo here</p>
+                                <p class="text-stone-400 text-sm mt-1">SVG, PNG, JPG (max. 2MB)</p>
+                                <input type="file" class="hidden" accept="image/*">
+                            </div>
+                            <div class="mt-6">
+                                <label class="block text-sm font-medium text-stone-600 mb-3">Brand Colors</label>
+                                <div class="flex gap-3">
+                                    <div class="w-12 h-12 rounded-xl bg-amber-600 cursor-pointer border-2 border-amber-300 shadow-lg"></div>
+                                    <div class="w-12 h-12 rounded-xl bg-amber-800 cursor-pointer hover:border-2 hover:border-amber-300"></div>
+                                    <div class="w-12 h-12 rounded-xl bg-amber-400 cursor-pointer hover:border-2 hover:border-amber-300"></div>
+                                    <div class="w-12 h-12 rounded-xl bg-stone-800 cursor-pointer hover:border-2 hover:border-amber-300"></div>
+                                    <button class="w-12 h-12 rounded-xl border-2 border-dashed border-stone-300 flex items-center justify-center text-stone-400 hover:border-amber-500 hover:text-amber-500">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Social Media -->
+                        <div class="bg-white rounded-2xl p-6 shadow-sm">
+                            <h3 class="font-playfair text-xl font-bold text-amber-900 mb-6">Social Media</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-2xl w-10 text-center">📸</span>
+                                    <input type="text" placeholder="Instagram URL" value="https://instagram.com/alfanous" 
+                                        class="flex-1 px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:border-amber-500">
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="text-2xl w-10 text-center">📘</span>
+                                    <input type="text" placeholder="Facebook URL" value="https://facebook.com/alfanous" 
+                                        class="flex-1 px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:border-amber-500">
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="text-2xl w-10 text-center">🐦</span>
+                                    <input type="text" placeholder="Twitter URL" value="https://twitter.com/alfanous" 
+                                        class="flex-1 px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:border-amber-500">
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="text-2xl w-10 text-center">📺</span>
+                                    <input type="text" placeholder="YouTube URL" value="" 
+                                        class="flex-1 px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:border-amber-500">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Save Button -->
+                    <div class="mt-6 flex justify-end gap-4">
+                        <button class="px-6 py-3 border border-stone-300 rounded-xl text-stone-600 hover:bg-stone-50 transition">
+                            Cancel
+                        </button>
+                        <button class="px-8 py-3 bg-gradient-to-r from-amber-600 to-amber-700 text-white rounded-xl font-semibold hover:from-amber-700 hover:to-amber-800 transition shadow-lg">
+                            Save Changes
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Products Tab -->
+                <div id="productsTab" class="tab-content hidden">
+                    <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+                        <div class="p-6 border-b border-stone-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                            <h3 class="font-playfair text-xl font-bold text-amber-900">All Products</h3>
+                            <div class="flex items-center gap-3">
+                                <div class="relative">
+                                    <input type="text" placeholder="Search products..." 
+                                        class="pl-10 pr-4 py-2 border border-stone-200 rounded-xl focus:outline-none focus:border-amber-500">
+                                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400">🔍</span>
+                                </div>
+                                <button id="addProductBtn" class="bg-gradient-to-r from-amber-600 to-amber-700 text-white px-4 py-2 rounded-xl font-medium hover:from-amber-700 hover:to-amber-800 transition flex items-center gap-2">
+                                    <span>➕</span> Add Product
+                                </button>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Category</th>
+                                        <th>Price</th>
+                                        <th>Stock</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="flex items-center gap-3">
+                                                <span class="text-3xl">🥮</span>
+                                                <div>
+                                                    <div class="font-medium text-amber-900">Baklava Royale</div>
+                                                    <div class="text-xs text-stone-500">Est. 1850</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>Traditional</td>
+                                        <td class="font-semibold">$12.00</td>
+                                        <td>156</td>
+                                        <td><span class="badge badge-success">Active</span></td>
+                                        <td>
+                                            <div class="flex items-center gap-2">
+                                                <button class="btn-action bg-blue-50 text-blue-600">✏️</button>
+                                                <button class="btn-action bg-red-50 text-red-600">🗑️</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="flex items-center gap-3">
+                                                <span class="text-3xl">🧁</span>
+                                                <div>
+                                                    <div class="font-medium text-amber-900">Rose Petal Muffin</div>
+                                                    <div class="text-xs text-stone-500">Est. 1920</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>Specialty</td>
+                                        <td class="font-semibold">$8.00</td>
+                                        <td>89</td>
+                                        <td><span class="badge badge-success">Active</span></td>
+                                        <td>
+                                            <div class="flex items-center gap-2">
+                                                <button class="btn-action bg-blue-50 text-blue-600">✏️</button>
+                                                <button class="btn-action bg-red-50 text-red-600">🗑️</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="flex items-center gap-3">
+                                                <span class="text-3xl">🥐</span>
+                                                <div>
+                                                    <div class="font-medium text-amber-900">Golden Croissant</div>
+                                                    <div class="text-xs text-stone-500">Est. 1780</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>French</td>
+                                        <td class="font-semibold">$6.50</td>
+                                        <td>234</td>
+                                        <td><span class="badge badge-success">Active</span></td>
+                                        <td>
+                                            <div class="flex items-center gap-2">
+                                                <button class="btn-action bg-blue-50 text-blue-600">✏️</button>
+                                                <button class="btn-action bg-red-50 text-red-600">🗑️</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="flex items-center gap-3">
+                                                <span class="text-3xl">🍩</span>
+                                                <div>
+                                                    <div class="font-medium text-amber-900">Saffron Ring</div>
+                                                    <div class="text-xs text-stone-500">Est. 1900</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>Persian</td>
+                                        <td class="font-semibold">$7.50</td>
+                                        <td>12</td>
+                                        <td><span class="badge badge-warning">Low Stock</span></td>
+                                        <td>
+                                            <div class="flex items-center gap-2">
+                                                <button class="btn-action bg-blue-50 text-blue-600">✏️</button>
+                                                <button class="btn-action bg-red-50 text-red-600">🗑️</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="flex items-center gap-3">
+                                                <span class="text-3xl">🍪</span>
+                                                <div>
+                                                    <div class="font-medium text-amber-900">Ma'amoul Legacy</div>
+                                                    <div class="text-xs text-stone-500">Est. 1875</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>Levantine</td>
+                                        <td class="font-semibold">$9.00</td>
+                                        <td>0</td>
+                                        <td><span class="badge badge-danger">Out of Stock</span></td>
+                                        <td>
+                                            <div class="flex items-center gap-2">
+                                                <button class="btn-action bg-blue-50 text-blue-600">✏️</button>
+                                                <button class="btn-action bg-red-50 text-red-600">🗑️</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="flex items-center gap-3">
+                                                <span class="text-3xl">🎂</span>
+                                                <div>
+                                                    <div class="font-medium text-amber-900">Heritage Torte</div>
+                                                    <div class="text-xs text-stone-500">Est. 1800</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>Celebration</td>
+                                        <td class="font-semibold">$45.00</td>
+                                        <td>8</td>
+                                        <td><span class="badge badge-success">Active</span></td>
+                                        <td>
+                                            <div class="flex items-center gap-2">
+                                                <button class="btn-action bg-blue-50 text-blue-600">✏️</button>
+                                                <button class="btn-action bg-red-50 text-red-600">🗑️</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="p-4 border-t border-stone-100 flex items-center justify-between">
+                            <span class="text-stone-500 text-sm">Showing 1-6 of 24 products</span>
+                            <div class="flex gap-2">
+                                <button class="px-3 py-1 border border-stone-200 rounded-lg hover:bg-amber-50">←</button>
+                                <button class="px-3 py-1 bg-amber-600 text-white rounded-lg">1</button>
+                                <button class="px-3 py-1 border border-stone-200 rounded-lg hover:bg-amber-50">2</button>
+                                <button class="px-3 py-1 border border-stone-200 rounded-lg hover:bg-amber-50">3</button>
+                                <button class="px-3 py-1 border border-stone-200 rounded-lg hover:bg-amber-50">4</button>
+                                <button class="px-3 py-1 border border-stone-200 rounded-lg hover:bg-amber-50">→</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Packages Tab -->
+                <div id="packagesTab" class="tab-content hidden">
+                    <div class="grid lg:grid-cols-3 gap-6">
+                        <!-- Package Card 1 -->
+                        <div class="bg-white rounded-2xl overflow-hidden shadow-sm">
+                            <div class="bg-gradient-to-br from-amber-500 to-amber-600 p-6 text-white">
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="bg-white/20 px-3 py-1 rounded-full text-sm">🌙 Ramadan</span>
+                                    <div class="toggle active"></div>
+                                </div>
+                                <span class="text-5xl block mb-3">🎁</span>
+                                <h4 class="font-playfair text-xl font-bold">Iftar Delights Box</h4>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-2 mb-4">
+                                    <span class="text-stone-400 line-through">$89.00</span>
+                                    <span class="text-2xl font-bold text-amber-900">$69.00</span>
+                                </div>
+                                <ul class="space-y-2 text-sm text-stone-600 mb-4">
+                                    <li>✓ 12 Pieces Baklava</li>
+                                    <li>✓ 8 Ma'amoul Cookies</li>
+                                    <li>✓ 6 Kunafa Bites</li>
+                                    <li>✓ Premium Box</li>
+                                </ul>
+                                <div class="flex gap-2">
+                                    <button class="flex-1 bg-amber-100 text-amber-800 py-2 rounded-xl font-medium hover:bg-amber-200">Edit</button>
+                                    <button class="px-4 py-2 border border-stone-200 rounded-xl hover:bg-stone-50">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Package Card 2 -->
+                        <div class="bg-white rounded-2xl overflow-hidden shadow-sm">
+                            <div class="bg-gradient-to-br from-stone-700 to-stone-800 p-6 text-white">
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="bg-amber-500 px-3 py-1 rounded-full text-sm">⭐ Best Seller</span>
+                                    <div class="toggle active"></div>
+                                </div>
+                                <span class="text-5xl block mb-3">👑</span>
+                                <h4 class="font-playfair text-xl font-bold">Royal Heritage Box</h4>
+                            </div>
+                            <div class="p-6">
+                                <div class="mb-4">
+                                    <span class="text-2xl font-bold text-amber-900">$129.00</span>
+                                </div>
+                                <ul class="space-y-2 text-sm text-stone-600 mb-4">
+                                    <li>✓ 24 Premium Baklava</li>
+                                    <li>✓ 12 Assorted Ma'amoul</li>
+                                    <li>✓ 6 Rose Muffins</li>
+                                    <li>✓ Wooden Box</li>
+                                </ul>
+                                <div class="flex gap-2">
+                                    <button class="flex-1 bg-amber-100 text-amber-800 py-2 rounded-xl font-medium hover:bg-amber-200">Edit</button>
+                                    <button class="px-4 py-2 border border-stone-200 rounded-xl hover:bg-stone-50">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Package Card 3 -->
+                        <div class="bg-white rounded-2xl overflow-hidden shadow-sm">
+                            <div class="bg-gradient-to-br from-rose-500 to-rose-600 p-6 text-white">
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="bg-white/20 px-3 py-1 rounded-full text-sm">💒 Events</span>
+                                    <div class="toggle active"></div>
+                                </div>
+                                <span class="text-5xl block mb-3">💝</span>
+                                <h4 class="font-playfair text-xl font-bold">Celebration Package</h4>
+                            </div>
+                            <div class="p-6">
+                                <div class="mb-4">
+                                    <span class="text-sm text-stone-500">Starting from</span>
+                                    <span class="text-2xl font-bold text-amber-900 block">$199.00</span>
+                                </div>
+                                <ul class="space-y-2 text-sm text-stone-600 mb-4">
+                                    <li>✓ 50 Mixed Pastries</li>
+                                    <li>✓ Custom Arrangement</li>
+                                    <li>✓ Display Tower</li>
+                                    <li>✓ Free Delivery</li>
+                                </ul>
+                                <div class="flex gap-2">
+                                    <button class="flex-1 bg-amber-100 text-amber-800 py-2 rounded-xl font-medium hover:bg-amber-200">Edit</button>
+                                    <button class="px-4 py-2 border border-stone-200 rounded-xl hover:bg-stone-50">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="mt-6 w-full py-4 border-2 border-dashed border-amber-300 rounded-2xl text-amber-700 font-medium hover:bg-amber-50 transition flex items-center justify-center gap-2">
+                        <span class="text-2xl">➕</span> Add New Package
+                    </button>
+                </div>
+                
+                <!-- Gallery Tab -->
+                <div id="galleryTab" class="tab-content hidden">
+                    <div class="bg-white rounded-2xl p-6 shadow-sm mb-6">
+                        <div class="upload-box" id="galleryUpload">
+                            <span class="text-6xl block mb-4">📤</span>
+                            <p class="text-stone-600 font-medium text-lg">Drag and drop images here</p>
+                            <p class="text-stone-400 text-sm mt-2">or click to browse files</p>
+                            <button class="mt-4 bg-amber-600 text-white px-6 py-2 rounded-xl font-medium hover:bg-amber-700 transition">
+                                Select Files
+                            </button>
+                            <input type="file" class="hidden" accept="image/*" multiple>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                        <div class="relative group">
+                            <div class="aspect-square bg-gradient-to-br from-amber-200 to-amber-100 rounded-xl flex items-center justify-center text-5xl">🥮</div>
+                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition rounded-xl flex items-center justify-center gap-2">
+                                <button class="bg-white p-2 rounded-lg">✏️</button>
+                                <button class="bg-red-500 text-white p-2 rounded-lg">🗑️</button>
+                            </div>
+                        </div>
+                        <div class="relative group">
+                            <div class="aspect-square bg-gradient-to-br from-rose-200 to-rose-100 rounded-xl flex items-center justify-center text-5xl">🧁</div>
+                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition rounded-xl flex items-center justify-center gap-2">
+                                <button class="bg-white p-2 rounded-lg">✏️</button>
+                                <button class="bg-red-500 text-white p-2 rounded-lg">🗑️</button>
+                            </div>
+                        </div>
+                        <div class="relative group">
+                            <div class="aspect-square bg-gradient-to-br from-orange-200 to-orange-100 rounded-xl flex items-center justify-center text-5xl">🥐</div>
+                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition rounded-xl flex items-center justify-center gap-2">
+                                <button class="bg-white p-2 rounded-lg">✏️</button>
+                                <button class="bg-red-500 text-white p-2 rounded-lg">🗑️</button>
+                            </div>
+                        </div>
+                        <div class="relative group">
+                            <div class="aspect-square bg-gradient-to-br from-purple-200 to-purple-100 rounded-xl flex items-center justify-center text-5xl">🍩</div>
+                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition rounded-xl flex items-center justify-center gap-2">
+                                <button class="bg-white p-2 rounded-lg">✏️</button>
+                                <button class="bg-red-500 text-white p-2 rounded-lg">🗑️</button>
+                            </div>
+                        </div>
+                        <div class="relative group">
+                            <div class="aspect-square bg-gradient-to-br from-yellow-200 to-yellow-100 rounded-xl flex items-center justify-center text-5xl">🍪</div>
+                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition rounded-xl flex items-center justify-center gap-2">
+                                <button class="bg-white p-2 rounded-lg">✏️</button>
+                                <button class="bg-red-500 text-white p-2 rounded-lg">🗑️</button>
+                            </div>
+                        </div>
+                        <div class="relative group">
+                            <div class="aspect-square bg-gradient-to-br from-pink-200 to-pink-100 rounded-xl flex items-center justify-center text-5xl">🎂</div>
+                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition rounded-xl flex items-center justify-center gap-2">
+                                <button class="bg-white p-2 rounded-lg">✏️</button>
+                                <button class="bg-red-500 text-white p-2 rounded-lg">🗑️</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- SEO Tab -->
+                <div id="seoTab" class="tab-content hidden">
+                    <div class="grid lg:grid-cols-2 gap-6">
+                        <div class="bg-white rounded-2xl p-6 shadow-sm">
+                            <h3 class="font-playfair text-xl font-bold text-amber-900 mb-6">SEO Settings</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-stone-600 mb-2">Meta Title</label>
+                                    <input type="text" value="Al-Fanous Pastry Museum | Traditional Artisan Pastries" 
+                                        class="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:border-amber-500">
+                                    <div class="text-xs text-stone-400 mt-1">58 / 60 characters</div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-stone-600 mb-2">Meta Description</label>
+                                    <textarea rows="3" class="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:border-amber-500">Step into a world where every pastry tells a story. Discover centuries of culinary heritage at Al-Fanous Pastry Museum.</textarea>
+                                    <div class="text-xs text-stone-400 mt-1">142 / 160 characters</div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-stone-600 mb-2">Keywords</label>
+                                    <input type="text" value="pastry, baklava, traditional sweets, museum, heritage, artisan" 
+                                        class="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:border-amber-500">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-2xl p-6 shadow-sm">
+                            <h3 class="font-playfair text-xl font-bold text-amber-900 mb-6">Search Preview</h3>
+                            <div class="border border-stone-200 rounded-xl p-4 bg-stone-50">
+                                <div class="text-blue-600 text-lg hover:underline cursor-pointer">Al-Fanous Pastry Museum | Traditional Artisan Pastries</div>
+                                <div class="text-green-700 text-sm">www.alfanous.com</div>
+                                <div class="text-stone-600 text-sm mt-1">Step into a world where every pastry tells a story. Discover centuries of culinary heritage at Al-Fanous Pastry Museum.</div>
+                            </div>
+                            
+                            <div class="mt-6 p-4 bg-amber-50 rounded-xl">
+                                <h4 class="font-semibold text-amber-900 mb-3">SEO Score</h4>
+                                <div class="flex items-center gap-4">
+                                    <div class="relative w-20 h-20">
+                                        <svg class="progress-ring w-20 h-20">
+                                            <circle cx="40" cy="40" r="35" stroke="#e5e7eb" stroke-width="6" fill="none"/>
+                                            <circle class="progress-ring-circle" cx="40" cy="40" r="35" stroke="#22c55e" stroke-width="6" fill="none" 
+                                                stroke-dasharray="220" stroke-dashoffset="44" stroke-linecap="round"/>
+                                        </svg>
+                                        <div class="absolute inset-0 flex items-center justify-center font-bold text-green-600">80%</div>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="text-sm text-stone-600 space-y-1">
+                                            <div class="flex items-center gap-2">✅ Title length is optimal</div>
+                                            <div class="flex items-center gap-2">✅ Meta description is good</div>
+                                            <div class="flex items-center gap-2">⚠️ Add more internal links</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Add Product Modal -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <div class="p-6 border-b border-stone-100 flex items-center justify-between">
+                <h3 class="font-playfair text-xl font-bold text-amber-900">Add New Product</h3>
+                <button class="modal-close text-2xl text-stone-400 hover:text-stone-600">&times;</button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-stone-600 mb-2">Product Name</label>
+                        <input type="text" placeholder="Enter product name" 
+                            class="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-stone-600 mb-2">Price ($)</label>
+                        <input type="number" placeholder="0.00" 
+                            class="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-stone-600 mb-2">Category</label>
+                        <select class="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:border-amber-500">
+                            <option>Traditional</option>
+                            <option>French</option>
+                            <option>Persian</option>
+                            <option>Levantine</option>
+                            <option>Celebration</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-stone-600 mb-2">Stock</label>
+                        <input type="number" placeholder="0" 
+                            class="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-stone-600 mb-2">Est. Year</label>
+                        <input type="number" placeholder="1850" 
+                            class="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-stone-600 mb-2">Description</label>
+                        <textarea rows="3" placeholder="Describe the product..." 
+                            class="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:border-amber-500"></textarea>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-stone-600 mb-2">Product Image</label>
+                        <div class="upload-box py-8">
+                            <span class="text-4xl">📷</span>
+                            <p class="text-stone-500 text-sm mt-2">Click to upload image</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 border-t border-stone-100 flex justify-end gap-3">
+                <button class="modal-close px-6 py-2 border border-stone-300 rounded-xl text-stone-600 hover:bg-stone-50">Cancel</button>
+                <button class="px-6 py-2 bg-gradient-to-r from-amber-600 to-amber-700 text-white rounded-xl font-medium hover:from-amber-700 hover:to-amber-800">Add Product</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== SYNC WITH CLIENT SIDE DATA =====
+        // Get real orders from localStorage (shared with main site)
+        function getOrders() {
+            return JSON.parse(localStorage.getItem('orders')) || [];
+        }
+        
+        function getCustomers() {
+            const orders = getOrders();
+            const customers = {};
+            orders.forEach(order => {
+                const email = order.customerEmail || 'unknown';
+                if (!customers[email]) {
+                    customers[email] = {
+                        name: order.customerName || 'Unknown',
+                        email: email,
+                        phone: order.customerPhone || '',
+                        orders: [],
+                        totalSpent: 0
+                    };
+                }
+                customers[email].orders.push(order);
+                customers[email].totalSpent += order.total || 0;
+            });
+            return Object.values(customers);
+        }
+        
+        function calculateStats() {
+            const orders = getOrders();
+            const totalRevenue = orders.reduce((sum, order) => sum + (order.total || 0), 0);
+            const totalOrders = orders.length;
+            const customers = getCustomers();
+            
+            return {
+                revenue: totalRevenue,
+                orders: totalOrders,
+                customers: customers.length,
+                avgRating: 4.9
+            };
+        }
+        
+        // Update order status
+        function updateOrderStatus(orderId, newStatus) {
+            const orders = getOrders();
+            const orderIndex = orders.findIndex(o => o.id === orderId);
+            if (orderIndex !== -1) {
+                orders[orderIndex].status = newStatus;
+                localStorage.setItem('orders', JSON.stringify(orders));
+                renderOrders();
+                showNotification(`✅ Order #${orderId} updated to ${newStatus}`, 'success');
+            }
+        }
+        
+        // Delete order
+        function deleteOrder(orderId) {
+            let orders = getOrders();
+            orders = orders.filter(o => o.id !== orderId);
+            localStorage.setItem('orders', JSON.stringify(orders));
+            renderOrders();
+            updateDashboardStats();
+            showNotification(`🗑️ Order #${orderId} deleted`, 'success');
+        }
+        
+        // Render orders in the table
+        function renderOrders() {
+            const orders = getOrders();
+            const recentOrdersBody = document.getElementById('recentOrdersBody');
+            const allOrdersBody = document.getElementById('allOrdersBody');
+            const ordersCount = document.getElementById('ordersCount');
+            const pendingOrdersBadge = document.getElementById('pendingOrdersBadge');
+            
+            // Count pending orders
+            const pendingCount = orders.filter(o => o.status === 'pending').length;
+            if (pendingOrdersBadge) {
+                pendingOrdersBadge.textContent = pendingCount;
+                pendingOrdersBadge.style.display = pendingCount > 0 ? 'flex' : 'none';
+            }
+            
+            if (ordersCount) {
+                ordersCount.textContent = orders.length;
+            }
+            
+            if (orders.length === 0) {
+                const emptyRow = `
+                    <tr>
+                        <td colspan="5" class="text-center py-8 text-stone-500">
+                            <span class="text-4xl block mb-2">📭</span>
+                            No orders yet. Orders placed on the website will appear here.
+                        </td>
+                    </tr>
+                `;
+                if (recentOrdersBody) recentOrdersBody.innerHTML = emptyRow;
+                if (allOrdersBody) allOrdersBody.innerHTML = emptyRow;
+                return;
+            }
+            
+            const sortedOrders = [...orders].sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            // Render recent orders (last 5)
+            if (recentOrdersBody) {
+                const recentHtml = sortedOrders.slice(0, 5).map(order => createOrderRow(order, false)).join('');
+                recentOrdersBody.innerHTML = recentHtml;
+            }
+            
+            // Render all orders
+            if (allOrdersBody) {
+                const allHtml = sortedOrders.map(order => createOrderRow(order, true)).join('');
+                allOrdersBody.innerHTML = allHtml;
+            }
+            
+            // Reattach event listeners
+            attachOrderEventListeners();
+        }
+        
+        function createOrderRow(order, showActions = true) {
+            const date = new Date(order.date);
+            const formattedDate = date.toLocaleDateString('en-US', { 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            const statusClass = order.status === 'pending' ? 'badge-warning' : 
+                               order.status === 'preparing' ? 'badge-info' : 
+                               order.status === 'delivered' ? 'badge-success' : 'badge-danger';
+            
+            const statusText = order.status ? order.status.charAt(0).toUpperCase() + order.status.slice(1) : 'Pending';
+            
+            const itemsPreview = order.items ? order.items.map(i => i.emoji).join(' ') : '🥮';
+            
+            const customerName = order.customerName || order.items?.[0]?.name || 'Customer';
+            
+            const actionsHtml = showActions ? `
+                <td>
+                    <div class="flex items-center gap-2">
+                        <select class="order-status-select text-xs border border-stone-200 rounded-lg px-2 py-1" data-order-id="${order.id}">
+                            <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
+                            <option value="preparing" ${order.status === 'preparing' ? 'selected' : ''}>Preparing</option>
+                            <option value="delivered" ${order.status === 'delivered' ? 'selected' : ''}>Delivered</option>
+                            <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                        </select>
+                        <button class="btn-action bg-blue-50 text-blue-600 view-order-btn" data-order-id="${order.id}" title="View Details">👁️</button>
+                        <button class="btn-action bg-red-50 text-red-600 delete-order-btn" data-order-id="${order.id}" title="Delete">🗑️</button>
+                    </div>
+                </td>
+            ` : '';
+            
+            return `
+                <tr data-order-id="${order.id}">
+                    <td class="font-mono text-sm">#${order.id}</td>
+                    <td>
+                        <div class="flex items-center gap-2">
+                            <span class="text-lg">${itemsPreview}</span>
+                            <span>${customerName}</span>
+                        </div>
+                    </td>
+                    <td class="font-semibold">$${(order.total || 0).toFixed(2)}</td>
+                    <td><span class="badge ${statusClass}">${statusText}</span></td>
+                    <td class="text-stone-500 text-sm">${formattedDate}</td>
+                    ${actionsHtml}
+                </tr>
+            `;
+        }
+        
+        function attachOrderEventListeners() {
+            // Status change
+            document.querySelectorAll('.order-status-select').forEach(select => {
+                select.addEventListener('change', (e) => {
+                    const orderId = e.target.dataset.orderId;
+                    const newStatus = e.target.value;
+                    updateOrderStatus(orderId, newStatus);
+                });
+            });
+            
+            // Delete order
+            document.querySelectorAll('.delete-order-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const orderId = btn.dataset.orderId;
+                    if (confirm(`Delete order #${orderId}?`)) {
+                        deleteOrder(orderId);
+                    }
+                });
+            });
+            
+            // View order details
+            document.querySelectorAll('.view-order-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const orderId = btn.dataset.orderId;
+                    viewOrderDetails(orderId);
+                });
+            });
+        }
+        
+        function viewOrderDetails(orderId) {
+            const orders = getOrders();
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+            
+            const date = new Date(order.date);
+            const formattedDate = date.toLocaleDateString('en-US', { 
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            const itemsList = order.items ? order.items.map(item => `
+                <div class="flex items-center justify-between py-2 border-b border-stone-100">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">${item.emoji}</span>
+                        <div>
+                            <div class="font-medium">${item.name}</div>
+                            <div class="text-sm text-stone-500">Qty: ${item.qty}</div>
+                        </div>
+                    </div>
+                    <div class="font-semibold">$${(item.price * item.qty).toFixed(2)}</div>
+                </div>
+            `).join('') : '<p class="text-stone-500">No items</p>';
+            
+            const modalHtml = `
+                <div id="orderDetailsModal" class="modal open">
+                    <div class="modal-content">
+                        <div class="p-6 border-b border-stone-100 flex items-center justify-between bg-gradient-to-r from-amber-600 to-amber-700 text-white rounded-t-2xl">
+                            <div>
+                                <h3 class="font-playfair text-xl font-bold">Order #${order.id}</h3>
+                                <p class="text-amber-100 text-sm">${formattedDate}</p>
+                            </div>
+                            <button class="modal-close-detail text-2xl hover:bg-white/20 rounded-full w-10 h-10">&times;</button>
+                        </div>
+                        <div class="p-6">
+                            <div class="grid md:grid-cols-2 gap-6 mb-6">
+                                <div>
+                                    <h4 class="font-semibold text-amber-900 mb-2">👤 Customer Info</h4>
+                                    <div class="bg-amber-50 rounded-xl p-4 space-y-2">
+                                        <p><strong>Name:</strong> ${order.customerName || 'N/A'}</p>
+                                        <p><strong>Email:</strong> ${order.customerEmail || 'N/A'}</p>
+                                        <p><strong>Phone:</strong> ${order.customerPhone || 'N/A'}</p>
+                                        <p><strong>Address:</strong> ${order.customerAddress || 'N/A'}</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-amber-900 mb-2">📦 Order Status</h4>
+                                    <div class="bg-amber-50 rounded-xl p-4">
+                                        <select class="w-full px-4 py-2 border border-amber-200 rounded-xl" id="modalStatusSelect">
+                                            <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>⏳ Pending</option>
+                                            <option value="preparing" ${order.status === 'preparing' ? 'selected' : ''}>👨‍🍳 Preparing</option>
+                                            <option value="delivered" ${order.status === 'delivered' ? 'selected' : ''}>✅ Delivered</option>
+                                            <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>❌ Cancelled</option>
+                                        </select>
+                                        ${order.notes ? `<p class="mt-3 text-sm"><strong>Notes:</strong> ${order.notes}</p>` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <h4 class="font-semibold text-amber-900 mb-2">🛒 Order Items</h4>
+                            <div class="bg-stone-50 rounded-xl p-4 mb-4">
+                                ${itemsList}
+                            </div>
+                            
+                            <div class="flex justify-between items-center p-4 bg-amber-100 rounded-xl">
+                                <span class="font-bold text-lg text-amber-900">Total</span>
+                                <span class="font-bold text-2xl text-amber-900">$${(order.total || 0).toFixed(2)}</span>
+                            </div>
+                        </div>
+                        <div class="p-6 border-t border-stone-100 flex justify-end gap-3">
+                            <button class="modal-close-detail px-6 py-2 border border-stone-300 rounded-xl text-stone-600 hover:bg-stone-50">Close</button>
+                            <button id="updateOrderBtn" data-order-id="${order.id}" class="px-6 py-2 bg-gradient-to-r from-amber-600 to-amber-700 text-white rounded-xl font-medium hover:from-amber-700 hover:to-amber-800">Update Order</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            
+            // Close modal
+            document.querySelectorAll('.modal-close-detail').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.getElementById('orderDetailsModal')?.remove();
+                });
+            });
+            
+            // Update order from modal
+            document.getElementById('updateOrderBtn')?.addEventListener('click', () => {
+                const newStatus = document.getElementById('modalStatusSelect').value;
+                updateOrderStatus(orderId, newStatus);
+                document.getElementById('orderDetailsModal')?.remove();
+            });
+            
+            // Click outside to close
+            document.getElementById('orderDetailsModal')?.addEventListener('click', (e) => {
+                if (e.target.id === 'orderDetailsModal') {
+                    document.getElementById('orderDetailsModal')?.remove();
+                }
+            });
+        }
+        
+        // Update dashboard stats with real data
+        function updateDashboardStats() {
+            const stats = calculateStats();
+            
+            // Update stat cards
+            const revenueEl = document.getElementById('totalRevenue');
+            const ordersEl = document.getElementById('totalOrders');
+            const customersEl = document.getElementById('totalCustomers');
+            
+            if (revenueEl) revenueEl.textContent = '$' + stats.revenue.toFixed(2);
+            if (ordersEl) ordersEl.textContent = stats.orders;
+            if (customersEl) customersEl.textContent = stats.customers;
+            
+            // Update sidebar badge
+            const ordersBadge = document.getElementById('pendingOrdersBadge');
+            const orders = getOrders();
+            const pendingCount = orders.filter(o => o.status === 'pending').length;
+            if (ordersBadge) {
+                ordersBadge.textContent = pendingCount;
+            }
+        }
+        
+        // Initialize dashboard
+        const adminDashboard = document.getElementById('adminDashboard');
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            initCharts();
+            animateStats();
+            renderOrders();
+            updateDashboardStats();
+            
+            // Refresh data every 5 seconds
+            setInterval(() => {
+                renderOrders();
+                updateDashboardStats();
+            }, 5000);
+        });
+        
+        // Back to website button
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+        
+        // Sidebar navigation
+        const sidebarLinks = document.querySelectorAll('.sidebar-link');
+        const pageTitle = document.getElementById('pageTitle');
+        
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const page = link.dataset.page;
+                
+                sidebarLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                
+                // Show corresponding page
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                
+                if (page === 'analytics') {
+                    document.getElementById('analyticsPage').classList.add('active');
+                    pageTitle.textContent = 'Analytics Dashboard';
+                } else if (page === 'management' || page === 'products' || page === 'media' || page === 'settings') {
+                    document.getElementById('managementPage').classList.add('active');
+                    pageTitle.textContent = 'Management';
+                    
+                    // Switch to appropriate tab
+                    if (page === 'products') {
+                        switchTab('products');
+                    } else if (page === 'media') {
+                        switchTab('gallery');
+                    } else if (page === 'settings') {
+                        switchTab('general');
+                    }
+                } else if (page === 'orders') {
+                    document.getElementById('ordersPage').classList.add('active');
+                    pageTitle.textContent = 'Customer Orders';
+                    renderOrders();
+                }
+                
+                // Close mobile sidebar
+                sidebar.classList.remove('open');
+                sidebarOverlay.classList.remove('open');
+            });
+        });
+        
+        // View All Orders link
+        document.querySelectorAll('.view-all-orders').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                document.getElementById('ordersPage').classList.add('active');
+                pageTitle.textContent = 'Customer Orders';
+                
+                sidebarLinks.forEach(l => l.classList.remove('active'));
+                document.querySelector('[data-page="orders"]').classList.add('active');
+                
+                renderOrders();
+            });
+        });
+        
+        // Refresh orders button
+        document.getElementById('refreshOrders')?.addEventListener('click', () => {
+            renderOrders();
+            updateDashboardStats();
+            showNotification('🔄 Orders refreshed!', 'success');
+        });
+        
+        // Order status filter
+        document.getElementById('orderStatusFilter')?.addEventListener('change', (e) => {
+            const status = e.target.value;
+            const rows = document.querySelectorAll('#allOrdersBody tr');
+            
+            rows.forEach(row => {
+                if (status === 'all') {
+                    row.style.display = '';
+                } else {
+                    const orderStatus = row.querySelector('.badge')?.textContent.toLowerCase();
+                    row.style.display = orderStatus === status ? '' : 'none';
+                }
+            });
+        });
+        
+        // Tab switching
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        
+        function switchTab(tabName) {
+            tabBtns.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.tab === tabName);
+            });
+            
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            document.getElementById(tabName + 'Tab').classList.remove('hidden');
+        }
+        
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                switchTab(btn.dataset.tab);
+            });
+        });
+        
+        // Mobile sidebar
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            sidebarOverlay.classList.toggle('open');
+        });
+        
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('open');
+        });
+        
+        // Modal
+        const productModal = document.getElementById('productModal');
+        const addProductBtn = document.getElementById('addProductBtn');
+        const modalCloses = document.querySelectorAll('.modal-close');
+        
+        addProductBtn?.addEventListener('click', () => {
+            productModal.classList.add('open');
+        });
+        
+        modalCloses.forEach(btn => {
+            btn.addEventListener('click', () => {
+                productModal.classList.remove('open');
+            });
+        });
+        
+        productModal.addEventListener('click', (e) => {
+            if (e.target === productModal) {
+                productModal.classList.remove('open');
+            }
+        });
+        
+        // Toggle switches
+        document.querySelectorAll('.toggle').forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                toggle.classList.toggle('active');
+            });
+        });
+        
+        // File upload drag and drop
+        document.querySelectorAll('.upload-box').forEach(box => {
+            box.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                box.classList.add('dragover');
+            });
+            
+            box.addEventListener('dragleave', () => {
+                box.classList.remove('dragover');
+            });
+            
+            box.addEventListener('drop', (e) => {
+                e.preventDefault();
+                box.classList.remove('dragover');
+                // Handle file upload
+            });
+            
+            box.addEventListener('click', () => {
+                box.querySelector('input[type="file"]')?.click();
+            });
+        });
+        
+        // Charts initialization
+        function initCharts() {
+            // Revenue Chart
+            const revenueCtx = document.getElementById('revenueChart');
+            if (revenueCtx) {
+                new Chart(revenueCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                        datasets: [{
+                            label: 'Revenue',
+                            data: [4200, 5800, 4900, 6200, 7100, 8400, 7800],
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: '#f59e0b',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2,
+                            pointRadius: 5
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return '$' + value.toLocaleString();
+                                    }
+                                },
+                                grid: {
+                                    color: 'rgba(0,0,0,0.05)'
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Traffic Chart
+            const trafficCtx = document.getElementById('trafficChart');
+            if (trafficCtx) {
+                new Chart(trafficCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Organic', 'Social', 'Direct', 'Referral'],
+                        datasets: [{
+                            data: [45, 25, 20, 10],
+                            backgroundColor: [
+                                '#f59e0b',
+                                '#ec4899',
+                                '#8b5cf6',
+                                '#10b981'
+                            ],
+                            borderWidth: 0,
+                            hoverOffset: 10
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    padding: 20,
+                                    usePointStyle: true
+                                }
+                            }
+                        },
+                        cutout: '65%'
+                    }
+                });
+            }
+        }
+        
+        // Quick animation for stats
+        function animateStats() {
+            const statCards = document.querySelectorAll('.stat-card');
+            statCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        }
+        
+        // Quick Actions buttons
+        document.getElementById('quickAddProduct')?.addEventListener('click', () => {
+            productModal.classList.add('open');
+        });
+        
+        document.getElementById('quickNewOffer')?.addEventListener('click', () => {
+            // Navigate to packages tab
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('managementPage').classList.add('active');
+            pageTitle.textContent = 'Management';
+            switchTab('packages');
+            
+            // Update sidebar
+            sidebarLinks.forEach(l => l.classList.remove('active'));
+            document.querySelector('[data-page="management"]').classList.add('active');
+        });
+        
+        document.getElementById('quickExport')?.addEventListener('click', () => {
+            // Show export notification
+            showNotification('📤 Report exported successfully!', 'success');
+        });
+        
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-24 right-6 z-50 px-6 py-4 rounded-xl shadow-lg transform translate-x-full transition-transform duration-300 ${
+                type === 'success' ? 'bg-green-500 text-white' : 
+                type === 'error' ? 'bg-red-500 text-white' : 
+                'bg-amber-500 text-white'
+            }`;
+            notification.innerHTML = `<div class="flex items-center gap-3"><span>${message}</span></div>`;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(150%)';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+        
+        // Edit and Delete buttons for products
+        document.querySelectorAll('.data-table .btn-action').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const isEdit = btn.textContent.includes('✏️');
+                const row = btn.closest('tr');
+                const productName = row?.querySelector('.font-medium')?.textContent || 'Product';
+                
+                if (isEdit) {
+                    showNotification(`✏️ Editing "${productName}"...`, 'info');
+                    productModal.classList.add('open');
+                } else {
+                    if (confirm(`Are you sure you want to delete "${productName}"?`)) {
+                        row.style.opacity = '0';
+                        row.style.transform = 'translateX(-100%)';
+                        setTimeout(() => row.remove(), 300);
+                        showNotification(`🗑️ "${productName}" deleted successfully`, 'success');
+                    }
+                }
+            });
+        });
+        
+        // Gallery image actions
+        document.querySelectorAll('#galleryTab .group button').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isEdit = btn.textContent.includes('✏️');
+                const imageBox = btn.closest('.group');
+                
+                if (isEdit) {
+                    showNotification('✏️ Opening image editor...', 'info');
+                } else {
+                    if (confirm('Delete this image?')) {
+                        imageBox.style.opacity = '0';
+                        imageBox.style.transform = 'scale(0)';
+                        setTimeout(() => imageBox.remove(), 300);
+                        showNotification('🗑️ Image deleted', 'success');
+                    }
+                }
+            });
+        });
+        
+        // Package Edit/Delete buttons
+        document.querySelectorAll('#packagesTab button').forEach(btn => {
+            if (btn.textContent.includes('Edit')) {
+                btn.addEventListener('click', () => {
+                    showNotification('✏️ Opening package editor...', 'info');
+                });
+            } else if (btn.textContent.includes('🗑️')) {
+                btn.addEventListener('click', () => {
+                    const card = btn.closest('.bg-white');
+                    const packageName = card?.querySelector('h4')?.textContent || 'Package';
+                    if (confirm(`Delete "${packageName}"?`)) {
+                        card.style.opacity = '0';
+                        card.style.transform = 'scale(0.8)';
+                        setTimeout(() => card.remove(), 300);
+                        showNotification(`🗑️ "${packageName}" deleted`, 'success');
+                    }
+                });
+            }
+        });
+        
+        // Save Changes button
+        document.querySelectorAll('button').forEach(btn => {
+            if (btn.textContent.includes('Save Changes')) {
+                btn.addEventListener('click', () => {
+                    btn.innerHTML = '⏳ Saving...';
+                    btn.disabled = true;
+                    setTimeout(() => {
+                        btn.innerHTML = 'Save Changes';
+                        btn.disabled = false;
+                        showNotification('✅ Changes saved successfully!', 'success');
+                    }, 1500);
+                });
+            }
+        });
+        
+        // Add New Package button
+        document.querySelector('#packagesTab > button')?.addEventListener('click', () => {
+            showNotification('📦 Opening new package form...', 'info');
+        });
+        
+        // View All Orders link
+        document.querySelector('a[href="#"]')?.addEventListener('click', (e) => {
+            if (e.target.textContent.includes('View All')) {
+                e.preventDefault();
+                sidebarLinks.forEach(l => l.classList.remove('active'));
+                document.querySelector('[data-page="orders"]').classList.add('active');
+                pageTitle.textContent = 'All Orders';
+                showNotification('📦 Showing all orders', 'info');
+            }
+        });
+        
+        // Search functionality
+        const searchInputs = document.querySelectorAll('input[placeholder*="Search"]');
+        searchInputs.forEach(input => {
+            input.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                const table = input.closest('.bg-white')?.querySelector('tbody') || 
+                              document.querySelector('.data-table tbody');
+                
+                if (table) {
+                    table.querySelectorAll('tr').forEach(row => {
+                        const text = row.textContent.toLowerCase();
+                        row.style.display = text.includes(query) ? '' : 'none';
+                    });
+                }
+            });
+        });
+        
+        // Pagination buttons
+        document.querySelectorAll('.flex.gap-2 button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (!btn.textContent.includes('←') && !btn.textContent.includes('→')) {
+                    btn.parentElement.querySelectorAll('button').forEach(b => {
+                        b.classList.remove('bg-amber-600', 'text-white');
+                        b.classList.add('border', 'border-stone-200');
+                    });
+                    btn.classList.remove('border', 'border-stone-200');
+                    btn.classList.add('bg-amber-600', 'text-white');
+                    showNotification(`📄 Page ${btn.textContent} loaded`, 'info');
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>

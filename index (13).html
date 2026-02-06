@@ -1,0 +1,3100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Al-Fanous Pastry Museum</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .font-playfair {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        /* ===== ENHANCED NAVBAR STYLES ===== */
+        .navbar {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        
+        .navbar.scrolled {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            background: rgba(120, 53, 15, 0.95) !important;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3), 0 0 60px rgba(217, 119, 6, 0.2);
+        }
+        
+        .navbar.scrolled .lantern-container {
+            transform: translateX(-50%) scale(0.7);
+        }
+        
+        .navbar.scrolled .logo-text {
+            font-size: 1.5rem;
+        }
+        
+        /* Navbar Glow Border */
+        .navbar::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #fbbf24, #f59e0b, #fbbf24, transparent);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        /* Floating Particles in Navbar */
+        .navbar-particles {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: radial-gradient(circle, #fcd34d, transparent);
+            border-radius: 50%;
+            animation: float-particle 4s ease-in-out infinite;
+        }
+        
+        .particle:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 20%; animation-delay: 0.5s; }
+        .particle:nth-child(3) { left: 30%; animation-delay: 1s; }
+        .particle:nth-child(4) { left: 70%; animation-delay: 1.5s; }
+        .particle:nth-child(5) { left: 80%; animation-delay: 2s; }
+        .particle:nth-child(6) { left: 90%; animation-delay: 2.5s; }
+        
+        @keyframes float-particle {
+            0%, 100% { 
+                transform: translateY(0) scale(0);
+                opacity: 0;
+            }
+            50% { 
+                transform: translateY(-30px) scale(1);
+                opacity: 1;
+            }
+        }
+        
+        /* Nav Links Animation */
+        .nav-link {
+            position: relative;
+            padding: 0.5rem 0;
+            overflow: hidden;
+        }
+        
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #fbbf24, #f59e0b);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        .nav-link:hover::before {
+            width: 100%;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.3), transparent);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.5s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100px;
+            height: 100px;
+        }
+        
+        /* Visit Button Glow */
+        .visit-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+        }
+        
+        .visit-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+        
+        .visit-btn:hover::before {
+            animation: btn-shine 0.6s ease;
+        }
+        
+        .visit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(251, 191, 36, 0.5);
+        }
+        
+        @keyframes btn-shine {
+            0% { left: -50%; opacity: 1; }
+            100% { left: 150%; opacity: 0; }
+        }
+        
+        /* Logo Animation */
+        .logo-icon {
+            animation: logo-float 3s ease-in-out infinite;
+            display: inline-block;
+        }
+        
+        @keyframes logo-float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-5px) rotate(5deg); }
+        }
+        
+        .logo-text {
+            background: linear-gradient(135deg, #fef3c7, #fcd34d, #f59e0b, #fcd34d, #fef3c7);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: text-shimmer 4s linear infinite;
+            transition: font-size 0.3s ease;
+        }
+        
+        @keyframes text-shimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+        
+        /* Decorative Corner Ornaments */
+        .corner-ornament {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            opacity: 0.5;
+        }
+        
+        .corner-ornament.top-left {
+            top: 8px;
+            left: 8px;
+            border-top: 2px solid #fcd34d;
+            border-left: 2px solid #fcd34d;
+        }
+        
+        .corner-ornament.top-right {
+            top: 8px;
+            right: 8px;
+            border-top: 2px solid #fcd34d;
+            border-right: 2px solid #fcd34d;
+        }
+        
+        .corner-ornament.bottom-left {
+            bottom: 8px;
+            left: 8px;
+            border-bottom: 2px solid #fcd34d;
+            border-left: 2px solid #fcd34d;
+        }
+        
+        .corner-ornament.bottom-right {
+            bottom: 8px;
+            right: 8px;
+            border-bottom: 2px solid #fcd34d;
+            border-right: 2px solid #fcd34d;
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            max-width: 350px;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(120, 53, 15, 0.98), rgba(69, 26, 3, 0.98));
+            backdrop-filter: blur(20px);
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;
+            padding: 2rem;
+            box-shadow: -10px 0 40px rgba(0,0,0,0.5);
+        }
+        
+        .mobile-menu.open {
+            right: 0;
+        }
+        
+        .mobile-menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 99;
+        }
+        
+        .mobile-menu-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .mobile-nav-link {
+            display: block;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(251, 191, 36, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-nav-link:hover {
+            padding-left: 1rem;
+            background: rgba(251, 191, 36, 0.1);
+        }
+        
+        /* Hamburger Animation */
+        .hamburger {
+            width: 30px;
+            height: 24px;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #fcd34d, #f59e0b);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        .hamburger.open span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+        
+        .hamburger.open span:nth-child(2) {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+        
+        .hamburger.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+        
+        /* Chain Animation - Enhanced */
+        .chain {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: swing 3s ease-in-out infinite;
+            transform-origin: top center;
+        }
+        
+        .chain-link {
+            width: 10px;
+            height: 18px;
+            border: 3px solid transparent;
+            border-radius: 5px;
+            margin: -5px 0;
+            background: linear-gradient(#1a0a00, #1a0a00) padding-box,
+                        linear-gradient(180deg, #e8c4a0, #8B4513, #e8c4a0) border-box;
+            box-shadow: 0 0 5px rgba(212, 165, 116, 0.5);
+        }
+        
+        @keyframes swing {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+        
+        /* 3D Lantern - Enhanced */
+        .lantern-container {
+            perspective: 1000px;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 50;
+            transition: transform 0.3s ease;
+        }
+        
+        .lantern {
+            transform-style: preserve-3d;
+            animation: lanternRotate 8s ease-in-out infinite, glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes lanternRotate {
+            0%, 100% { transform: rotateY(-15deg); }
+            50% { transform: rotateY(15deg); }
+        }
+        
+        @keyframes glow {
+            0% { filter: drop-shadow(0 0 15px rgba(255, 180, 50, 0.7)) drop-shadow(0 0 30px rgba(255, 120, 20, 0.4)); }
+            100% { filter: drop-shadow(0 0 30px rgba(255, 180, 50, 1)) drop-shadow(0 0 60px rgba(255, 120, 20, 0.6)); }
+        }
+        
+        .lantern-hook {
+            width: 20px;
+            height: 10px;
+            border: 3px solid #d4a574;
+            border-bottom: none;
+            border-radius: 10px 10px 0 0;
+            margin: 0 auto -2px;
+        }
+        
+        .lantern-top {
+            width: 45px;
+            height: 18px;
+            background: linear-gradient(180deg, #d4a574, #8B4513, #5c2d0a);
+            border-radius: 8px 8px 0 0;
+            margin: 0 auto;
+            position: relative;
+            box-shadow: inset 0 5px 10px rgba(255,255,255,0.2);
+        }
+        
+        .lantern-top::before {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 8px;
+            background: #fcd34d;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #fcd34d;
+        }
+        
+        .lantern-body {
+            width: 65px;
+            height: 85px;
+            background: linear-gradient(135deg, 
+                rgba(255, 220, 120, 0.95) 0%,
+                rgba(255, 170, 60, 0.9) 30%,
+                rgba(255, 130, 40, 0.85) 60%,
+                rgba(200, 100, 30, 0.95) 100%);
+            border: 4px solid #8B4513;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                inset 0 0 40px rgba(255, 200, 100, 0.9),
+                inset 0 0 80px rgba(255, 150, 50, 0.5),
+                0 5px 20px rgba(0,0,0,0.3);
+        }
+        
+        .lantern-body::before {
+            content: '';
+            position: absolute;
+            inset: 6px;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 10px,
+                rgba(139, 69, 19, 0.25) 10px,
+                rgba(139, 69, 19, 0.25) 12px
+            );
+        }
+        
+        .lantern-body::after {
+            content: '';
+            position: absolute;
+            inset: 6px;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 12px,
+                rgba(139, 69, 19, 0.25) 12px,
+                rgba(139, 69, 19, 0.25) 14px
+            );
+        }
+        
+        .lantern-pattern {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .lantern-pattern::before {
+            content: '☪';
+            font-size: 28px;
+            color: rgba(139, 69, 19, 0.7);
+            text-shadow: 0 0 15px rgba(255, 220, 150, 1), 0 0 30px rgba(255, 180, 100, 0.8);
+            animation: symbol-pulse 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes symbol-pulse {
+            0% { transform: scale(1); opacity: 0.7; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+        
+        .lantern-bottom {
+            width: 55px;
+            height: 22px;
+            background: linear-gradient(180deg, #8B4513, #d4a574, #8B4513);
+            border-radius: 0 0 50% 50%;
+            margin: 0 auto;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .lantern-tip {
+            width: 12px;
+            height: 18px;
+            background: linear-gradient(180deg, #d4a574, #8B4513, #3d1a00);
+            margin: 0 auto;
+            clip-path: polygon(50% 100%, 0 0, 100% 0);
+        }
+        
+        .lantern-tassel {
+            width: 4px;
+            height: 25px;
+            background: linear-gradient(180deg, #8B4513, #d4a574);
+            margin: 0 auto;
+            animation: tassel-swing 2s ease-in-out infinite alternate;
+            transform-origin: top;
+        }
+        
+        @keyframes tassel-swing {
+            0% { transform: rotate(-5deg); }
+            100% { transform: rotate(5deg); }
+        }
+        
+        .flame {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 18px;
+            height: 30px;
+            background: radial-gradient(ellipse at bottom, 
+                #ffffff 0%, 
+                #fff7e0 20%, 
+                #ffcc00 45%, 
+                #ff9900 65%, 
+                #ff6600 80%, 
+                transparent 100%);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: flicker 0.3s ease-in-out infinite alternate;
+            z-index: 10;
+            box-shadow: 0 0 20px #ffcc00, 0 0 40px #ff9900, 0 0 60px rgba(255, 100, 0, 0.5);
+        }
+        
+        .flame::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, #fff, #ffcc00);
+            border-radius: 50%;
+            box-shadow: 0 0 10px #fff, 0 0 20px #ffcc00;
+        }
+        
+        @keyframes flicker {
+            0% { transform: translate(-50%, -50%) scale(1) rotate(-3deg) scaleX(1); }
+            25% { transform: translate(-50%, -50%) scale(1.05) rotate(2deg) scaleX(0.95); }
+            50% { transform: translate(-50%, -50%) scale(0.98) rotate(-1deg) scaleX(1.02); }
+            75% { transform: translate(-50%, -50%) scale(1.02) rotate(3deg) scaleX(0.98); }
+            100% { transform: translate(-50%, -50%) scale(1) rotate(-2deg) scaleX(1); }
+        }
+        
+        /* Light rays from lantern */
+        .lantern-rays {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            pointer-events: none;
+        }
+        
+        .ray {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 2px;
+            height: 60px;
+            background: linear-gradient(to bottom, rgba(255, 200, 100, 0.6), transparent);
+            transform-origin: top center;
+            animation: ray-pulse 2s ease-in-out infinite alternate;
+        }
+        
+        .ray:nth-child(1) { transform: rotate(0deg) translateY(20px); animation-delay: 0s; }
+        .ray:nth-child(2) { transform: rotate(45deg) translateY(20px); animation-delay: 0.25s; }
+        .ray:nth-child(3) { transform: rotate(90deg) translateY(20px); animation-delay: 0.5s; }
+        .ray:nth-child(4) { transform: rotate(135deg) translateY(20px); animation-delay: 0.75s; }
+        .ray:nth-child(5) { transform: rotate(180deg) translateY(20px); animation-delay: 1s; }
+        .ray:nth-child(6) { transform: rotate(225deg) translateY(20px); animation-delay: 1.25s; }
+        .ray:nth-child(7) { transform: rotate(270deg) translateY(20px); animation-delay: 1.5s; }
+        .ray:nth-child(8) { transform: rotate(315deg) translateY(20px); animation-delay: 1.75s; }
+        
+        @keyframes ray-pulse {
+            0% { opacity: 0.3; height: 40px; }
+            100% { opacity: 0.7; height: 60px; }
+        }
+        
+        /* Exhibit Cards */
+        .exhibit-card {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .exhibit-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .exhibit-image {
+            transition: transform 0.5s ease;
+        }
+        
+        .exhibit-card:hover .exhibit-image {
+            transform: scale(1.1);
+        }
+        
+        /* Museum Frame */
+        .museum-frame {
+            border: 15px solid;
+            border-image: linear-gradient(135deg, #8B4513 0%, #d4a574 25%, #8B4513 50%, #d4a574 75%, #8B4513 100%) 1;
+            box-shadow: 
+                inset 0 0 20px rgba(0,0,0,0.3),
+                0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        /* Scroll Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Decorative Pattern */
+        .pattern-bg {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4a574' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        /* ===== THEME SWITCHER STYLES ===== */
+        .theme-switcher {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+        }
+        
+        .theme-toggle-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #78350f, #451a03);
+            border: 3px solid #fcd34d;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.3), 0 0 30px rgba(251, 191, 36, 0.3);
+            transition: all 0.3s ease;
+            animation: theme-btn-pulse 2s ease-in-out infinite;
+        }
+        
+        .theme-toggle-btn:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 8px 35px rgba(0,0,0,0.4), 0 0 50px rgba(251, 191, 36, 0.5);
+        }
+        
+        @keyframes theme-btn-pulse {
+            0%, 100% { box-shadow: 0 5px 25px rgba(0,0,0,0.3), 0 0 30px rgba(251, 191, 36, 0.3); }
+            50% { box-shadow: 0 5px 25px rgba(0,0,0,0.3), 0 0 50px rgba(251, 191, 36, 0.6); }
+        }
+        
+        .theme-panel {
+            position: absolute;
+            right: 70px;
+            top: 50%;
+            transform: translateY(-50%) scale(0.8);
+            background: linear-gradient(135deg, rgba(120, 53, 15, 0.98), rgba(69, 26, 3, 0.98));
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 24px;
+            min-width: 280px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid rgba(251, 191, 36, 0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(251, 191, 36, 0.2);
+        }
+        
+        .theme-panel.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(-50%) scale(1);
+        }
+        
+        .theme-panel-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(251, 191, 36, 0.2);
+        }
+        
+        .theme-panel-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #fef3c7;
+        }
+        
+        .theme-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .theme-option {
+            position: relative;
+            padding: 16px 12px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            text-align: center;
+        }
+        
+        .theme-option:hover {
+            transform: translateY(-3px);
+        }
+        
+        .theme-option.active {
+            border-color: #fcd34d;
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+        }
+        
+        .theme-option.active::after {
+            content: '✓';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 20px;
+            height: 20px;
+            background: #fcd34d;
+            color: #78350f;
+            border-radius: 50%;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .theme-option-icon {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        .theme-option-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #fef3c7;
+        }
+        
+        /* Individual Theme Option Backgrounds */
+        .theme-option.golden-hour {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706);
+        }
+        
+        .theme-option.midnight-blue {
+            background: linear-gradient(135deg, #1e3a5f, #0f172a, #1e1b4b);
+        }
+        
+        .theme-option.rose-garden {
+            background: linear-gradient(135deg, #be185d, #9d174d, #831843);
+        }
+        
+        .theme-option.desert-sand {
+            background: linear-gradient(135deg, #d4a574, #c4956a, #a3826d);
+        }
+        
+        .theme-option.emerald-oasis {
+            background: linear-gradient(135deg, #059669, #047857, #065f46);
+        }
+        
+        .theme-option.royal-purple {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9, #5b21b6);
+        }
+        
+        /* ===== THEME VARIATIONS ===== */
+        
+        /* Golden Hour (Default) - No additional styles needed */
+        
+        /* Midnight Blue Theme */
+        body.theme-midnight {
+            --primary: #1e3a5f;
+            --secondary: #60a5fa;
+            --accent: #38bdf8;
+        }
+        
+        body.theme-midnight .navbar {
+            background: linear-gradient(to right, rgba(15, 23, 42, 0.95), rgba(30, 58, 95, 0.95), rgba(15, 23, 42, 0.95)) !important;
+        }
+        
+        body.theme-midnight .navbar::after {
+            background: linear-gradient(90deg, transparent, #60a5fa, #38bdf8, #60a5fa, transparent);
+        }
+        
+        body.theme-midnight .navbar.scrolled {
+            background: rgba(15, 23, 42, 0.98) !important;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4), 0 0 60px rgba(56, 189, 248, 0.2);
+        }
+        
+        body.theme-midnight .particle {
+            background: radial-gradient(circle, #60a5fa, transparent);
+        }
+        
+        body.theme-midnight .corner-ornament {
+            border-color: #60a5fa !important;
+        }
+        
+        body.theme-midnight .logo-text {
+            background: linear-gradient(135deg, #bfdbfe, #60a5fa, #38bdf8, #60a5fa, #bfdbfe);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+        
+        body.theme-midnight .hamburger span {
+            background: linear-gradient(90deg, #60a5fa, #38bdf8);
+        }
+        
+        body.theme-midnight .lantern-body {
+            background: linear-gradient(135deg, 
+                rgba(147, 197, 253, 0.95) 0%,
+                rgba(96, 165, 250, 0.9) 30%,
+                rgba(56, 189, 248, 0.85) 60%,
+                rgba(14, 165, 233, 0.95) 100%);
+            border-color: #1e40af;
+        }
+        
+        body.theme-midnight .flame {
+            background: radial-gradient(ellipse at bottom, 
+                #ffffff 0%, 
+                #bfdbfe 20%, 
+                #60a5fa 45%, 
+                #3b82f6 65%, 
+                #2563eb 80%, 
+                transparent 100%);
+            box-shadow: 0 0 20px #60a5fa, 0 0 40px #3b82f6, 0 0 60px rgba(37, 99, 235, 0.5);
+        }
+        
+        body.theme-midnight .lantern {
+            filter: drop-shadow(0 0 15px rgba(96, 165, 250, 0.7)) drop-shadow(0 0 30px rgba(56, 189, 248, 0.4));
+        }
+        
+        body.theme-midnight #heritage {
+            background: linear-gradient(135deg, #1e3a5f, #0f172a);
+        }
+        
+        body.theme-midnight .visit-btn {
+            background: linear-gradient(to right, #bfdbfe, #93c5fd);
+            color: #1e3a5f;
+        }
+        
+        body.theme-midnight footer {
+            background: #0f172a;
+        }
+        
+        /* Rose Garden Theme */
+        body.theme-rose .navbar {
+            background: linear-gradient(to right, rgba(131, 24, 67, 0.95), rgba(157, 23, 77, 0.95), rgba(131, 24, 67, 0.95)) !important;
+        }
+        
+        body.theme-rose .navbar::after {
+            background: linear-gradient(90deg, transparent, #f472b6, #ec4899, #f472b6, transparent);
+        }
+        
+        body.theme-rose .navbar.scrolled {
+            background: rgba(131, 24, 67, 0.98) !important;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4), 0 0 60px rgba(236, 72, 153, 0.2);
+        }
+        
+        body.theme-rose .particle {
+            background: radial-gradient(circle, #f472b6, transparent);
+        }
+        
+        body.theme-rose .corner-ornament {
+            border-color: #f472b6 !important;
+        }
+        
+        body.theme-rose .logo-text {
+            background: linear-gradient(135deg, #fce7f3, #f472b6, #ec4899, #f472b6, #fce7f3);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+        
+        body.theme-rose .hamburger span {
+            background: linear-gradient(90deg, #f472b6, #ec4899);
+        }
+        
+        body.theme-rose .lantern-body {
+            background: linear-gradient(135deg, 
+                rgba(252, 231, 243, 0.95) 0%,
+                rgba(244, 114, 182, 0.9) 30%,
+                rgba(236, 72, 153, 0.85) 60%,
+                rgba(219, 39, 119, 0.95) 100%);
+            border-color: #9d174d;
+        }
+        
+        body.theme-rose .flame {
+            background: radial-gradient(ellipse at bottom, 
+                #ffffff 0%, 
+                #fce7f3 20%, 
+                #f472b6 45%, 
+                #ec4899 65%, 
+                #db2777 80%, 
+                transparent 100%);
+            box-shadow: 0 0 20px #f472b6, 0 0 40px #ec4899, 0 0 60px rgba(219, 39, 119, 0.5);
+        }
+        
+        body.theme-rose .lantern {
+            filter: drop-shadow(0 0 15px rgba(244, 114, 182, 0.7)) drop-shadow(0 0 30px rgba(236, 72, 153, 0.4));
+        }
+        
+        body.theme-rose #heritage {
+            background: linear-gradient(135deg, #9d174d, #831843);
+        }
+        
+        body.theme-rose .visit-btn {
+            background: linear-gradient(to right, #fce7f3, #fbcfe8);
+            color: #9d174d;
+        }
+        
+        body.theme-rose footer {
+            background: #500724;
+        }
+        
+        /* Emerald Oasis Theme */
+        body.theme-emerald .navbar {
+            background: linear-gradient(to right, rgba(6, 95, 70, 0.95), rgba(4, 120, 87, 0.95), rgba(6, 95, 70, 0.95)) !important;
+        }
+        
+        body.theme-emerald .navbar::after {
+            background: linear-gradient(90deg, transparent, #34d399, #10b981, #34d399, transparent);
+        }
+        
+        body.theme-emerald .navbar.scrolled {
+            background: rgba(6, 95, 70, 0.98) !important;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4), 0 0 60px rgba(16, 185, 129, 0.2);
+        }
+        
+        body.theme-emerald .particle {
+            background: radial-gradient(circle, #34d399, transparent);
+        }
+        
+        body.theme-emerald .corner-ornament {
+            border-color: #34d399 !important;
+        }
+        
+        body.theme-emerald .logo-text {
+            background: linear-gradient(135deg, #d1fae5, #34d399, #10b981, #34d399, #d1fae5);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+        
+        body.theme-emerald .hamburger span {
+            background: linear-gradient(90deg, #34d399, #10b981);
+        }
+        
+        body.theme-emerald .lantern-body {
+            background: linear-gradient(135deg, 
+                rgba(209, 250, 229, 0.95) 0%,
+                rgba(52, 211, 153, 0.9) 30%,
+                rgba(16, 185, 129, 0.85) 60%,
+                rgba(5, 150, 105, 0.95) 100%);
+            border-color: #047857;
+        }
+        
+        body.theme-emerald .flame {
+            background: radial-gradient(ellipse at bottom, 
+                #ffffff 0%, 
+                #d1fae5 20%, 
+                #34d399 45%, 
+                #10b981 65%, 
+                #059669 80%, 
+                transparent 100%);
+            box-shadow: 0 0 20px #34d399, 0 0 40px #10b981, 0 0 60px rgba(5, 150, 105, 0.5);
+        }
+        
+        body.theme-emerald .lantern {
+            filter: drop-shadow(0 0 15px rgba(52, 211, 153, 0.7)) drop-shadow(0 0 30px rgba(16, 185, 129, 0.4));
+        }
+        
+        body.theme-emerald #heritage {
+            background: linear-gradient(135deg, #047857, #065f46);
+        }
+        
+        body.theme-emerald .visit-btn {
+            background: linear-gradient(to right, #d1fae5, #a7f3d0);
+            color: #047857;
+        }
+        
+        body.theme-emerald footer {
+            background: #022c22;
+        }
+        
+        /* Royal Purple Theme */
+        body.theme-purple .navbar {
+            background: linear-gradient(to right, rgba(91, 33, 182, 0.95), rgba(109, 40, 217, 0.95), rgba(91, 33, 182, 0.95)) !important;
+        }
+        
+        body.theme-purple .navbar::after {
+            background: linear-gradient(90deg, transparent, #a78bfa, #8b5cf6, #a78bfa, transparent);
+        }
+        
+        body.theme-purple .navbar.scrolled {
+            background: rgba(91, 33, 182, 0.98) !important;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4), 0 0 60px rgba(139, 92, 246, 0.2);
+        }
+        
+        body.theme-purple .particle {
+            background: radial-gradient(circle, #a78bfa, transparent);
+        }
+        
+        body.theme-purple .corner-ornament {
+            border-color: #a78bfa !important;
+        }
+        
+        body.theme-purple .logo-text {
+            background: linear-gradient(135deg, #ede9fe, #a78bfa, #8b5cf6, #a78bfa, #ede9fe);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+        
+        body.theme-purple .hamburger span {
+            background: linear-gradient(90deg, #a78bfa, #8b5cf6);
+        }
+        
+        body.theme-purple .lantern-body {
+            background: linear-gradient(135deg, 
+                rgba(237, 233, 254, 0.95) 0%,
+                rgba(167, 139, 250, 0.9) 30%,
+                rgba(139, 92, 246, 0.85) 60%,
+                rgba(124, 58, 237, 0.95) 100%);
+            border-color: #6d28d9;
+        }
+        
+        body.theme-purple .flame {
+            background: radial-gradient(ellipse at bottom, 
+                #ffffff 0%, 
+                #ede9fe 20%, 
+                #a78bfa 45%, 
+                #8b5cf6 65%, 
+                #7c3aed 80%, 
+                transparent 100%);
+            box-shadow: 0 0 20px #a78bfa, 0 0 40px #8b5cf6, 0 0 60px rgba(124, 58, 237, 0.5);
+        }
+        
+        body.theme-purple .lantern {
+            filter: drop-shadow(0 0 15px rgba(167, 139, 250, 0.7)) drop-shadow(0 0 30px rgba(139, 92, 246, 0.4));
+        }
+        
+        body.theme-purple #heritage {
+            background: linear-gradient(135deg, #6d28d9, #5b21b6);
+        }
+        
+        body.theme-purple .visit-btn {
+            background: linear-gradient(to right, #ede9fe, #ddd6fe);
+            color: #6d28d9;
+        }
+        
+        body.theme-purple footer {
+            background: #2e1065;
+        }
+        
+        /* Desert Sand Theme */
+        body.theme-desert .navbar {
+            background: linear-gradient(to right, rgba(163, 130, 109, 0.95), rgba(196, 149, 106, 0.95), rgba(163, 130, 109, 0.95)) !important;
+        }
+        
+        body.theme-desert .navbar::after {
+            background: linear-gradient(90deg, transparent, #e7d4c0, #d4a574, #e7d4c0, transparent);
+        }
+        
+        body.theme-desert .navbar.scrolled {
+            background: rgba(163, 130, 109, 0.98) !important;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3), 0 0 60px rgba(212, 165, 116, 0.2);
+        }
+        
+        body.theme-desert .particle {
+            background: radial-gradient(circle, #e7d4c0, transparent);
+        }
+        
+        body.theme-desert .corner-ornament {
+            border-color: #e7d4c0 !important;
+        }
+        
+        body.theme-desert .logo-text {
+            background: linear-gradient(135deg, #fef7ed, #e7d4c0, #d4a574, #e7d4c0, #fef7ed);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+        
+        body.theme-desert .hamburger span {
+            background: linear-gradient(90deg, #e7d4c0, #d4a574);
+        }
+        
+        body.theme-desert .lantern-body {
+            background: linear-gradient(135deg, 
+                rgba(254, 247, 237, 0.95) 0%,
+                rgba(231, 212, 192, 0.9) 30%,
+                rgba(212, 165, 116, 0.85) 60%,
+                rgba(196, 149, 106, 0.95) 100%);
+            border-color: #a3826d;
+        }
+        
+        body.theme-desert .flame {
+            background: radial-gradient(ellipse at bottom, 
+                #ffffff 0%, 
+                #fef7ed 20%, 
+                #e7d4c0 45%, 
+                #d4a574 65%, 
+                #c4956a 80%, 
+                transparent 100%);
+            box-shadow: 0 0 20px #e7d4c0, 0 0 40px #d4a574, 0 0 60px rgba(196, 149, 106, 0.5);
+        }
+        
+        body.theme-desert .lantern {
+            filter: drop-shadow(0 0 15px rgba(212, 165, 116, 0.7)) drop-shadow(0 0 30px rgba(196, 149, 106, 0.4));
+        }
+        
+        body.theme-desert #heritage {
+            background: linear-gradient(135deg, #a3826d, #8b7355);
+        }
+        
+        body.theme-desert .visit-btn {
+            background: linear-gradient(to right, #fef7ed, #fde8d7);
+            color: #78350f;
+        }
+        
+        body.theme-desert footer {
+            background: #5c4033;
+        }
+        
+        /* Animated Background Stars for Midnight Theme */
+        body.theme-midnight::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, white, transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 90px 40px, white, transparent),
+                radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.7), transparent),
+                radial-gradient(1px 1px at 230px 80px, white, transparent),
+                radial-gradient(2px 2px at 300px 150px, rgba(255,255,255,0.9), transparent),
+                radial-gradient(1px 1px at 370px 50px, white, transparent),
+                radial-gradient(2px 2px at 450px 180px, rgba(255,255,255,0.8), transparent);
+            background-repeat: repeat;
+            background-size: 500px 200px;
+            animation: stars-twinkle 4s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        @keyframes stars-twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.7; }
+        }
+        
+        /* Theme Transition */
+        body {
+            transition: background-color 0.5s ease;
+        }
+        
+        body * {
+            transition: background-color 0.5s ease, border-color 0.5s ease, color 0.3s ease;
+        }
+        
+        /* ===== SHOPPING CART STYLES ===== */
+        .cart-btn {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 22px;
+            height: 22px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: cart-bounce 0.3s ease;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.5);
+        }
+        
+        @keyframes cart-bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+        
+        /* Cart Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 100%;
+            max-width: 450px;
+            height: 100vh;
+            background: linear-gradient(180deg, #fffbeb, #fef3c7);
+            z-index: 1001;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: -10px 0 50px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .cart-sidebar.open {
+            right: 0;
+        }
+        
+        .cart-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .cart-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .cart-header {
+            background: linear-gradient(135deg, #78350f, #451a03);
+            padding: 24px;
+            color: white;
+        }
+        
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .cart-item {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            gap: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .cart-item-image {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+        }
+        
+        .cart-item-qty {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 8px;
+        }
+        
+        .qty-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            border: 2px solid #d97706;
+            background: white;
+            color: #d97706;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .qty-btn:hover {
+            background: #d97706;
+            color: white;
+        }
+        
+        .cart-footer {
+            background: white;
+            padding: 24px;
+            border-top: 2px solid #fde68a;
+        }
+        
+        .cart-empty {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .cart-empty-icon {
+            font-size: 80px;
+            opacity: 0.5;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* Order Modal */
+        .order-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            z-index: 1002;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .order-modal.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .order-modal-content {
+            background: white;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.3s ease;
+        }
+        
+        .order-modal.open .order-modal-content {
+            transform: scale(1) translateY(0);
+        }
+        
+        .order-modal-header {
+            background: linear-gradient(135deg, #78350f, #451a03);
+            padding: 24px;
+            color: white;
+            border-radius: 24px 24px 0 0;
+            position: relative;
+        }
+        
+        .order-modal-header::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #fbbf24, #f59e0b, #fbbf24);
+        }
+        
+        .order-success {
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 50px;
+            animation: success-pop 0.5s ease;
+        }
+        
+        @keyframes success-pop {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        /* User Dashboard */
+        .user-dashboard {
+            position: fixed;
+            top: 0;
+            right: -500px;
+            width: 100%;
+            max-width: 500px;
+            height: 100vh;
+            background: linear-gradient(180deg, #fffbeb, #fef3c7);
+            z-index: 1001;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: -10px 0 50px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        
+        .user-dashboard.open {
+            right: 0;
+        }
+        
+        .dashboard-header {
+            background: linear-gradient(135deg, #78350f, #451a03);
+            padding: 24px;
+            color: white;
+            position: relative;
+        }
+        
+        .dashboard-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #fbbf24, #f59e0b, #fbbf24);
+        }
+        
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin: 0 auto 16px;
+            border: 4px solid rgba(255,255,255,0.3);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+        
+        .dashboard-tabs {
+            display: flex;
+            background: white;
+            border-bottom: 2px solid #fde68a;
+        }
+        
+        .dashboard-tab {
+            flex: 1;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 500;
+            color: #78350f;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .dashboard-tab.active {
+            background: #fef3c7;
+            border-bottom-color: #f59e0b;
+        }
+        
+        .dashboard-content {
+            flex: 1;
+            padding: 20px;
+        }
+        
+        .order-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        
+        .order-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-preparing {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .status-delivered {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .update-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-left: 4px solid #f59e0b;
+        }
+        
+        .update-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+        
+        /* Add to cart button animation */
+        .add-to-cart-btn {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .add-to-cart-btn.added {
+            background: #22c55e !important;
+            color: white !important;
+        }
+        
+        .add-to-cart-btn.added::after {
+            content: '✓';
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #22c55e;
+            animation: checkmark 0.3s ease;
+        }
+        
+        @keyframes checkmark {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+        
+        /* Floating cart button for mobile */
+        .floating-cart {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #78350f, #451a03);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 8px 30px rgba(120, 53, 15, 0.4);
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        
+        .floating-cart:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 40px rgba(120, 53, 15, 0.5);
+        }
+        
+        .floating-cart .cart-count {
+            top: -4px;
+            right: -4px;
+        }
+        
+        @media (min-width: 768px) {
+            .floating-cart {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-stone-50">
+    <!-- Mobile Menu Overlay -->
+    <div id="mobileOverlay" class="mobile-menu-overlay"></div>
+    
+    <!-- Cart Overlay -->
+    <div id="cartOverlay" class="cart-overlay"></div>
+    
+    <!-- Cart Sidebar -->
+    <div id="cartSidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <span class="text-3xl">🛒</span>
+                    <div>
+                        <h3 class="font-playfair text-xl font-bold">Your Cart</h3>
+                        <p class="text-amber-200 text-sm"><span id="cartItemCount">0</span> items</p>
+                    </div>
+                </div>
+                <button id="closeCart" class="text-3xl text-amber-200 hover:text-white transition">&times;</button>
+            </div>
+        </div>
+        
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be dynamically added here -->
+            <div class="cart-empty" id="cartEmpty">
+                <div class="cart-empty-icon">🧺</div>
+                <h4 class="font-playfair text-xl font-bold text-amber-900 mt-4">Your cart is empty</h4>
+                <p class="text-stone-500 mt-2">Start adding some delicious pastries!</p>
+                <button id="browseProducts" class="mt-6 bg-amber-600 text-white px-6 py-3 rounded-full font-medium hover:bg-amber-700 transition">
+                    Browse Collection
+                </button>
+            </div>
+        </div>
+        
+        <div class="cart-footer" id="cartFooter" style="display: none;">
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-stone-600">Subtotal</span>
+                <span class="font-bold text-lg text-amber-900" id="cartSubtotal">$0.00</span>
+            </div>
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-stone-600">Delivery</span>
+                <span class="font-medium text-amber-700">Free</span>
+            </div>
+            <div class="flex justify-between items-center mb-6 pt-4 border-t border-amber-200">
+                <span class="font-bold text-lg text-amber-900">Total</span>
+                <span class="font-bold text-2xl text-amber-900" id="cartTotal">$0.00</span>
+            </div>
+            <button id="checkoutBtn" class="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-4 rounded-2xl font-bold text-lg hover:from-amber-700 hover:to-amber-800 transition shadow-lg flex items-center justify-center gap-3">
+                <span>🏮</span> Place Order
+            </button>
+        </div>
+    </div>
+    
+    <!-- Order Modal -->
+    <div id="orderModal" class="order-modal">
+        <div class="order-modal-content">
+            <div class="order-modal-header">
+                <button id="closeOrderModal" class="absolute top-4 right-4 text-2xl text-amber-200 hover:text-white">&times;</button>
+                <div class="text-center">
+                    <span class="text-4xl block mb-2">📦</span>
+                    <h3 class="font-playfair text-2xl font-bold">Complete Your Order</h3>
+                    <p class="text-amber-200 mt-1">Just a few details to finish</p>
+                </div>
+            </div>
+            
+            <div id="orderFormContainer" class="p-6">
+                <form id="orderForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-amber-900 mb-2">Full Name *</label>
+                        <input type="text" id="customerName" required placeholder="Enter your full name" 
+                            class="w-full px-4 py-3 border-2 border-amber-200 rounded-xl focus:outline-none focus:border-amber-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-amber-900 mb-2">Email Address *</label>
+                        <input type="email" id="customerEmail" required placeholder="your@email.com" 
+                            class="w-full px-4 py-3 border-2 border-amber-200 rounded-xl focus:outline-none focus:border-amber-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-amber-900 mb-2">Phone Number *</label>
+                        <input type="tel" id="customerPhone" required placeholder="+1 (555) 000-0000" 
+                            class="w-full px-4 py-3 border-2 border-amber-200 rounded-xl focus:outline-none focus:border-amber-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-amber-900 mb-2">Delivery Address</label>
+                        <textarea id="customerAddress" rows="2" placeholder="Enter your delivery address" 
+                            class="w-full px-4 py-3 border-2 border-amber-200 rounded-xl focus:outline-none focus:border-amber-500 transition resize-none"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-amber-900 mb-2">Special Instructions</label>
+                        <textarea id="orderNotes" rows="2" placeholder="Any special requests or notes..." 
+                            class="w-full px-4 py-3 border-2 border-amber-200 rounded-xl focus:outline-none focus:border-amber-500 transition resize-none"></textarea>
+                    </div>
+                    
+                    <div class="bg-amber-50 rounded-xl p-4 mt-4">
+                        <div class="flex justify-between items-center">
+                            <span class="font-medium text-amber-900">Order Total</span>
+                            <span class="font-bold text-xl text-amber-900" id="modalTotal">$0.00</span>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-4 rounded-2xl font-bold text-lg hover:from-amber-700 hover:to-amber-800 transition shadow-lg mt-4">
+                        ✨ Confirm Order
+                    </button>
+                </form>
+            </div>
+            
+            <div id="orderSuccess" class="order-success hidden">
+                <div class="success-icon">✓</div>
+                <h3 class="font-playfair text-2xl font-bold text-amber-900">Order Placed Successfully!</h3>
+                <p class="text-stone-600 mt-2">Thank you for your order. We've created an account for you.</p>
+                <div class="bg-amber-50 rounded-xl p-4 mt-6 text-left">
+                    <p class="text-sm text-amber-900 font-medium">Order #<span id="orderNumber">AF-2024-001</span></p>
+                    <p class="text-sm text-stone-600 mt-1">A confirmation email has been sent to your inbox.</p>
+                </div>
+                <button id="viewDashboard" class="mt-6 bg-gradient-to-r from-amber-600 to-amber-700 text-white px-8 py-3 rounded-full font-bold hover:from-amber-700 hover:to-amber-800 transition">
+                    View My Account 👤
+                </button>
+                <button id="closeSuccess" class="mt-3 text-amber-700 font-medium hover:text-amber-900 transition block mx-auto">
+                    Continue Shopping
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- User Dashboard Sidebar -->
+    <div id="userDashboard" class="user-dashboard">
+        <div class="dashboard-header">
+            <button id="closeDashboard" class="absolute top-4 right-4 text-2xl text-amber-200 hover:text-white">&times;</button>
+            <div class="user-avatar">👤</div>
+            <h3 class="font-playfair text-xl font-bold text-center" id="userName">Welcome!</h3>
+            <p class="text-amber-200 text-sm text-center mt-1" id="userEmail">customer@email.com</p>
+        </div>
+        
+        <div class="dashboard-tabs">
+            <div class="dashboard-tab active" data-tab="orders">📦 My Orders</div>
+            <div class="dashboard-tab" data-tab="updates">🔔 Updates <span class="update-badge" id="updateCount">3</span></div>
+        </div>
+        
+        <div class="dashboard-content">
+            <!-- Orders Tab -->
+            <div id="ordersTab" class="tab-content">
+                <div id="ordersList">
+                    <!-- Orders will be dynamically added here -->
+                </div>
+                <div id="noOrders" class="text-center py-12 hidden">
+                    <span class="text-6xl opacity-50">📭</span>
+                    <p class="text-stone-500 mt-4">No orders yet</p>
+                </div>
+            </div>
+            
+            <!-- Updates Tab -->
+            <div id="updatesTab" class="tab-content hidden">
+                <div class="update-card">
+                    <div class="flex items-start gap-3">
+                        <span class="text-2xl">🌙</span>
+                        <div>
+                            <h4 class="font-bold text-amber-900">Ramadan Special is Here!</h4>
+                            <p class="text-stone-600 text-sm mt-1">Get 20% off on all Iftar boxes. Limited time offer!</p>
+                            <p class="text-xs text-stone-400 mt-2">2 hours ago</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="update-card">
+                    <div class="flex items-start gap-3">
+                        <span class="text-2xl">🆕</span>
+                        <div>
+                            <h4 class="font-bold text-amber-900">New Arrival: Pistachio Kunafa</h4>
+                            <p class="text-stone-600 text-sm mt-1">Try our newest creation - crispy, creamy, and absolutely delicious!</p>
+                            <p class="text-xs text-stone-400 mt-2">Yesterday</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="update-card">
+                    <div class="flex items-start gap-3">
+                        <span class="text-2xl">🏆</span>
+                        <div>
+                            <h4 class="font-bold text-amber-900">We Won an Award!</h4>
+                            <p class="text-stone-600 text-sm mt-1">Al-Fanous has been recognized as Best Traditional Pastry Shop 2024!</p>
+                            <p class="text-xs text-stone-400 mt-2">3 days ago</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4 border-t border-amber-200 bg-white">
+            <button id="logoutBtn" class="w-full py-3 text-red-600 font-medium hover:bg-red-50 rounded-xl transition">
+                🚪 Sign Out
+            </button>
+        </div>
+    </div>
+    
+    <!-- Floating Cart Button (Mobile) -->
+    <div id="floatingCart" class="floating-cart">
+        🛒
+        <span class="cart-count hidden" id="floatingCartCount">0</span>
+    </div>
+    
+    <!-- Theme Switcher -->
+    <div class="theme-switcher">
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Change Theme">
+            🎨
+        </button>
+        <div id="themePanel" class="theme-panel">
+            <div class="theme-panel-header">
+                <span class="text-2xl">✨</span>
+                <span class="theme-panel-title">Choose Ambiance</span>
+            </div>
+            <div class="theme-options">
+                <div class="theme-option golden-hour active" data-theme="default">
+                    <span class="theme-option-icon">🌅</span>
+                    <span class="theme-option-name">Golden Hour</span>
+                </div>
+                <div class="theme-option midnight-blue" data-theme="midnight">
+                    <span class="theme-option-icon">🌙</span>
+                    <span class="theme-option-name">Midnight</span>
+                </div>
+                <div class="theme-option rose-garden" data-theme="rose">
+                    <span class="theme-option-icon">🌹</span>
+                    <span class="theme-option-name">Rose Garden</span>
+                </div>
+                <div class="theme-option emerald-oasis" data-theme="emerald">
+                    <span class="theme-option-icon">🌿</span>
+                    <span class="theme-option-name">Emerald Oasis</span>
+                </div>
+                <div class="theme-option royal-purple" data-theme="purple">
+                    <span class="theme-option-icon">👑</span>
+                    <span class="theme-option-name">Royal Purple</span>
+                </div>
+                <div class="theme-option desert-sand" data-theme="desert">
+                    <span class="theme-option-icon">🏜️</span>
+                    <span class="theme-option-name">Desert Sand</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu">
+        <div class="flex justify-between items-center mb-8">
+            <div class="flex items-center space-x-2">
+                <span class="text-3xl logo-icon">🥐</span>
+                <span class="font-playfair text-xl font-bold text-amber-100">Al-Fanous</span>
+            </div>
+            <button id="closeMenu" class="text-amber-100 text-3xl hover:rotate-90 transition-transform duration-300">&times;</button>
+        </div>
+        
+        <!-- Mobile Lantern -->
+        <div class="flex justify-center mb-8">
+            <div class="lantern scale-75">
+                <div class="lantern-hook"></div>
+                <div class="lantern-top"></div>
+                <div class="lantern-body">
+                    <div class="flame"></div>
+                    <div class="lantern-pattern"></div>
+                </div>
+                <div class="lantern-bottom"></div>
+                <div class="lantern-tip"></div>
+            </div>
+        </div>
+        
+        <nav class="space-y-2">
+            <a href="#exhibits" class="mobile-nav-link text-amber-100 font-medium flex items-center gap-3">
+                <span class="text-xl">🏛️</span> Exhibits
+            </a>
+            <a href="#media" class="mobile-nav-link text-amber-100 font-medium flex items-center gap-3">
+                <span class="text-xl">📺</span> Media
+            </a>
+            <a href="#packages" class="mobile-nav-link text-amber-100 font-medium flex items-center gap-3">
+                <span class="text-xl">🎁</span> Packages
+            </a>
+            <a href="#heritage" class="mobile-nav-link text-amber-100 font-medium flex items-center gap-3">
+                <span class="text-xl">📜</span> Heritage
+            </a>
+            <a href="#gallery" class="mobile-nav-link text-amber-100 font-medium flex items-center gap-3">
+                <span class="text-xl">🖼️</span> Gallery
+            </a>
+        </nav>
+        
+        <a href="#visit" class="block mt-8 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-center py-4 rounded-2xl font-bold shadow-lg">
+            🏮 Visit Us
+        </a>
+        
+        <div class="absolute bottom-8 left-8 right-8 text-center">
+            <p class="text-amber-400 text-sm">✨ Experience the Magic ✨</p>
+            <div class="flex justify-center gap-4 mt-4">
+                <span class="text-2xl hover:scale-125 transition-transform cursor-pointer">📸</span>
+                <span class="text-2xl hover:scale-125 transition-transform cursor-pointer">📘</span>
+                <span class="text-2xl hover:scale-125 transition-transform cursor-pointer">🐦</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav id="navbar" class="navbar fixed top-0 left-0 right-0 bg-gradient-to-r from-amber-900/95 via-amber-800/95 to-amber-900/95 shadow-2xl z-40">
+        <!-- Corner Ornaments -->
+        <div class="corner-ornament top-left"></div>
+        <div class="corner-ornament top-right"></div>
+        <div class="corner-ornament bottom-left"></div>
+        <div class="corner-ornament bottom-right"></div>
+        
+        <!-- Floating Particles -->
+        <div class="navbar-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 py-4 relative">
+            <div class="flex items-center justify-between relative">
+                <!-- Logo -->
+                <a href="#" class="flex items-center space-x-3 group">
+                    <span class="text-4xl logo-icon">🥐</span>
+                    <div>
+                        <h1 class="font-playfair text-2xl md:text-3xl font-bold logo-text">Al-Fanous</h1>
+                        <span class="text-amber-300 text-xs tracking-widest hidden sm:block">PASTRY MUSEUM</span>
+                    </div>
+                </a>
+                
+                <!-- Enhanced Lantern Container -->
+                <div class="lantern-container hidden lg:block">
+                    <div class="chain">
+                        <div class="chain-link"></div>
+                        <div class="chain-link"></div>
+                        <div class="chain-link"></div>
+                        <div class="chain-link"></div>
+                        <div class="chain-link"></div>
+                        <div class="lantern">
+                            <div class="lantern-rays">
+                                <div class="ray"></div>
+                                <div class="ray"></div>
+                                <div class="ray"></div>
+                                <div class="ray"></div>
+                                <div class="ray"></div>
+                                <div class="ray"></div>
+                                <div class="ray"></div>
+                                <div class="ray"></div>
+                            </div>
+                            <div class="lantern-hook"></div>
+                            <div class="lantern-top"></div>
+                            <div class="lantern-body">
+                                <div class="flame"></div>
+                                <div class="lantern-pattern"></div>
+                            </div>
+                            <div class="lantern-bottom"></div>
+                            <div class="lantern-tip"></div>
+                            <div class="lantern-tassel"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Nav Links -->
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="#exhibits" class="nav-link text-amber-100 hover:text-amber-300 transition-colors font-medium">Exhibits</a>
+                    <a href="#media" class="nav-link text-amber-100 hover:text-amber-300 transition-colors font-medium">Media</a>
+                    <a href="#packages" class="nav-link text-amber-100 hover:text-amber-300 transition-colors font-medium">Packages</a>
+                    <a href="#heritage" class="nav-link text-amber-100 hover:text-amber-300 transition-colors font-medium">Heritage</a>
+                    
+                    <!-- Cart Button -->
+                    <button id="navCartBtn" class="cart-btn text-2xl p-2 hover:bg-amber-700/50 rounded-full transition">
+                        🛒
+                        <span class="cart-count hidden" id="navCartCount">0</span>
+                    </button>
+                    
+                    <!-- User Account Button -->
+                    <button id="userAccountBtn" class="cart-btn text-2xl p-2 hover:bg-amber-700/50 rounded-full transition hidden">
+                        👤
+                    </button>
+                    
+                    <a href="#visit" class="visit-btn bg-gradient-to-r from-amber-100 to-amber-200 text-amber-900 px-6 py-2.5 rounded-full font-semibold hover:from-white hover:to-amber-100 transition-all">
+                        <span class="flex items-center gap-2">
+                            <span>🏮</span> Visit
+                        </span>
+                    </a>
+                </div>
+                
+                <!-- Hamburger Menu -->
+                <button id="menuBtn" class="hamburger md:hidden" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center pattern-bg pt-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-amber-50 to-stone-100 opacity-90"></div>
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center max-w-4xl mx-auto">
+                <span class="inline-block text-amber-700 font-medium tracking-widest uppercase text-sm mb-4">Welcome to the</span>
+                <h1 class="font-playfair text-5xl md:text-7xl font-bold text-amber-900 mb-6 leading-tight">
+                    Museum of<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-amber-800">Traditional Pastries</span>
+                </h1>
+                <p class="text-xl text-stone-600 mb-10 leading-relaxed max-w-2xl mx-auto">
+                    Step into a world where every pastry tells a story. Discover centuries of culinary heritage, preserved and celebrated in our exquisite collection.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#exhibits" class="bg-amber-800 text-white px-10 py-4 rounded-full font-medium hover:bg-amber-900 transition-all shadow-lg hover:shadow-xl">
+                        Explore Collection
+                    </a>
+                    <a href="#heritage" class="border-2 border-amber-800 text-amber-800 px-10 py-4 rounded-full font-medium hover:bg-amber-800 hover:text-white transition-all">
+                        Our Heritage
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Decorative Elements -->
+        <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-stone-100 to-transparent"></div>
+    </section>
+
+    <!-- Featured Exhibits -->
+    <section id="exhibits" class="py-24 bg-stone-100">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <span class="text-amber-600 font-medium tracking-widest uppercase text-sm">Our Collection</span>
+                <h2 class="font-playfair text-4xl md:text-5xl font-bold text-amber-900 mt-3">Featured Exhibits</h2>
+                <p class="text-stone-600 mt-4 max-w-2xl mx-auto">Each piece is a masterwork of tradition, crafted with recipes passed down through generations.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <!-- Exhibit 1 -->
+                <div class="exhibit-card bg-white rounded-2xl overflow-hidden shadow-lg reveal">
+                    <div class="museum-frame">
+                        <div class="overflow-hidden h-64 bg-gradient-to-br from-amber-100 to-amber-50 flex items-center justify-center">
+                            <span class="text-8xl exhibit-image">🥮</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs text-amber-600 font-medium tracking-widest uppercase">Est. 1850</span>
+                        <h3 class="font-playfair text-2xl font-bold text-amber-900 mt-2">Baklava Royale</h3>
+                        <p class="text-stone-500 mt-3 leading-relaxed">Layers of delicate phyllo, honey from the highlands, and pistachios from ancient groves.</p>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span class="text-amber-700 font-bold text-lg">$12.00</span>
+                            <button class="add-to-cart-btn bg-amber-100 text-amber-800 px-4 py-2 rounded-full text-sm font-medium hover:bg-amber-200 transition" data-id="1" data-name="Baklava Royale" data-price="12.00" data-emoji="🥮">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exhibit 2 -->
+                <div class="exhibit-card bg-white rounded-2xl overflow-hidden shadow-lg reveal">
+                    <div class="museum-frame">
+                        <div class="overflow-hidden h-64 bg-gradient-to-br from-rose-100 to-rose-50 flex items-center justify-center">
+                            <span class="text-8xl exhibit-image">🧁</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs text-amber-600 font-medium tracking-widest uppercase">Est. 1920</span>
+                        <h3 class="font-playfair text-2xl font-bold text-amber-900 mt-2">Rose Petal Muffin</h3>
+                        <p class="text-stone-500 mt-3 leading-relaxed">Infused with Damascus rose water and topped with crystallized petals.</p>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span class="text-amber-700 font-bold text-lg">$8.00</span>
+                            <button class="add-to-cart-btn bg-amber-100 text-amber-800 px-4 py-2 rounded-full text-sm font-medium hover:bg-amber-200 transition" data-id="2" data-name="Rose Petal Muffin" data-price="8.00" data-emoji="🧁">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exhibit 3 -->
+                <div class="exhibit-card bg-white rounded-2xl overflow-hidden shadow-lg reveal">
+                    <div class="museum-frame">
+                        <div class="overflow-hidden h-64 bg-gradient-to-br from-orange-100 to-orange-50 flex items-center justify-center">
+                            <span class="text-8xl exhibit-image">🥐</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs text-amber-600 font-medium tracking-widest uppercase">Est. 1780</span>
+                        <h3 class="font-playfair text-2xl font-bold text-amber-900 mt-2">Golden Croissant</h3>
+                        <p class="text-stone-500 mt-3 leading-relaxed">72 layers of pure butter pastry, folded by hand using century-old techniques.</p>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span class="text-amber-700 font-bold text-lg">$6.50</span>
+                            <button class="add-to-cart-btn bg-amber-100 text-amber-800 px-4 py-2 rounded-full text-sm font-medium hover:bg-amber-200 transition" data-id="3" data-name="Golden Croissant" data-price="6.50" data-emoji="🥐">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exhibit 4 -->
+                <div class="exhibit-card bg-white rounded-2xl overflow-hidden shadow-lg reveal">
+                    <div class="museum-frame">
+                        <div class="overflow-hidden h-64 bg-gradient-to-br from-purple-100 to-purple-50 flex items-center justify-center">
+                            <span class="text-8xl exhibit-image">🍩</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs text-amber-600 font-medium tracking-widest uppercase">Est. 1900</span>
+                        <h3 class="font-playfair text-2xl font-bold text-amber-900 mt-2">Saffron Ring</h3>
+                        <p class="text-stone-500 mt-3 leading-relaxed">Persian saffron glaze over pillowy dough, a treasure of the East.</p>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span class="text-amber-700 font-bold text-lg">$7.50</span>
+                            <button class="add-to-cart-btn bg-amber-100 text-amber-800 px-4 py-2 rounded-full text-sm font-medium hover:bg-amber-200 transition" data-id="4" data-name="Saffron Ring" data-price="7.50" data-emoji="🍩">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exhibit 5 -->
+                <div class="exhibit-card bg-white rounded-2xl overflow-hidden shadow-lg reveal">
+                    <div class="museum-frame">
+                        <div class="overflow-hidden h-64 bg-gradient-to-br from-yellow-100 to-yellow-50 flex items-center justify-center">
+                            <span class="text-8xl exhibit-image">🍪</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs text-amber-600 font-medium tracking-widest uppercase">Est. 1875</span>
+                        <h3 class="font-playfair text-2xl font-bold text-amber-900 mt-2">Ma'amoul Legacy</h3>
+                        <p class="text-stone-500 mt-3 leading-relaxed">Date-filled shortbread pressed in antique wooden molds.</p>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span class="text-amber-700 font-bold text-lg">$9.00</span>
+                            <button class="add-to-cart-btn bg-amber-100 text-amber-800 px-4 py-2 rounded-full text-sm font-medium hover:bg-amber-200 transition" data-id="5" data-name="Ma'amoul Legacy" data-price="9.00" data-emoji="🍪">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exhibit 6 -->
+                <div class="exhibit-card bg-white rounded-2xl overflow-hidden shadow-lg reveal">
+                    <div class="museum-frame">
+                        <div class="overflow-hidden h-64 bg-gradient-to-br from-pink-100 to-pink-50 flex items-center justify-center">
+                            <span class="text-8xl exhibit-image">🎂</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs text-amber-600 font-medium tracking-widest uppercase">Est. 1800</span>
+                        <h3 class="font-playfair text-2xl font-bold text-amber-900 mt-2">Heritage Torte</h3>
+                        <p class="text-stone-500 mt-3 leading-relaxed">Seven layers of history, each representing a generation of master bakers.</p>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span class="text-amber-700 font-bold text-lg">$45.00</span>
+                            <button class="add-to-cart-btn bg-amber-100 text-amber-800 px-4 py-2 rounded-full text-sm font-medium hover:bg-amber-200 transition" data-id="6" data-name="Heritage Torte" data-price="45.00" data-emoji="🎂">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Media Section -->
+    <section id="media" class="py-24 bg-gradient-to-b from-stone-100 to-amber-50 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-5">
+            <div class="pattern-bg h-full w-full"></div>
+        </div>
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-16 reveal">
+                <span class="text-amber-600 font-medium tracking-widest uppercase text-sm">Behind The Scenes</span>
+                <h2 class="font-playfair text-4xl md:text-5xl font-bold text-amber-900 mt-3">Media & Stories</h2>
+                <p class="text-stone-600 mt-4 max-w-2xl mx-auto">Discover the artistry and passion that goes into every creation through our featured content.</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Featured Video -->
+                <div class="lg:col-span-2 reveal">
+                    <div class="relative rounded-3xl overflow-hidden shadow-2xl group cursor-pointer">
+                        <div class="aspect-video bg-gradient-to-br from-amber-800 to-amber-950 flex items-center justify-center relative">
+                            <div class="absolute inset-0 bg-black/30"></div>
+                            <div class="text-center z-10">
+                                <div class="w-24 h-24 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                                    <div class="w-16 h-16 bg-amber-500 rounded-full flex items-center justify-center shadow-lg">
+                                        <span class="text-white text-3xl ml-1">▶</span>
+                                    </div>
+                                </div>
+                                <h3 class="font-playfair text-2xl text-white font-bold">The Art of Baklava</h3>
+                                <p class="text-amber-200 mt-2">Watch our master chef create 100 layers of perfection</p>
+                            </div>
+                            <div class="absolute bottom-4 right-4 bg-black/50 px-3 py-1 rounded-full text-white text-sm">
+                                12:45
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Video Thumbnails -->
+                <div class="space-y-4 reveal">
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-lg group cursor-pointer hover:shadow-xl transition-shadow">
+                        <div class="flex items-center gap-4 p-4">
+                            <div class="w-28 h-20 bg-gradient-to-br from-rose-300 to-rose-400 rounded-xl flex items-center justify-center flex-shrink-0 relative">
+                                <span class="text-4xl">🥐</span>
+                                <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-xl">
+                                    <span class="text-white text-xl">▶</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-playfair font-bold text-amber-900">Croissant Mastery</h4>
+                                <p class="text-stone-500 text-sm mt-1">8:30 min</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-lg group cursor-pointer hover:shadow-xl transition-shadow">
+                        <div class="flex items-center gap-4 p-4">
+                            <div class="w-28 h-20 bg-gradient-to-br from-purple-300 to-purple-400 rounded-xl flex items-center justify-center flex-shrink-0 relative">
+                                <span class="text-4xl">🍪</span>
+                                <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-xl">
+                                    <span class="text-white text-xl">▶</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-playfair font-bold text-amber-900">Ma'amoul Traditions</h4>
+                                <p class="text-stone-500 text-sm mt-1">10:15 min</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-lg group cursor-pointer hover:shadow-xl transition-shadow">
+                        <div class="flex items-center gap-4 p-4">
+                            <div class="w-28 h-20 bg-gradient-to-br from-amber-300 to-amber-400 rounded-xl flex items-center justify-center flex-shrink-0 relative">
+                                <span class="text-4xl">🎂</span>
+                                <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-xl">
+                                    <span class="text-white text-xl">▶</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-playfair font-bold text-amber-900">Heritage Cakes</h4>
+                                <p class="text-stone-500 text-sm mt-1">15:00 min</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Press & Social -->
+            <div class="grid md:grid-cols-4 gap-6 mt-12 reveal">
+                <div class="bg-white rounded-2xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow">
+                    <span class="text-4xl">📺</span>
+                    <h4 class="font-playfair font-bold text-amber-900 mt-3">Featured on TV</h4>
+                    <p class="text-stone-500 text-sm mt-2">National Culinary Channel</p>
+                </div>
+                <div class="bg-white rounded-2xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow">
+                    <span class="text-4xl">📰</span>
+                    <h4 class="font-playfair font-bold text-amber-900 mt-3">Press Coverage</h4>
+                    <p class="text-stone-500 text-sm mt-2">50+ Publications</p>
+                </div>
+                <div class="bg-white rounded-2xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow">
+                    <span class="text-4xl">📸</span>
+                    <h4 class="font-playfair font-bold text-amber-900 mt-3">Instagram</h4>
+                    <p class="text-stone-500 text-sm mt-2">120K+ Followers</p>
+                </div>
+                <div class="bg-white rounded-2xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow">
+                    <span class="text-4xl">🏆</span>
+                    <h4 class="font-playfair font-bold text-amber-900 mt-3">Awards</h4>
+                    <p class="text-stone-500 text-sm mt-2">15 International Awards</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Packages & Offers Section -->
+    <section id="packages" class="py-24 bg-stone-900 text-white relative overflow-hidden">
+        <div class="absolute inset-0">
+            <div class="absolute inset-0 bg-gradient-to-br from-amber-900/20 to-stone-900"></div>
+            <div class="pattern-bg h-full w-full opacity-5"></div>
+        </div>
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-16 reveal">
+                <span class="text-amber-400 font-medium tracking-widest uppercase text-sm">Special Collections</span>
+                <h2 class="font-playfair text-4xl md:text-5xl font-bold mt-3">Packages & Offers</h2>
+                <p class="text-stone-400 mt-4 max-w-2xl mx-auto">Curated gift boxes and seasonal specials for every occasion.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Package 1 - Ramadan Special -->
+                <div class="bg-gradient-to-br from-amber-800 to-amber-900 rounded-3xl overflow-hidden shadow-2xl reveal group hover:scale-105 transition-transform duration-300">
+                    <div class="relative p-8">
+                        <div class="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold animate-pulse">
+                            🌙 Ramadan Special
+                        </div>
+                        <div class="text-center pt-6">
+                            <span class="text-7xl block mb-4">🎁</span>
+                            <h3 class="font-playfair text-2xl font-bold">Iftar Delights Box</h3>
+                            <p class="text-amber-200 mt-3 text-sm">A luxurious collection of traditional sweets perfect for breaking fast</p>
+                        </div>
+                        <div class="mt-6 space-y-2 text-amber-100 text-sm">
+                            <div class="flex items-center gap-2"><span>✓</span> 12 Pieces Baklava Assorted</div>
+                            <div class="flex items-center gap-2"><span>✓</span> 8 Ma'amoul Date Cookies</div>
+                            <div class="flex items-center gap-2"><span>✓</span> 6 Kunafa Bites</div>
+                            <div class="flex items-center gap-2"><span>✓</span> Premium Gift Box</div>
+                        </div>
+                        <div class="mt-8 text-center">
+                            <span class="text-stone-400 line-through text-lg">$89.00</span>
+                            <span class="text-3xl font-bold text-white ml-2">$69.00</span>
+                        </div>
+                        <button class="w-full mt-6 bg-white text-amber-900 py-3 rounded-full font-bold hover:bg-amber-100 transition">
+                            Order Now
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Package 2 - Premium Collection -->
+                <div class="bg-gradient-to-br from-stone-800 to-stone-900 rounded-3xl overflow-hidden shadow-2xl reveal group hover:scale-105 transition-transform duration-300 border border-amber-500/30">
+                    <div class="relative p-8">
+                        <div class="absolute top-4 right-4 bg-amber-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                            ⭐ Best Seller
+                        </div>
+                        <div class="text-center pt-6">
+                            <span class="text-7xl block mb-4">👑</span>
+                            <h3 class="font-playfair text-2xl font-bold">Royal Heritage Box</h3>
+                            <p class="text-stone-400 mt-3 text-sm">Our signature collection featuring century-old recipes</p>
+                        </div>
+                        <div class="mt-6 space-y-2 text-stone-300 text-sm">
+                            <div class="flex items-center gap-2"><span class="text-amber-400">✓</span> 24 Pieces Premium Baklava</div>
+                            <div class="flex items-center gap-2"><span class="text-amber-400">✓</span> 12 Assorted Ma'amoul</div>
+                            <div class="flex items-center gap-2"><span class="text-amber-400">✓</span> 6 Rose Petal Muffins</div>
+                            <div class="flex items-center gap-2"><span class="text-amber-400">✓</span> Wooden Heritage Box</div>
+                            <div class="flex items-center gap-2"><span class="text-amber-400">✓</span> Complimentary Card</div>
+                        </div>
+                        <div class="mt-8 text-center">
+                            <span class="text-3xl font-bold text-amber-400">$129.00</span>
+                        </div>
+                        <button class="w-full mt-6 bg-gradient-to-r from-amber-500 to-amber-600 text-white py-3 rounded-full font-bold hover:from-amber-600 hover:to-amber-700 transition">
+                            Order Now
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Package 3 - Wedding/Events -->
+                <div class="bg-gradient-to-br from-rose-900 to-stone-900 rounded-3xl overflow-hidden shadow-2xl reveal group hover:scale-105 transition-transform duration-300">
+                    <div class="relative p-8">
+                        <div class="absolute top-4 right-4 bg-rose-400 text-white px-3 py-1 rounded-full text-sm font-bold">
+                            💒 Events
+                        </div>
+                        <div class="text-center pt-6">
+                            <span class="text-7xl block mb-4">💝</span>
+                            <h3 class="font-playfair text-2xl font-bold">Celebration Package</h3>
+                            <p class="text-rose-200 mt-3 text-sm">Perfect for weddings, engagements & special celebrations</p>
+                        </div>
+                        <div class="mt-6 space-y-2 text-rose-100 text-sm">
+                            <div class="flex items-center gap-2"><span>✓</span> 50 Pieces Mixed Pastries</div>
+                            <div class="flex items-center gap-2"><span>✓</span> Custom Arrangement</div>
+                            <div class="flex items-center gap-2"><span>✓</span> Elegant Display Tower</div>
+                            <div class="flex items-center gap-2"><span>✓</span> Free Delivery</div>
+                        </div>
+                        <div class="mt-8 text-center">
+                            <span class="text-sm text-rose-300">Starting from</span>
+                            <span class="text-3xl font-bold text-white block">$199.00</span>
+                        </div>
+                        <button class="w-full mt-6 bg-white text-rose-900 py-3 rounded-full font-bold hover:bg-rose-100 transition">
+                            Inquire Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Special Offers Banner -->
+            <div class="mt-16 reveal">
+                <div class="bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 rounded-3xl p-8 md:p-12 relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-20">
+                        <div class="absolute top-0 left-0 text-9xl opacity-30">🏮</div>
+                        <div class="absolute bottom-0 right-0 text-9xl opacity-30">🌙</div>
+                    </div>
+                    <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+                        <div>
+                            <span class="bg-white/20 text-white px-4 py-1 rounded-full text-sm font-medium">Limited Time Offer</span>
+                            <h3 class="font-playfair text-3xl md:text-4xl font-bold text-white mt-4">Ramadan Early Bird Special</h3>
+                            <p class="text-amber-100 mt-2">Order before Ramadan and get <strong>20% OFF</strong> on all gift packages!</p>
+                        </div>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-4 text-center min-w-24">
+                                <div class="text-3xl font-bold text-white" id="days">15</div>
+                                <div class="text-amber-100 text-sm">Days</div>
+                            </div>
+                            <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-4 text-center min-w-24">
+                                <div class="text-3xl font-bold text-white" id="hours">08</div>
+                                <div class="text-amber-100 text-sm">Hours</div>
+                            </div>
+                            <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-4 text-center min-w-24">
+                                <div class="text-3xl font-bold text-white" id="mins">42</div>
+                                <div class="text-amber-100 text-sm">Minutes</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8 text-center md:text-left">
+                        <button class="bg-white text-amber-700 px-8 py-4 rounded-full font-bold text-lg hover:bg-amber-50 transition shadow-lg">
+                            🎁 Claim Your Discount
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Heritage Section -->
+    <section id="heritage" class="py-24 bg-amber-900 text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="pattern-bg h-full w-full"></div>
+        </div>
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="reveal">
+                    <span class="text-amber-300 font-medium tracking-widest uppercase text-sm">Our Story</span>
+                    <h2 class="font-playfair text-4xl md:text-5xl font-bold mt-3 mb-6">A Legacy of Sweetness</h2>
+                    <p class="text-amber-100 text-lg leading-relaxed mb-6">
+                        For over two centuries, our family has preserved the art of traditional pastry making. Each recipe is a carefully guarded secret, passed down from master to apprentice.
+                    </p>
+                    <p class="text-amber-100 text-lg leading-relaxed mb-8">
+                        Our museum-shop celebrates this heritage, presenting each pastry as the work of art it truly is. We source only the finest ingredients from their places of origin.
+                    </p>
+                    <div class="grid grid-cols-3 gap-8">
+                        <div class="text-center">
+                            <div class="text-4xl font-playfair font-bold text-amber-300">200+</div>
+                            <div class="text-amber-200 text-sm mt-1">Years of Heritage</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl font-playfair font-bold text-amber-300">50+</div>
+                            <div class="text-amber-200 text-sm mt-1">Recipe Collection</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl font-playfair font-bold text-amber-300">7</div>
+                            <div class="text-amber-200 text-sm mt-1">Generations</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="reveal">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-amber-800 rounded-2xl p-8 text-center">
+                            <span class="text-6xl">👨‍🍳</span>
+                            <h4 class="font-playfair text-xl font-bold mt-4">Master Artisans</h4>
+                            <p class="text-amber-200 text-sm mt-2">Trained in ancestral techniques</p>
+                        </div>
+                        <div class="bg-amber-800 rounded-2xl p-8 text-center mt-8">
+                            <span class="text-6xl">🌿</span>
+                            <h4 class="font-playfair text-xl font-bold mt-4">Pure Ingredients</h4>
+                            <p class="text-amber-200 text-sm mt-2">Sourced from origin lands</p>
+                        </div>
+                        <div class="bg-amber-800 rounded-2xl p-8 text-center">
+                            <span class="text-6xl">📜</span>
+                            <h4 class="font-playfair text-xl font-bold mt-4">Ancient Recipes</h4>
+                            <p class="text-amber-200 text-sm mt-2">Preserved for centuries</p>
+                        </div>
+                        <div class="bg-amber-800 rounded-2xl p-8 text-center mt-8">
+                            <span class="text-6xl">✨</span>
+                            <h4 class="font-playfair text-xl font-bold mt-4">Handcrafted</h4>
+                            <p class="text-amber-200 text-sm mt-2">Each piece made with love</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-24 bg-stone-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <span class="text-amber-600 font-medium tracking-widest uppercase text-sm">Visual Journey</span>
+                <h2 class="font-playfair text-4xl md:text-5xl font-bold text-amber-900 mt-3">The Gallery</h2>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 reveal">
+                <div class="col-span-2 row-span-2 bg-gradient-to-br from-amber-200 to-amber-100 rounded-2xl p-12 flex items-center justify-center museum-frame">
+                    <span class="text-9xl">🎂</span>
+                </div>
+                <div class="bg-gradient-to-br from-rose-200 to-rose-100 rounded-2xl p-8 flex items-center justify-center">
+                    <span class="text-6xl">🥧</span>
+                </div>
+                <div class="bg-gradient-to-br from-orange-200 to-orange-100 rounded-2xl p-8 flex items-center justify-center">
+                    <span class="text-6xl">🥨</span>
+                </div>
+                <div class="bg-gradient-to-br from-yellow-200 to-yellow-100 rounded-2xl p-8 flex items-center justify-center">
+                    <span class="text-6xl">🧇</span>
+                </div>
+                <div class="bg-gradient-to-br from-purple-200 to-purple-100 rounded-2xl p-8 flex items-center justify-center">
+                    <span class="text-6xl">🍰</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visit Section -->
+    <section id="visit" class="py-24 bg-gradient-to-b from-stone-100 to-amber-50">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden reveal">
+                <div class="grid md:grid-cols-2">
+                    <div class="bg-amber-800 p-12 text-white">
+                        <h3 class="font-playfair text-3xl font-bold mb-6">Visit Our Museum</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-4">
+                                <span class="text-2xl">📍</span>
+                                <div>
+                                    <h4 class="font-medium">Location</h4>
+                                    <p class="text-amber-200">123 Heritage Lane, Old Town</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span class="text-2xl">🕐</span>
+                                <div>
+                                    <h4 class="font-medium">Hours</h4>
+                                    <p class="text-amber-200">Daily: 9AM - 9PM</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span class="text-2xl">📞</span>
+                                <div>
+                                    <h4 class="font-medium">Contact</h4>
+                                    <p class="text-amber-200">+1 (555) 123-4567</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-12">
+                        <h3 class="font-playfair text-2xl font-bold text-amber-900 mb-6">Book a Tour</h3>
+                        <form class="space-y-4">
+                            <input type="text" placeholder="Your Name" class="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:border-amber-500">
+                            <input type="email" placeholder="Email Address" class="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:border-amber-500">
+                            <input type="date" class="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:border-amber-500">
+                            <button class="w-full bg-amber-800 text-white py-3 rounded-xl font-medium hover:bg-amber-900 transition">
+                                Reserve Your Spot
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-amber-950 text-amber-100 py-16">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="col-span-2">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <span class="text-4xl">🥐</span>
+                        <h2 class="font-playfair text-2xl font-bold">Al-Fanous</h2>
+                    </div>
+                    <p class="text-amber-300 max-w-md">
+                        Where tradition meets artistry. Experience the museum of traditional pastries and take home a piece of culinary heritage.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-playfair font-bold text-lg mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-amber-300">
+                        <li><a href="#exhibits" class="hover:text-white transition">Exhibits</a></li>
+                        <li><a href="#media" class="hover:text-white transition">Media</a></li>
+                        <li><a href="#packages" class="hover:text-white transition">Packages</a></li>
+                        <li><a href="#heritage" class="hover:text-white transition">Heritage</a></li>
+                        <li><a href="#visit" class="hover:text-white transition">Visit Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-playfair font-bold text-lg mb-4">Follow Us</h4>
+                    <div class="flex space-x-4 text-2xl">
+                        <a href="#" class="hover:scale-110 transition">📸</a>
+                        <a href="#" class="hover:scale-110 transition">📘</a>
+                        <a href="#" class="hover:scale-110 transition">🐦</a>
+                    </div>
+                    
+                    <!-- Admin Access -->
+                    <div class="mt-6 pt-4 border-t border-amber-800/50">
+                        <a href="admin.html" class="inline-flex items-center gap-2 text-amber-400 hover:text-amber-200 transition group">
+                            <span class="text-lg">🔐</span>
+                            <span class="text-sm font-medium">Admin Panel</span>
+                            <span class="group-hover:translate-x-1 transition-transform">→</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-amber-800 mt-12 pt-8 text-center text-amber-400">
+                <p>© 2024 Al-Fanous Pastry Museum. All traditions preserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll reveal animation
+        function reveal() {
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach(element => {
+                const windowHeight = window.innerHeight;
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add('active');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', reveal);
+        reveal(); // Initial check
+        
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // Mobile menu functionality
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        const closeMenuBtn = document.getElementById('closeMenu');
+        
+        function openMenu() {
+            mobileMenu.classList.add('open');
+            mobileOverlay.classList.add('open');
+            menuBtn.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeMenu() {
+            mobileMenu.classList.remove('open');
+            mobileOverlay.classList.remove('open');
+            menuBtn.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        
+        menuBtn.addEventListener('click', openMenu);
+        closeMenuBtn.addEventListener('click', closeMenu);
+        mobileOverlay.addEventListener('click', closeMenu);
+        
+        // Close mobile menu when clicking nav links
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+        
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Countdown timer for special offer
+        function updateCountdown() {
+            const now = new Date();
+            const ramadan = new Date('2025-03-01');
+            const diff = ramadan - now;
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            
+            document.getElementById('days').textContent = days > 0 ? days : 0;
+            document.getElementById('hours').textContent = hours > 0 ? String(hours).padStart(2, '0') : '00';
+            document.getElementById('mins').textContent = mins > 0 ? String(mins).padStart(2, '0') : '00';
+        }
+        
+        updateCountdown();
+        setInterval(updateCountdown, 60000);
+        
+        // Add parallax effect to particles
+        document.addEventListener('mousemove', (e) => {
+            const particles = document.querySelectorAll('.particle');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            particles.forEach((particle, index) => {
+                const speed = (index + 1) * 0.5;
+                particle.style.transform = `translate(${x * speed * 10}px, ${y * speed * 5}px)`;
+            });
+        });
+        
+        // ===== THEME SWITCHER FUNCTIONALITY =====
+        const themeToggle = document.getElementById('themeToggle');
+        const themePanel = document.getElementById('themePanel');
+        const themeOptions = document.querySelectorAll('.theme-option');
+        
+        // Theme icons for the toggle button
+        const themeIcons = {
+            default: '🌅',
+            midnight: '🌙',
+            rose: '🌹',
+            emerald: '🌿',
+            purple: '👑',
+            desert: '🏜️'
+        };
+        
+        // Toggle theme panel
+        themeToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            themePanel.classList.toggle('open');
+        });
+        
+        // Close panel when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!themePanel.contains(e.target) && e.target !== themeToggle) {
+                themePanel.classList.remove('open');
+            }
+        });
+        
+        // Theme selection
+        themeOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const theme = option.dataset.theme;
+                
+                // Remove all theme classes
+                document.body.classList.remove('theme-midnight', 'theme-rose', 'theme-emerald', 'theme-purple', 'theme-desert');
+                
+                // Add selected theme class (if not default)
+                if (theme !== 'default') {
+                    document.body.classList.add(`theme-${theme}`);
+                }
+                
+                // Update active state
+                themeOptions.forEach(opt => opt.classList.remove('active'));
+                option.classList.add('active');
+                
+                // Update toggle button icon
+                themeToggle.textContent = themeIcons[theme];
+                
+                // Save to localStorage
+                localStorage.setItem('selectedTheme', theme);
+                
+                // Close panel with a slight delay
+                setTimeout(() => {
+                    themePanel.classList.remove('open');
+                }, 300);
+                
+                // Add a fun animation to the button
+                themeToggle.style.transform = 'scale(1.2) rotate(360deg)';
+                setTimeout(() => {
+                    themeToggle.style.transform = '';
+                }, 500);
+            });
+        });
+        
+        // Load saved theme on page load
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem('selectedTheme') || 'default';
+            
+            // Apply theme
+            if (savedTheme !== 'default') {
+                document.body.classList.add(`theme-${savedTheme}`);
+            }
+            
+            // Update toggle icon
+            themeToggle.textContent = themeIcons[savedTheme];
+            
+            // Update active state in panel
+            themeOptions.forEach(opt => {
+                if (opt.dataset.theme === savedTheme) {
+                    opt.classList.add('active');
+                } else {
+                    opt.classList.remove('active');
+                }
+            });
+        }
+        
+        loadSavedTheme();
+        
+        // Keyboard shortcut for theme panel (press 'T')
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 't' || e.key === 'T') {
+                if (!e.target.matches('input, textarea')) {
+                    themePanel.classList.toggle('open');
+                }
+            }
+        });
+        
+        // ===== SHOPPING CART SYSTEM =====
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let userAccount = JSON.parse(localStorage.getItem('userAccount')) || null;
+        let orders = JSON.parse(localStorage.getItem('orders')) || [];
+        
+        // DOM Elements
+        const cartSidebar = document.getElementById('cartSidebar');
+        const cartOverlay = document.getElementById('cartOverlay');
+        const cartItems = document.getElementById('cartItems');
+        const cartEmpty = document.getElementById('cartEmpty');
+        const cartFooter = document.getElementById('cartFooter');
+        const navCartBtn = document.getElementById('navCartBtn');
+        const navCartCount = document.getElementById('navCartCount');
+        const floatingCart = document.getElementById('floatingCart');
+        const floatingCartCount = document.getElementById('floatingCartCount');
+        const orderModal = document.getElementById('orderModal');
+        const userDashboard = document.getElementById('userDashboard');
+        const userAccountBtn = document.getElementById('userAccountBtn');
+        
+        // Open/Close Cart
+        function openCart() {
+            cartSidebar.classList.add('open');
+            cartOverlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeCart() {
+            cartSidebar.classList.remove('open');
+            cartOverlay.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        
+        navCartBtn.addEventListener('click', openCart);
+        floatingCart.addEventListener('click', openCart);
+        document.getElementById('closeCart').addEventListener('click', closeCart);
+        cartOverlay.addEventListener('click', closeCart);
+        document.getElementById('browseProducts').addEventListener('click', () => {
+            closeCart();
+            document.getElementById('exhibits').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // Add to Cart
+        document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.dataset.id;
+                const name = btn.dataset.name;
+                const price = parseFloat(btn.dataset.price);
+                const emoji = btn.dataset.emoji;
+                
+                // Check if item already in cart
+                const existingItem = cart.find(item => item.id === id);
+                if (existingItem) {
+                    existingItem.qty += 1;
+                } else {
+                    cart.push({ id, name, price, emoji, qty: 1 });
+                }
+                
+                // Save to localStorage
+                localStorage.setItem('cart', JSON.stringify(cart));
+                
+                // Update UI
+                updateCartUI();
+                
+                // Button animation
+                btn.classList.add('added');
+                setTimeout(() => {
+                    btn.classList.remove('added');
+                }, 1000);
+                
+                // Open cart briefly
+                openCart();
+            });
+        });
+        
+        // Update Cart UI
+        function updateCartUI() {
+            const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            
+            // Update counts
+            if (totalItems > 0) {
+                navCartCount.textContent = totalItems;
+                navCartCount.classList.remove('hidden');
+                floatingCartCount.textContent = totalItems;
+                floatingCartCount.classList.remove('hidden');
+                cartEmpty.style.display = 'none';
+                cartFooter.style.display = 'block';
+            } else {
+                navCartCount.classList.add('hidden');
+                floatingCartCount.classList.add('hidden');
+                cartEmpty.style.display = 'block';
+                cartFooter.style.display = 'none';
+            }
+            
+            // Update item count text
+            document.getElementById('cartItemCount').textContent = totalItems;
+            
+            // Update totals
+            document.getElementById('cartSubtotal').textContent = `$${totalPrice.toFixed(2)}`;
+            document.getElementById('cartTotal').textContent = `$${totalPrice.toFixed(2)}`;
+            document.getElementById('modalTotal').textContent = `$${totalPrice.toFixed(2)}`;
+            
+            // Render cart items
+            renderCartItems();
+        }
+        
+        // Render Cart Items
+        function renderCartItems() {
+            const itemsContainer = document.getElementById('cartItems');
+            const emptyDiv = cartEmpty.outerHTML;
+            
+            if (cart.length === 0) {
+                itemsContainer.innerHTML = emptyDiv;
+                return;
+            }
+            
+            let html = '';
+            cart.forEach(item => {
+                html += `
+                    <div class="cart-item" data-id="${item.id}">
+                        <div class="cart-item-image">${item.emoji}</div>
+                        <div class="flex-1">
+                            <h4 class="font-bold text-amber-900">${item.name}</h4>
+                            <p class="text-amber-700 font-semibold">$${item.price.toFixed(2)}</p>
+                            <div class="cart-item-qty">
+                                <button class="qty-btn" onclick="updateQty('${item.id}', -1)">−</button>
+                                <span class="font-medium text-amber-900">${item.qty}</span>
+                                <button class="qty-btn" onclick="updateQty('${item.id}', 1)">+</button>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-bold text-lg text-amber-900">$${(item.price * item.qty).toFixed(2)}</p>
+                            <button class="text-red-500 text-sm mt-2 hover:text-red-700" onclick="removeItem('${item.id}')">Remove</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            itemsContainer.innerHTML = html;
+        }
+        
+        // Update Quantity
+        function updateQty(id, change) {
+            const item = cart.find(i => i.id === id);
+            if (item) {
+                item.qty += change;
+                if (item.qty <= 0) {
+                    cart = cart.filter(i => i.id !== id);
+                }
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartUI();
+            }
+        }
+        
+        // Remove Item
+        function removeItem(id) {
+            cart = cart.filter(i => i.id !== id);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartUI();
+        }
+        
+        // Checkout
+        document.getElementById('checkoutBtn').addEventListener('click', () => {
+            closeCart();
+            orderModal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+            
+            // Pre-fill form if user exists
+            if (userAccount) {
+                document.getElementById('customerName').value = userAccount.name || '';
+                document.getElementById('customerEmail').value = userAccount.email || '';
+                document.getElementById('customerPhone').value = userAccount.phone || '';
+                document.getElementById('customerAddress').value = userAccount.address || '';
+            }
+        });
+        
+        // Close Order Modal
+        document.getElementById('closeOrderModal').addEventListener('click', () => {
+            orderModal.classList.remove('open');
+            document.body.style.overflow = '';
+        });
+        
+        orderModal.addEventListener('click', (e) => {
+            if (e.target === orderModal) {
+                orderModal.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        });
+        
+        // Order Form Submit
+        document.getElementById('orderForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('customerName').value;
+            const email = document.getElementById('customerEmail').value;
+            const phone = document.getElementById('customerPhone').value;
+            const address = document.getElementById('customerAddress').value;
+            const notes = document.getElementById('orderNotes').value;
+            
+            // Create/Update User Account
+            userAccount = { name, email, phone, address };
+            localStorage.setItem('userAccount', JSON.stringify(userAccount));
+            
+            // Create Order
+            const orderNumber = `AF-${Date.now().toString().slice(-6)}`;
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            
+            const order = {
+                id: orderNumber,
+                items: [...cart],
+                total: totalPrice,
+                status: 'pending',
+                date: new Date().toISOString(),
+                notes,
+                customerName: name,
+                customerEmail: email,
+                customerPhone: phone,
+                customerAddress: address
+            };
+            
+            orders.push(order);
+            localStorage.setItem('orders', JSON.stringify(orders));
+            
+            // Clear cart
+            cart = [];
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartUI();
+            
+            // Show success
+            document.getElementById('orderFormContainer').classList.add('hidden');
+            document.getElementById('orderSuccess').classList.remove('hidden');
+            document.getElementById('orderNumber').textContent = orderNumber;
+            
+            // Show user account button
+            userAccountBtn.classList.remove('hidden');
+        });
+        
+        // View Dashboard after order
+        document.getElementById('viewDashboard').addEventListener('click', () => {
+            orderModal.classList.remove('open');
+            document.getElementById('orderFormContainer').classList.remove('hidden');
+            document.getElementById('orderSuccess').classList.add('hidden');
+            document.body.style.overflow = '';
+            openDashboard();
+        });
+        
+        // Close Success
+        document.getElementById('closeSuccess').addEventListener('click', () => {
+            orderModal.classList.remove('open');
+            document.getElementById('orderFormContainer').classList.remove('hidden');
+            document.getElementById('orderSuccess').classList.add('hidden');
+            document.body.style.overflow = '';
+        });
+        
+        // ===== USER DASHBOARD =====
+        function openDashboard() {
+            userDashboard.classList.add('open');
+            document.body.style.overflow = 'hidden';
+            
+            // Update user info
+            if (userAccount) {
+                document.getElementById('userName').textContent = userAccount.name || 'Welcome!';
+                document.getElementById('userEmail').textContent = userAccount.email || '';
+            }
+            
+            // Render orders
+            renderOrders();
+        }
+        
+        function closeDashboard() {
+            userDashboard.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        
+        userAccountBtn.addEventListener('click', openDashboard);
+        document.getElementById('closeDashboard').addEventListener('click', closeDashboard);
+        
+        // Dashboard Tabs
+        document.querySelectorAll('.dashboard-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.dashboard-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                const tabName = tab.dataset.tab;
+                document.getElementById('ordersTab').classList.toggle('hidden', tabName !== 'orders');
+                document.getElementById('updatesTab').classList.toggle('hidden', tabName !== 'updates');
+            });
+        });
+        
+        // Render Orders
+        function renderOrders() {
+            const ordersList = document.getElementById('ordersList');
+            const noOrders = document.getElementById('noOrders');
+            
+            if (orders.length === 0) {
+                ordersList.innerHTML = '';
+                noOrders.classList.remove('hidden');
+                return;
+            }
+            
+            noOrders.classList.add('hidden');
+            
+            let html = '';
+            orders.slice().reverse().forEach(order => {
+                const date = new Date(order.date);
+                const formattedDate = date.toLocaleDateString('en-US', { 
+                    month: 'short', 
+                    day: 'numeric', 
+                    year: 'numeric' 
+                });
+                
+                const statusClass = order.status === 'pending' ? 'status-pending' : 
+                                   order.status === 'preparing' ? 'status-preparing' : 'status-delivered';
+                const statusText = order.status.charAt(0).toUpperCase() + order.status.slice(1);
+                
+                html += `
+                    <div class="order-card">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="font-bold text-amber-900">#${order.id}</span>
+                            <span class="order-status ${statusClass}">${statusText}</span>
+                        </div>
+                        <div class="flex gap-2 mb-3">
+                            ${order.items.map(item => `<span class="text-2xl" title="${item.name}">${item.emoji}</span>`).join('')}
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-stone-500">${formattedDate}</span>
+                            <span class="font-bold text-amber-900">$${order.total.toFixed(2)}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            ordersList.innerHTML = html;
+        }
+        
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            if (confirm('Are you sure you want to sign out?')) {
+                userAccount = null;
+                orders = [];
+                localStorage.removeItem('userAccount');
+                localStorage.removeItem('orders');
+                userAccountBtn.classList.add('hidden');
+                closeDashboard();
+            }
+        });
+        
+        // Initialize on page load
+        function initShoppingCart() {
+            updateCartUI();
+            
+            // Show account button if user exists
+            if (userAccount) {
+                userAccountBtn.classList.remove('hidden');
+            }
+        }
+        
+        initShoppingCart();
+    </script>
+</body>
+</html>

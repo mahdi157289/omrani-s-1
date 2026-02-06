@@ -1,0 +1,205 @@
+{
+  "navbar": {
+    "title": "Makroudh Omrani",
+    "subtitle": "Kairouan Heritage",
+    "exhibits": "Exhibits",
+    "media": "Media",
+    "packages": "Packages",
+    "heritage": "Heritage",
+    "visit": "Visit",
+    "store": "Store"
+  },
+  "hero": {
+    "explore": "Explore Collection",
+    "heritage": "Our Heritage"
+  },
+  "exhibits": {
+    "subtitle": "Our Collection",
+    "title": "Featured Exhibits",
+    "est": "Est.",
+    "addToCart": "Add to Cart"
+  },
+  "gallery": {
+    "subtitle": "Visual Journey",
+    "title": "The Gallery"
+  },
+  "heritage": {
+    "subtitle": "Our Story",
+    "title": "A Legacy of Sweetness",
+    "p1": "For over two centuries, our family has preserved the art of traditional pastry making. Each recipe is a carefully guarded secret, passed down from master to apprentice.",
+    "p2": "Our museum-shop celebrates this heritage, presenting each pastry as the work of art it truly is. We source only the finest ingredients from their places of origin.",
+    "stat1": "Years of Heritage",
+    "stat2": "Recipe Collection",
+    "stat3": "Generations",
+    "card1_title": "Master Artisans",
+    "card1_text": "Trained in ancestral techniques",
+    "card2_title": "Pure Ingredients",
+    "card2_text": "Sourced from origin lands",
+    "card3_title": "Ancient Recipes",
+    "card3_text": "Preserved for centuries",
+    "card4_title": "Handcrafted",
+    "card4_text": "Each piece made with love"
+  },
+  "packages": {
+    "subtitle": "Special Collections",
+    "title": "Packages & Offers",
+    "desc": "Curated gift boxes and seasonal specials for every occasion.",
+    "pkg1_badge": "Ramadan Special",
+    "pkg1_title": "Iftar Delights Box",
+    "pkg1_desc": "A luxurious collection of traditional sweets perfect for breaking fast",
+    "pkg1_item1": "12 Pieces Baklava Assorted",
+    "pkg1_item2": "8 Ma'amoul Date Cookies",
+    "pkg1_item3": "6 Kunafa Bites",
+    "pkg1_item4": "Premium Gift Box",
+    "orderNow": "Order Now",
+    "pkg2_badge": "Best Seller",
+    "pkg2_title": "Royal Heritage Box",
+    "pkg2_desc": "Our signature collection featuring century-old recipes",
+    "pkg2_item1": "24 Pieces Premium Baklava",
+    "pkg2_item2": "12 Assorted Ma'amoul",
+    "pkg2_item3": "6 Rose Petal Muffins",
+    "pkg2_item4": "Wooden Heritage Box",
+    "pkg3_badge": "Events",
+    "pkg3_title": "Celebration Package",
+    "pkg3_desc": "Perfect for weddings, engagements & special celebrations",
+    "pkg3_item1": "50 Pieces Mixed Pastries",
+    "pkg3_item2": "Custom Arrangement",
+    "pkg3_item3": "Elegant Display Tower",
+    "pkg3_item4": "Free Delivery",
+    "startingFrom": "Starting from",
+    "inquireNow": "Inquire Now"
+  },
+  "visit": {
+    "title": "Visit Our Museum",
+    "loc_title": "Location",
+    "loc_text": "123 Heritage Lane, Old Town",
+    "hours_title": "Hours",
+    "hours_text": "Daily: 9AM - 9PM",
+    "contact_title": "Contact",
+    "book_title": "Book a Tour",
+    "name_ph": "Your Name",
+    "email_ph": "Email Address",
+    "reserve_btn": "Reserve Your Spot"
+  },
+  "cart": {
+    "title": "Your Cart",
+    "items": "items",
+    "empty_title": "Your cart is empty",
+    "empty_text": "Start adding some delicious pastries!",
+    "remove": "Remove",
+    "subtotal": "Subtotal",
+    "placeOrder": "Place Order"
+  },
+  "footer": {
+    "title": "Makroudh Omrani",
+    "description": "Where tradition meets artistry. Experience the museum of traditional pastries and take home a piece of culinary heritage.",
+    "quickLinks": "Quick Links",
+    "followUs": "Follow Us",
+    "adminPanel": "Admin Panel",
+    "copyright": "© 2026 Makroudh Omrani. All traditions preserved."
+  },
+  "admin": {
+    "sidebar": {
+      "title": "Al-Fanous",
+      "adminPanel": "Admin Panel",
+      "mainMenu": "Main Menu",
+      "analytics": "Analytics",
+      "management": "Management",
+      "quickAccess": "Quick Access",
+      "products": "Products",
+      "orders": "Orders",
+      "adminUser": "Admin User",
+      "logout": "Logout"
+    },
+    "analytics": {
+      "title": "Analytics Dashboard",
+      "welcome": "Welcome back! Here's what's happening today.",
+      "viewSite": "View Site",
+      "connectionError": "Connection Error",
+      "totalRevenue": "Total Revenue",
+      "totalOrders": "Total Orders",
+      "totalCustomers": "Total Customers",
+      "avgRating": "Avg Rating",
+      "live": "Live",
+      "revenueOverview": "Revenue Overview",
+      "last7Days": "Last 7 Days",
+      "trafficSources": "Traffic Sources",
+      "visitors": "Visitors",
+      "recentOrders": "Recent Orders",
+      "viewAll": "View All",
+      "table": {
+        "orderId": "Order ID",
+        "customer": "Customer",
+        "status": "Status",
+        "amount": "Amount"
+      }
+    },
+    "management": {
+      "title": "Store Management",
+      "tabs": {
+        "general": "General",
+        "products": "Products",
+        "packages": "Packages",
+        "gallery": "Gallery",
+        "seo": "SEO"
+      },
+      "products": {
+        "title": "Product Inventory",
+        "addProduct": "Add Product",
+        "columns": {
+          "product": "Product",
+          "category": "Category",
+          "price": "Price",
+          "stock": "Stock",
+          "actions": "Actions"
+        },
+        "stockLeft": "left"
+      },
+      "general": {
+        "title": "Basic Info",
+        "storeName": "Store Name",
+        "description": "Description",
+        "saveChanges": "Save Changes"
+      }
+    },
+    "orders": {
+      "title": "Order Management",
+      "columns": {
+        "orderId": "Order ID",
+        "customer": "Customer",
+        "status": "Status",
+        "total": "Total",
+        "date": "Date"
+      }
+    }
+  },
+  "media": {
+    "subtitle": "Behind The Scenes",
+    "title": "Media & Stories",
+    "description": "Discover the artistry and passion that goes into every creation through our featured content.",
+    "video": {
+      "title": "The Art of Baklava",
+      "desc": "Watch our master chef create 100 layers of perfection"
+    },
+    "videos": {
+      "video1": { "title": "Croissant Mastery" },
+      "video2": { "title": "Ma'amoul Traditions" },
+      "video3": { "title": "Heritage Cakes" }
+    },
+    "stats": {
+      "tv": { "title": "Featured on TV", "desc": "National Culinary Channel" },
+      "press": { "title": "Press Coverage", "desc": "50+ Publications" },
+      "insta": { "title": "Instagram", "desc": "120K+ Followers" },
+      "awards": { "title": "Awards", "desc": "15 International Awards" }
+    }
+  },
+  "themes": {
+    "title": "Choose Ambiance",
+    "default": "Golden Hour",
+    "midnight": "Midnight",
+    "rose": "Rose Garden",
+    "emerald": "Emerald Oasis",
+    "purple": "Royal Purple",
+    "desert": "Desert Sand"
+  }
+}

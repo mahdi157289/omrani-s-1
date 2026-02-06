@@ -1,0 +1,206 @@
+{
+  "navbar": {
+    "title": "Makroudh Omrani",
+    "subtitle": "Héritage Kairouanais",
+    "exhibits": "Expositions",
+    "media": "Médias",
+    "packages": "Paquets",
+    "heritage": "Héritage",
+    "visit": "Visite",
+    "store": "Boutique"
+  },
+  "hero": {
+    "explore": "Explorer la Collection",
+    "heritage": "Notre Héritage"
+  },
+  "exhibits": {
+    "subtitle": "Notre Collection",
+    "title": "Expositions en Vedette",
+    "est": "Est.",
+    "addToCart": "Ajouter au Panier"
+  },
+  "gallery": {
+    "subtitle": "Voyage Visuel",
+    "title": "La Galerie"
+  },
+  "heritage": {
+    "subtitle": "Notre Histoire",
+    "title": "Un Héritage de Douceur",
+    "p1": "Depuis plus de deux siècles, notre famille préserve l'art de la pâtisserie traditionnelle. Chaque recette est un secret soigneusement gardé, transmis de maître à apprenti.",
+    "p2": "Notre musée-boutique célèbre cet héritage, présentant chaque pâtisserie comme l'œuvre d'art qu'elle est vraiment. Nous n'utilisons que les meilleurs ingrédients provenant de leurs terres d'origine.",
+    "stat1": "Années d'Héritage",
+    "stat2": "Collection de Recettes",
+    "stat3": "Générations",
+    "card1_title": "Maîtres Artisans",
+    "card1_text": "Formés aux techniques ancestrales",
+    "card2_title": "Ingrédients Purs",
+    "card2_text": "Provenant des terres d'origine",
+    "card3_title": "Recettes Anciennes",
+    "card3_text": "Préservées depuis des siècles",
+    "card4_title": "Fait Main",
+    "card4_text": "Chaque pièce faite avec amour"
+  },
+  "packages": {
+    "subtitle": "Collections Spéciales",
+    "title": "Paquets & Offres",
+    "desc": "Coffrets cadeaux et offres saisonnières pour chaque occasion.",
+    "pkg1_badge": "Spécial Ramadan",
+    "pkg1_title": "Coffret Délices Iftar",
+    "pkg1_desc": "Une collection luxueuse de douceurs traditionnelles parfaites pour la rupture du jeûne",
+    "pkg1_item1": "12 Pièces Baklava Assorties",
+    "pkg1_item2": "8 Ma'amoul aux Dattes",
+    "pkg1_item3": "6 Bouchées Kunafa",
+    "pkg1_item4": "Coffret Cadeau Premium",
+    "orderNow": "Commander",
+    "pkg2_badge": "Meilleure Vente",
+    "pkg2_title": "Coffret Héritage Royal",
+    "pkg2_desc": "Notre collection signature avec des recettes centenaires",
+    "pkg2_item1": "24 Pièces Baklava Premium",
+    "pkg2_item2": "12 Ma'amoul Assortis",
+    "pkg2_item3": "6 Muffins aux Pétales de Rose",
+    "pkg2_item4": "Coffret Héritage en Bois",
+    "pkg3_badge": "Événements",
+    "pkg3_title": "Paquet Célébration",
+    "pkg3_desc": "Parfait pour les mariages, fiançailles & célébrations spéciales",
+    "pkg3_item1": "50 Pièces Pâtisseries Mixtes",
+    "pkg3_item2": "Arrangement Personnalisé",
+    "pkg3_item3": "Tour de Présentation Élégante",
+    "pkg3_item4": "Livraison Gratuite",
+    "startingFrom": "À partir de",
+    "inquireNow": "Demander",
+    "addToCart": "Ajouter au Panier"
+  },
+  "visit": {
+    "title": "Visitez Notre Musée",
+    "loc_title": "Emplacement",
+    "loc_text": "123 Allée de l'Héritage, Vieille Ville",
+    "hours_title": "Heures",
+    "hours_text": "Tous les jours: 9H - 21H",
+    "contact_title": "Contact",
+    "book_title": "Réserver une Visite",
+    "name_ph": "Votre Nom",
+    "email_ph": "Adresse Email",
+    "reserve_btn": "Réservez Votre Place"
+  },
+  "cart": {
+    "title": "Votre Panier",
+    "items": "articles",
+    "empty_title": "Votre panier est vide",
+    "empty_text": "Commencez à ajouter de délicieuses pâtisseries !",
+    "remove": "Retirer",
+    "subtotal": "Sous-total",
+    "placeOrder": "Passer la Commande"
+  },
+  "footer": {
+    "title": "Makroudh Omrani",
+    "description": "Où la tradition rencontre l'art. Découvrez le musée des pâtisseries traditionnelles et emportez un morceau du patrimoine culinaire.",
+    "quickLinks": "Liens Rapides",
+    "followUs": "Suivez-nous",
+    "adminPanel": "Panneau d'Admin",
+    "copyright": "© 2026 Makroudh Omrani. Toutes les traditions préservées."
+  },
+  "admin": {
+    "sidebar": {
+      "title": "Al-Fanous",
+      "adminPanel": "Panneau d'Admin",
+      "mainMenu": "Menu Principal",
+      "analytics": "Analytique",
+      "management": "Gestion",
+      "quickAccess": "Accès Rapide",
+      "products": "Produits",
+      "orders": "Commandes",
+      "adminUser": "Admin",
+      "logout": "Déconnexion"
+    },
+    "analytics": {
+      "title": "Tableau de Bord Analytique",
+      "welcome": "Bon retour ! Voici ce qui se passe aujourd'hui.",
+      "viewSite": "Voir le Site",
+      "connectionError": "Erreur de Connexion",
+      "totalRevenue": "Revenu Total",
+      "totalOrders": "Commandes Totales",
+      "totalCustomers": "Clients Totaux",
+      "avgRating": "Note Moyenne",
+      "live": "En Direct",
+      "revenueOverview": "Aperçu des Revenus",
+      "last7Days": "Les 7 derniers jours",
+      "trafficSources": "Sources de Trafic",
+      "visitors": "Visiteurs",
+      "recentOrders": "Commandes Récentes",
+      "viewAll": "Voir Tout",
+      "table": {
+        "orderId": "ID Commande",
+        "customer": "Client",
+        "status": "Statut",
+        "amount": "Montant"
+      }
+    },
+    "management": {
+      "title": "Gestion du Magasin",
+      "tabs": {
+        "general": "Général",
+        "products": "Produits",
+        "packages": "Paquets",
+        "gallery": "Galerie",
+        "seo": "SEO"
+      },
+      "products": {
+        "title": "Inventaire Produits",
+        "addProduct": "Ajouter Produit",
+        "columns": {
+          "product": "Produit",
+          "category": "Catégorie",
+          "price": "Prix",
+          "stock": "Stock",
+          "actions": "Actions"
+        },
+        "stockLeft": "restants"
+      },
+      "general": {
+        "title": "Infos de Base",
+        "storeName": "Nom du Magasin",
+        "description": "Description",
+        "saveChanges": "Sauvegarder"
+      }
+    },
+    "orders": {
+      "title": "Gestion des Commandes",
+      "columns": {
+        "orderId": "ID Commande",
+        "customer": "Client",
+        "status": "Statut",
+        "total": "Total",
+        "date": "Date"
+      }
+    }
+  },
+  "media": {
+    "subtitle": "Dans les coulisses",
+    "title": "Médias et Histoires",
+    "description": "Découvrez l'art et la passion qui entrent dans chaque création à travers notre contenu vedette.",
+    "video": {
+      "title": "L'art du Baklava",
+      "desc": "Regardez notre chef cuisinier créer 100 couches de perfection"
+    },
+    "videos": {
+      "video1": { "title": "Maîtrise du Croissant" },
+      "video2": { "title": "Traditions Ma'amoul" },
+      "video3": { "title": "Gâteaux du Patrimoine" }
+    },
+    "stats": {
+      "tv": { "title": "Vu à la télé", "desc": "Chaîne culinaire nationale" },
+      "press": { "title": "Couverture médiatique", "desc": "50+ Publications" },
+      "insta": { "title": "Instagram", "desc": "120K+ Abonnés" },
+      "awards": { "title": "Prix", "desc": "15 Prix Internationaux" }
+    }
+  },
+  "themes": {
+    "title": "Choisir l'ambiance",
+    "default": "Heure dorée",
+    "midnight": "Minuit",
+    "rose": "Jardin de roses",
+    "emerald": "Oasis d'émeraude",
+    "purple": "Violet royal",
+    "desert": "Sable du désert"
+  }
+}
