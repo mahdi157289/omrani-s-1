@@ -97,7 +97,7 @@ const Gallery = () => {
             transition={{ delay: 0.8 }}
             className="rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all hover:-translate-y-1"
           >
-            <img src="/images/media/happy new year.jpg" alt="Celebration" className="w-full h-full object-cover" />
+            <img src="/images/media/happy_new_year.jpg" alt="Celebration" className="w-full h-full object-cover" />
           </motion.div>
         </div>
       </div>

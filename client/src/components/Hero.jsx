@@ -8,7 +8,7 @@ const Hero = () => {
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="/images/background image.jpg" 
+          src="/images/background_image.jpg" 
           alt="Makroudh Background" 
           className="w-full h-full object-cover"
         />
