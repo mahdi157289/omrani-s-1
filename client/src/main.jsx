@@ -6,6 +6,11 @@ import './i18n'
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from './context/ThemeContext'
 import { CartProvider } from './context/CartContext'
+import axios from 'axios'
+
+// Set base URL for API requests
+// If VITE_API_URL is set (production), use it. Otherwise use relative path (dev proxy).
+axios.defaults.baseURL = import.meta.env.VITE_API_URL || '';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

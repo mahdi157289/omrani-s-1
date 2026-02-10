@@ -12,7 +12,7 @@ const Exhibits = () => {
     const fetchProducts = async () => {
       try {
         const res = await axios.get('/api/products');
-        setProducts(res.data);
+        setProducts(Array.isArray(res.data) ? res.data : []);
       } catch (err) {
         console.error('Failed to fetch products', err);
         // Fallback data if API fails or not ready

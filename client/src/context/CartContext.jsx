@@ -12,7 +12,13 @@ export const CartProvider = ({ children }) => {
   useEffect(() => {
     const savedCart = localStorage.getItem('cart');
     if (savedCart) {
-      setCart(JSON.parse(savedCart));
+      try {
+        const parsed = JSON.parse(savedCart);
+        setCart(Array.isArray(parsed) ? parsed : []);
+      } catch (e) {
+        console.error('Failed to parse cart', e);
+        setCart([]);
+      }
     }
   }, []);
 

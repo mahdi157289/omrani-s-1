@@ -63,8 +63,8 @@ const AdminDashboard = () => {
           axios.get('/api/orders'),
           axios.get('/api/products')
         ]);
-        setOrders(ordersRes.data);
-        setProducts(productsRes.data);
+        setOrders(Array.isArray(ordersRes.data) ? ordersRes.data : []);
+        setProducts(Array.isArray(productsRes.data) ? productsRes.data : []);
         setError(null);
       } catch (err) {
         console.error('Admin data fetch failed, using fallback data', err);
