@@ -79,14 +79,14 @@ const CartSidebar = () => {
                       <div className="flex items-center gap-3">
                         <button 
                           onClick={() => updateQty(item.id, -1)}
-                          className="w-7 h-7 rounded-lg border-2 border-amber-200 text-amber-700 flex items-center justify-center hover:bg-amber-50 font-bold transition-colors"
+                          className="w-7 h-7 rounded-lg border border-amber-400 text-amber-700 flex items-center justify-center hover:bg-amber-50 font-bold transition-colors"
                         >
                           -
                         </button>
                         <span className="font-medium text-amber-900 min-w-[20px] text-center">{item.qty}</span>
                         <button 
                           onClick={() => updateQty(item.id, 1)}
-                          className="w-7 h-7 rounded-lg border-2 border-amber-200 text-amber-700 flex items-center justify-center hover:bg-amber-50 font-bold transition-colors"
+                          className="w-7 h-7 rounded-lg border border-amber-400 text-amber-700 flex items-center justify-center hover:bg-amber-50 font-bold transition-colors"
                         >
                           +
                         </button>

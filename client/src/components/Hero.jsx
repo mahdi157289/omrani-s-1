@@ -21,10 +21,10 @@ const Hero = () => {
           transition={{ duration: 0.8 }}
         >
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-96">
-            <a href="#exhibits" className="bg-white/90 text-amber-900 px-10 py-4 rounded-full font-medium hover:bg-white transition-all shadow-lg hover:shadow-xl backdrop-blur-sm">
+            <a href="#exhibits" className="bg-white/90 text-amber-900 px-10 py-4 rounded-full font-medium hover:bg-white transition-all shadow-lg hover:shadow-xl backdrop-blur-sm border border-amber-400/50 shimmer-gold">
               {t('hero.explore')}
             </a>
-            <a href="#heritage" className="bg-amber-900/80 text-white px-10 py-4 rounded-full font-medium hover:bg-amber-900 transition-all backdrop-blur-sm border border-amber-700/50">
+            <a href="#heritage" className="bg-amber-900/80 text-white px-10 py-4 rounded-full font-medium hover:bg-amber-900 transition-all backdrop-blur-sm border border-amber-400/50 shimmer-gold">
               {t('hero.heritage')}
             </a>
           </div>

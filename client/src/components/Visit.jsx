@@ -19,7 +19,7 @@ const Visit = () => {
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden"
+          className="max-w-4xl mx-auto bg-white card-golden shadow-2xl overflow-hidden"
         >
           <div className="grid md:grid-cols-2">
             <div className="bg-amber-800 p-12 text-white">

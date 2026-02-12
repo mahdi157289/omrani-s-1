@@ -42,3 +42,21 @@ CREATE TABLE IF NOT EXISTS order_items (
   quantity INTEGER NOT NULL,
   price_at_purchase DECIMAL(10, 2) NOT NULL
 );
+
+-- Store Settings table
+CREATE TABLE IF NOT EXISTS store_settings (
+  key VARCHAR(50) PRIMARY KEY,
+  value TEXT,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Gallery table
+CREATE TABLE IF NOT EXISTS gallery (
+  id SERIAL PRIMARY KEY,
+  url VARCHAR(512) NOT NULL,
+  type VARCHAR(50) DEFAULT 'image', -- image, video
+  title VARCHAR(255),
+  description TEXT,
+  thumbnail_url VARCHAR(512),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

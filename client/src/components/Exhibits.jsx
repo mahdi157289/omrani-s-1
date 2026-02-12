@@ -52,7 +52,7 @@ const Exhibits = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
+              className="bg-white card-golden shadow-lg hover:shadow-xl transition-shadow"
             >
               <div className="h-64 bg-stone-100 flex items-center justify-center overflow-hidden group">
                 {product.image_url ? (

@@ -7,7 +7,9 @@ services:
       - "5000:5000"
     environment:
       - NODE_ENV=production
-      # Add other environment variables here if needed
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/pastery
+    depends_on:
+      - postgres
 
   client:
     build: ./client
@@ -15,3 +17,17 @@ services:
       - "80:80"
     depends_on:
       - server
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=pastery
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:

@@ -18,7 +18,7 @@ const ThemeSwitcher = () => {
       <div className="relative">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-14 h-14 rounded-full bg-gradient-to-br from-amber-400 via-amber-500 to-amber-700 border-2 border-amber-200 flex items-center justify-center text-2xl shadow-[0_0_20px_rgba(251,191,36,0.5)] hover:shadow-[0_0_30px_rgba(251,191,36,0.8)] hover:scale-110 transition-all duration-300 active:scale-95 relative z-50"
+          className="w-14 h-14 rounded-full bg-gradient-to-br from-amber-400 via-amber-500 to-amber-700 border border-amber-400 flex items-center justify-center text-2xl shadow-[0_0_20px_rgba(251,191,36,0.5)] hover:shadow-[0_0_30px_rgba(251,191,36,0.8)] hover:scale-110 transition-all duration-300 active:scale-95 relative z-50"
         >
           <motion.span
             key={theme}
@@ -56,9 +56,9 @@ const ThemeSwitcher = () => {
                       key={themeItem.id}
                       onClick={() => setTheme(themeItem.id)}
                       className={`
-                        p-3 rounded-xl border-2 transition-all text-left group relative overflow-hidden
+                        p-3 rounded-xl border transition-all text-left group relative overflow-hidden
                         ${theme === themeItem.id 
-                          ? 'border-amber-400 bg-amber-500/20' 
+                          ? 'border-amber-400 bg-amber-500/20 shadow-[0_0_10px_rgba(251,191,36,0.3)]' 
                           : 'border-transparent hover:bg-white/5 hover:border-white/10'}
                       `}
                     >
@@ -81,14 +81,14 @@ const ThemeSwitcher = () => {
         </AnimatePresence>
       </div>
 
-      <Link to="/store" className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-600 to-amber-800 border border-amber-400/50 flex items-center justify-center text-white shadow-lg hover:scale-110 transition-transform animate-bounce-small relative group z-40">
+      <Link to="/store" className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-600 to-amber-800 border border-amber-400 flex items-center justify-center text-white shadow-[0_0_10px_rgba(251,191,36,0.5)] hover:shadow-[0_0_20px_rgba(251,191,36,0.8)] hover:scale-110 transition-transform animate-bounce-small relative group z-40">
         <span className="text-xl">🏮</span>
         <span className="absolute right-full mr-4 bg-amber-950/90 text-amber-100 text-xs py-1 px-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-amber-500/30 pointer-events-none">
           {t('navbar.store')}
         </span>
       </Link>
 
-      <Link to="/packages" className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-800 to-amber-950 border border-amber-500/30 flex items-center justify-center text-white shadow-lg hover:scale-110 transition-transform relative group z-40">
+      <Link to="/packages" className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-800 to-amber-950 border border-amber-400 flex items-center justify-center text-white shadow-[0_0_10px_rgba(251,191,36,0.5)] hover:shadow-[0_0_20px_rgba(251,191,36,0.8)] hover:scale-110 transition-transform relative group z-40">
         <span className="text-xl">🎁</span>
         <span className="absolute right-full mr-4 bg-amber-950/90 text-amber-100 text-xs py-1 px-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-amber-500/30 pointer-events-none">
           {t('navbar.packages')}

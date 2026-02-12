@@ -53,22 +53,22 @@ const Heritage = () => {
             viewport={{ once: true }}
           >
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-amber-800 rounded-2xl p-8 text-center hover:bg-amber-700 transition-colors duration-300">
+              <div className="card-golden bg-amber-800 p-8 text-center hover:bg-amber-700 transition-colors duration-300">
                 <span className="text-6xl block mb-4">👨‍🍳</span>
                 <h4 className="font-serif text-xl font-bold">{t('heritage.card1_title')}</h4>
                 <p className="text-amber-200 text-sm mt-2">{t('heritage.card1_text')}</p>
               </div>
-              <div className="bg-amber-800 rounded-2xl p-8 text-center mt-8 hover:bg-amber-700 transition-colors duration-300">
+              <div className="card-golden bg-amber-800 p-8 text-center mt-8 hover:bg-amber-700 transition-colors duration-300">
                 <span className="text-6xl block mb-4">🌿</span>
                 <h4 className="font-serif text-xl font-bold">{t('heritage.card2_title')}</h4>
                 <p className="text-amber-200 text-sm mt-2">{t('heritage.card2_text')}</p>
               </div>
-              <div className="bg-amber-800 rounded-2xl p-8 text-center hover:bg-amber-700 transition-colors duration-300">
+              <div className="card-golden bg-amber-800 p-8 text-center hover:bg-amber-700 transition-colors duration-300">
                 <span className="text-6xl block mb-4">📜</span>
                 <h4 className="font-serif text-xl font-bold">{t('heritage.card3_title')}</h4>
                 <p className="text-amber-200 text-sm mt-2">{t('heritage.card3_text')}</p>
               </div>
-              <div className="bg-amber-800 rounded-2xl p-8 text-center mt-8 hover:bg-amber-700 transition-colors duration-300">
+              <div className="card-golden bg-amber-800 p-8 text-center mt-8 hover:bg-amber-700 transition-colors duration-300">
                 <span className="text-6xl block mb-4">✨</span>
                 <h4 className="font-serif text-xl font-bold">{t('heritage.card4_title')}</h4>
                 <p className="text-amber-200 text-sm mt-2">{t('heritage.card4_text')}</p>

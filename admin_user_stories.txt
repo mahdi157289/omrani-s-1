@@ -1,0 +1,89 @@
+Admin User Stories & Implementation Status Report
+================================================
+
+1. Secure Access (Login)
+------------------------
+User Story: "As an admin, I want to log in securely so that unauthorized users cannot access the dashboard."
+Status: FAILED ❌
+- Frontend: No login page or route protection. The '/admin' route is public.
+- Backend: No authentication middleware or login API endpoint.
+
+2. Dashboard Overview
+---------------------
+User Story: "As an admin, I want to see an overview of business performance (revenue, total orders, active customers) and visual charts."
+Status: WORKING ✅ (with caveats)
+- Frontend: Implemented in 'AdminDashboard.jsx'. Displays cards for Revenue, Orders, Customers, and Charts.
+- Backend: Fetches data from '/api/orders' and '/api/products'.
+- Note: Relies on unprotected API endpoints.
+
+3. Product Management - List
+----------------------------
+User Story: "As an admin, I want to view a list of all products with their stock levels and prices."
+Status: WORKING ✅
+- Frontend: Implemented in Management > Products tab.
+- Backend: GET '/api/products' is functional.
+
+4. Product Management - Add
+---------------------------
+User Story: "As an admin, I want to add a new product to the catalog."
+Status: WORKING ✅
+- Frontend: "Add Product" button now opens a modal with a form. Submitting creates a new product.
+- Backend: POST '/api/products' endpoint implemented.
+
+5. Product Management - Edit
+----------------------------
+User Story: "As an admin, I want to edit details of an existing product."
+Status: WORKING ✅
+- Frontend: Edit button (✏️) opens a modal pre-filled with product data. Submitting updates the product.
+- Backend: PUT '/api/products/:id' endpoint implemented.
+
+6. Product Management - Delete
+------------------------------
+User Story: "As an admin, I want to delete a product."
+Status: WORKING ✅
+- Frontend: Delete button (🗑️) prompts for confirmation and then deletes the product.
+- Backend: DELETE '/api/products/:id' endpoint implemented.
+
+7. Order Management - View List
+-------------------------------
+User Story: "As an admin, I want to view a dedicated list of all orders."
+Status: WORKING ✅
+- Frontend: 'AdminDashboard.jsx' renders a table of orders when 'orders' tab is active.
+- Backend: GET '/api/orders' exists and works.
+
+8. Order Management - Update Status
+-----------------------------------
+User Story: "As an admin, I want to update the status of an order (e.g., pending -> delivered)."
+Status: WORKING ✅
+- Frontend: Dropdown UI now has an onChange handler that calls the API and updates local state.
+- Backend: PATCH '/api/orders/:id/status' exists and works.
+
+9. Store Management - General Settings
+--------------------------------------
+User Story: "As an admin, I want to update general store information (Name, Description)."
+Status: WORKING ✅
+- Frontend: "Save Changes" button now calls the API. Settings are loaded on mount.
+- Backend: GET and POST '/api/settings' endpoints implemented. Database table 'store_settings' created.
+
+10. Store Management - Packages
+-------------------------------
+User Story: "As an admin, I want to manage special packages/offers."
+Status: FAILED ❌
+- Frontend: Tab button exists, but NO content renders when selected (empty implementation).
+- Backend: No API endpoints for packages.
+
+11. Store Management - Gallery
+------------------------------
+User Story: "As an admin, I want to manage the photo gallery."
+Status: WORKING ✅
+- Frontend: Implemented in Management > Gallery tab. Supports adding and deleting media (images/videos).
+- Backend: GET, POST, and DELETE '/api/gallery' endpoints implemented. Database table 'gallery' created.
+- Facebook Sync: Added "Sync with Facebook" feature to extract/sync media from the Makroudh Omrani page.
+- Integration: Gallery and Media components now fetch data from the API and support Facebook video embeds.
+
+12. Store Management - SEO
+--------------------------
+User Story: "As an admin, I want to update SEO settings (meta tags, keywords)."
+Status: FAILED ❌
+- Frontend: Tab button exists, but NO content renders when selected (empty implementation).
+- Backend: No API endpoints for SEO settings.

@@ -31,7 +31,7 @@ const Packages = () => {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-gradient-to-br from-amber-800 to-amber-900 rounded-3xl overflow-hidden shadow-2xl group hover:scale-105 transition-transform duration-300"
+            className="card-golden bg-gradient-to-br from-amber-800 to-amber-900 group hover:scale-105 transition-transform duration-300"
           >
             <div className="relative p-8">
               <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold animate-pulse">
@@ -64,7 +64,7 @@ const Packages = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="bg-gradient-to-br from-stone-800 to-stone-900 rounded-3xl overflow-hidden shadow-2xl group hover:scale-105 transition-transform duration-300 border border-amber-500/30"
+            className="card-golden bg-gradient-to-br from-stone-800 to-stone-900 group hover:scale-105 transition-transform duration-300 border border-amber-500/30"
           >
             <div className="relative p-8">
               <div className="absolute top-4 right-4 bg-amber-500 text-white px-3 py-1 rounded-full text-sm font-bold">
@@ -96,7 +96,7 @@ const Packages = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="bg-gradient-to-br from-rose-900 to-stone-900 rounded-3xl overflow-hidden shadow-2xl group hover:scale-105 transition-transform duration-300"
+            className="card-golden bg-gradient-to-br from-rose-900 to-stone-900 group hover:scale-105 transition-transform duration-300"
           >
             <div className="relative p-8">
               <div className="absolute top-4 right-4 bg-rose-400 text-white px-3 py-1 rounded-full text-sm font-bold">
