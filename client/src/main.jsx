@@ -7,6 +7,7 @@ import './i18n'
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from './context/ThemeContext'
 import { CartProvider } from './context/CartContext'
+import { AuthProvider } from './context/AuthContext'
 import axios from 'axios'
 
 // Set base URL for API requests
@@ -16,13 +17,15 @@ axios.defaults.baseURL = import.meta.env.VITE_API_URL || (isProd ? 'https://past
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ErrorBoundary>
-      <BrowserRouter>
-        <ThemeProvider>
-          <CartProvider>
-            <App />
-          </CartProvider>
-        </ThemeProvider>
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <ThemeProvider>
+            <CartProvider>
+              <App />
+            </CartProvider>
+          </ThemeProvider>
+        </BrowserRouter>
+      </AuthProvider>
     </ErrorBoundary>
   </React.StrictMode>,
 )

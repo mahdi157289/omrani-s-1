@@ -45,6 +45,86 @@
   }
 }
 
+/* ================= THEME VARIANTS ================= */
+/* Visual ambiance changes when selecting themes */
+body.theme-midnight {
+  background: radial-gradient(1200px circle at 20% 0%, #0f172a 20%, #020617 60%, #000 100%);
+  color: #e5e7eb;
+}
+body.theme-rose {
+  background: radial-gradient(1200px circle at 80% 20%, #fff1f2 0%, #ffe4e6 40%, #fecdd3 100%);
+}
+body.theme-emerald {
+  background: radial-gradient(1200px circle at 10% 80%, #ecfdf5 0%, #d1fae5 40%, #a7f3d0 100%);
+}
+body.theme-purple {
+  background: radial-gradient(1200px circle at 50% 10%, #1e1b4b 0%, #312e81 50%, #4c1d95 100%);
+  color: #e5e7eb;
+}
+body.theme-desert {
+  background: radial-gradient(1200px circle at 50% 90%, #fff7ed 0%, #fde68a 40%, #f59e0b 100%);
+}
+
+/* Dark navbar adjust on dark themes */
+body.theme-midnight .navbar,
+body.theme-purple .navbar {
+  background-color: rgba(2, 6, 23, 0.9) !important;
+}
+
+/* Navbar link/text color per theme */
+body.theme-midnight .navbar a,
+body.theme-purple .navbar a,
+body.theme-midnight .navbar .nav-link,
+body.theme-purple .navbar .nav-link {
+  color: #e5e7eb !important;
+}
+body.theme-rose .navbar {
+  background-color: rgba(255, 240, 244, 0.9) !important;
+}
+body.theme-rose .navbar a,
+body.theme-rose .navbar .nav-link {
+  color: #7f1d1d !important;
+}
+body.theme-emerald .navbar {
+  background-color: rgba(236, 253, 245, 0.9) !important;
+}
+body.theme-emerald .navbar a,
+body.theme-emerald .navbar .nav-link {
+  color: #064e3b !important;
+}
+body.theme-desert .navbar {
+  background-color: rgba(255, 247, 237, 0.95) !important;
+}
+body.theme-desert .navbar a,
+body.theme-desert .navbar .nav-link {
+  color: #92400e !important;
+}
+
+/* Footer background/text per theme */
+body.theme-midnight .site-footer,
+body.theme-purple .site-footer {
+  background-color: #0b1020 !important;
+  color: #e5e7eb !important;
+}
+body.theme-rose .site-footer {
+  background-color: #ffe4e6 !important;
+  color: #7f1d1d !important;
+}
+body.theme-emerald .site-footer {
+  background-color: #d1fae5 !important;
+  color: #064e3b !important;
+}
+body.theme-desert .site-footer {
+  background-color: #fff7ed !important;
+  color: #78350f !important;
+}
+
+/* Buttons slight tint according to theme */
+body.theme-rose button { filter: hue-rotate(-10deg) saturate(1.1); }
+body.theme-emerald button { filter: hue-rotate(-60deg) saturate(1.1); }
+body.theme-desert button { filter: hue-rotate(-20deg) saturate(1.05); }
+body.theme-midnight button, body.theme-purple button { filter: brightness(1.1) saturate(1.1); }
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
@@ -326,7 +406,11 @@
 /* CSS Lantern (Restored) */
 .lantern-container {
   perspective: 1000px;
-  z-index: 50;
+  z-index: 2000;
+}
+
+.navbar {
+  overflow: visible;
 }
 
 .lantern {
@@ -489,4 +573,8 @@
   background: radial-gradient(circle at top, #ef4444, transparent);
   filter: blur(2px);
   opacity: 0.6;
+}
+
+.lanterns-hidden .lantern-container {
+  display: none !important;
 }

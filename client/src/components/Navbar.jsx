@@ -1,21 +1,24 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-// import LanternCanvas from './LanternCanvas'; // Optional: Three.js version
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import LanguageSelector from './LanguageSelector';
+import LoginModal from './LoginModal';
 
 const Navbar = () => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
   const { setIsCartOpen, totalItems } = useCart();
+  const { user } = useAuth();
 
   return (
     <>
       <nav className="navbar fixed z-50 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] navbar-glow backdrop-blur-md bg-amber-900/95 top-4 left-1/2 -translate-x-1/2 w-[95%] md:w-[85%] rounded-full py-2 shadow-[0_10px_40px_rgba(0,0,0,0.3),0_0_60px_rgba(251,191,36,0.2)] border border-amber-400/50 shimmer-gold">
         
         {/* Left Lantern */}
-        <div className="absolute left-10 md:left-20 top-full -mt-2 hidden lg:block lantern-container transition-transform duration-300 scale-75 origin-top">
+        <div className="absolute left-10 md:left-20 top-full -mt-2 hidden md:block lantern-container transition-transform duration-300 scale-75 origin-top z-50">
            <div className="lantern">
              <div className="chain">
               <div className="chain-link"></div>
@@ -37,7 +40,7 @@ const Navbar = () => {
         </div>
 
         {/* Right Lantern */}
-        <div className="absolute right-10 md:right-20 top-full -mt-2 hidden lg:block lantern-container transition-transform duration-300 scale-75 origin-top">
+        <div className="absolute right-10 md:right-20 top-full -mt-2 hidden md:block lantern-container transition-transform duration-300 scale-75 origin-top z-50">
            <div className="lantern">
              <div className="chain">
                <div className="chain-link"></div>
@@ -85,6 +88,12 @@ const Navbar = () => {
               <Link to="/#packages" className="text-amber-100 font-medium nav-link py-2">{t('navbar.packages')}</Link>
               <Link to="/#heritage" className="text-amber-100 font-medium nav-link py-2">{t('navbar.heritage')}</Link>
               
+              {user && (
+                <Link to="/profile" className="text-amber-100 font-medium nav-link py-2 flex items-center gap-2">
+                  <span>👤</span> {t('navbar.profile') || 'Profile'}
+                </Link>
+              )}
+              
               <Link to="/store" className="bg-gradient-to-r from-amber-100 to-amber-200 text-amber-900 px-6 py-2.5 rounded-full font-semibold visit-btn animate-bounce-small border border-amber-400/50 shimmer-gold">
                 <span className="flex items-center gap-2">
                   <span>🏮</span> {t('navbar.store')}
@@ -126,9 +135,14 @@ const Navbar = () => {
             <Link to="/#media" className="block py-2">{t('navbar.media')}</Link>
             <Link to="/#packages" className="block py-2">{t('navbar.packages')}</Link>
             <Link to="/#heritage" className="block py-2">{t('navbar.heritage')}</Link>
+            {user && (
+              <Link to="/profile" className="block py-2">👤 {t('navbar.profile') || 'Profile'}</Link>
+            )}
           </div>
         )}
       </nav>
+
+      <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
 
       {/* Language Selector - Bottom Center */}
       <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 animate-fade-in-up">

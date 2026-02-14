@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 const Footer = () => {
   const { t } = useTranslation();
   return (
-    <footer className="bg-amber-950 text-amber-100 py-16">
+    <footer className="site-footer bg-amber-950 text-amber-100 py-16">
       <div className="container mx-auto px-6">
         <div className="grid md:grid-cols-4 gap-8">
           <div className="col-span-2">

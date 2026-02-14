@@ -5,6 +5,7 @@ import Landing from './pages/Landing';
 import AdminDashboard from './pages/AdminDashboard';
 import StorePage from './pages/StorePage';
 import PackagesPage from './pages/PackagesPage';
+import Profile from './pages/Profile';
 import ScrollToTop from './components/ScrollToTop';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/store" element={<StorePage />} />
         <Route path="/packages" element={<PackagesPage />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </>
   );

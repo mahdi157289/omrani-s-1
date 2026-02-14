@@ -1,15 +1,34 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { useCart } from '../context/CartContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import LoginModal from './LoginModal';
 
 const ThemeSwitcher = () => {
   const { theme, setTheme, themes } = useTheme();
   const { setIsCartOpen, totalItems } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [lanternsVisible, setLanternsVisible] = useState(() => {
+    const saved = localStorage.getItem('lanternsVisible');
+    return saved !== 'false';
+  });
+  useEffect(() => {
+    if (localStorage.getItem('lanternsVisible') === null) {
+      localStorage.setItem('lanternsVisible', 'true');
+    }
+  }, []);
+  useEffect(() => {
+    document.body.classList.toggle('lanterns-hidden', !lanternsVisible);
+  }, [lanternsVisible]);
+  const toggleLanterns = () => {
+    const next = !lanternsVisible;
+    setLanternsVisible(next);
+    localStorage.setItem('lanternsVisible', String(next));
+  };
 
 
   // Find current theme icon
@@ -34,6 +53,27 @@ const ThemeSwitcher = () => {
         )}
         <span className="absolute right-full mr-4 bg-amber-950/90 text-amber-100 text-xs py-1 px-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-amber-500/30 pointer-events-none">
           {t('cart.title')}
+        </span>
+      </button>
+
+      <button 
+        onClick={toggleLanterns}
+        className="w-14 h-14 rounded-full bg-gradient-to-br from-amber-700 to-amber-900 border border-amber-400 flex items-center justify-center text-2xl shadow-[0_0_20px_rgba(251,191,36,0.5)] hover:shadow-[0_0_30px_rgba(251,191,36,0.8)] hover:scale-110 transition-all duration-300 active:scale-95 relative z-50 group"
+      >
+        🏮
+        <span className="absolute right-full mr-4 bg-amber-950/90 text-amber-100 text-xs py-1 px-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-amber-500/30 pointer-events-none">
+          {lanternsVisible ? (t('navbar.hideLanterns') || 'Hide Lanterns') : (t('navbar.showLanterns') || 'Show Lanterns')}
+        </span>
+      </button>
+
+      {/* Floating Login Button */}
+      <button 
+        onClick={() => setIsLoginOpen(true)}
+        className="w-14 h-14 rounded-full bg-gradient-to-br from-amber-700 to-amber-900 border border-amber-400 flex items-center justify-center text-2xl shadow-[0_0_20px_rgba(251,191,36,0.5)] hover:shadow-[0_0_30px_rgba(251,191,36,0.8)] hover:scale-110 transition-all duration-300 active:scale-95 relative z-50 group"
+      >
+        🔑
+        <span className="absolute right-full mr-4 bg-amber-950/90 text-amber-100 text-xs py-1 px-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-amber-500/30 pointer-events-none">
+          {t('navbar.login') || 'Login'}
         </span>
       </button>
 
@@ -116,6 +156,8 @@ const ThemeSwitcher = () => {
           {t('navbar.packages')}
         </span>
       </Link>
+
+      <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
     </div>
   );
 };

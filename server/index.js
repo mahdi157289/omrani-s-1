@@ -1,14 +1,123 @@
 const express = require('express');
 const cors = require('cors');
 const db = require('./db');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key_change_this';
 
 app.use(cors());
 app.use(express.json());
 
+// Middleware to verify JWT
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  
+  if (!token) return res.status(0).json({ error: 'Access denied' });
+
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) return res.status(403).json({ error: 'Invalid token' });
+    req.user = user;
+    next();
+  });
+};
+
+// Login endpoint
+app.post('/api/auth/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const result = await db.query('SELECT * FROM users WHERE username = $1', [email]);
+    
+    if (result.rows.length === 0) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+    
+    const user = result.rows[0];
+    const validPassword = await bcrypt.compare(password, user.password_hash);
+    
+    if (!validPassword) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+    
+    const token = jwt.sign({ id: user.id, username: user.username, role: user.role, customerId: user.customer_id }, JWT_SECRET, { expiresIn: '24h' });
+    
+    res.json({ token, user: { id: user.id, username: user.username, role: user.role, customerId: user.customer_id } });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// GET customer profile
+app.get('/api/profile', authenticateToken, async (req, res) => {
+  try {
+    const { customerId } = req.user;
+    if (!customerId) return res.status(400).json({ error: 'Not a customer account' });
+    
+    const customerRes = await db.query('SELECT * FROM customers WHERE id = $1', [customerId]);
+    const ordersRes = await db.query('SELECT * FROM orders WHERE customer_id = $1 ORDER BY created_at DESC', [customerId]);
+    const notificationsRes = await db.query('SELECT * FROM notifications WHERE customer_id = $1 ORDER BY created_at DESC', [customerId]);
+    
+    res.json({
+      customer: customerRes.rows[0],
+      orders: ordersRes.rows,
+      notifications: notificationsRes.rows
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// GET special offers
+app.get('/api/offers', async (req, res) => {
+  try {
+    const result = await db.query('SELECT * FROM offers WHERE is_active = TRUE AND (end_date IS NULL OR end_date > CURRENT_TIMESTAMP)');
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// PATCH mark notification as read
+app.patch('/api/notifications/:id/read', authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { customerId } = req.user;
+    await db.query('UPDATE notifications SET is_read = TRUE WHERE id = $1 AND customer_id = $2', [id, customerId]);
+    res.json({ message: 'Notification marked as read' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// POST update credentials
+app.post('/api/profile/credentials', authenticateToken, async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    const { id } = req.user;
+    
+    const userRes = await db.query('SELECT * FROM users WHERE id = $1', [id]);
+    const user = userRes.rows[0];
+    
+    const validPassword = await bcrypt.compare(currentPassword, user.password_hash);
+    if (!validPassword) return res.status(401).json({ error: 'Current password incorrect' });
+    
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    await db.query('UPDATE users SET password_hash = $1 WHERE id = $2', [hashedNewPassword, id]);
+    
+    res.json({ message: 'Password updated successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 // GET all products
 app.get('/api/products', async (req, res) => {
   try {
@@ -81,19 +190,51 @@ app.delete('/api/products/:id', async (req, res) => {
   }
 });
 
-// POST create order
+// POST create order (Auto-create customer and user account)
 app.post('/api/orders', async (req, res) => {
   const client = await db.getClient();
   try {
     await client.query('BEGIN');
     const { customerName, customerEmail, customerPhone, customerAddress, items, total, notes } = req.body;
     
+    // 1. Check if customer exists or create new one
+    let customerId;
+    const existingCustomer = await client.query('SELECT id FROM customers WHERE email = $1', [customerEmail]);
+    
+    if (existingCustomer.rows.length > 0) {
+      customerId = existingCustomer.rows[0].id;
+      // Update customer info if changed
+      await client.query(
+        'UPDATE customers SET name = $1, phone = $2, address = $3 WHERE id = $4',
+        [customerName, customerPhone, customerAddress, customerId]
+      );
+    } else {
+      const newCustomer = await client.query(
+        'INSERT INTO customers (name, email, phone, address) VALUES ($1, $2, $3, $4) RETURNING id',
+        [customerName, customerEmail, customerPhone, customerAddress]
+      );
+      customerId = newCustomer.rows[0].id;
+      
+      // 2. Create user account for the customer (username is email, default password is 'pastery123')
+      const hashedPassword = await bcrypt.hash('pastery123', 10);
+      await client.query(
+        'INSERT INTO users (username, password_hash, role, customer_id) VALUES ($1, $2, $3, $4)',
+        [customerEmail, hashedPassword, 'customer', customerId]
+      );
+
+      // 3. Create a welcome notification
+      await client.query(
+        'INSERT INTO notifications (customer_id, title, message) VALUES ($1, $2, $3)',
+        [customerId, 'Welcome to Omrani\'s Pastery!', 'Your account has been created. Use your email to log in. Default password: pastery123']
+      );
+    }
+
     const orderNumber = `AF-${Date.now().toString().slice(-6)}`;
     
     const orderRes = await client.query(
-      `INSERT INTO orders (order_number, customer_name, customer_email, customer_phone, customer_address, total_amount, notes, status)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, 'pending') RETURNING *`,
-      [orderNumber, customerName, customerEmail, customerPhone, customerAddress, total, notes]
+      `INSERT INTO orders (order_number, customer_id, customer_name, customer_email, customer_phone, customer_address, total_amount, notes, status)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'pending') RETURNING *`,
+      [orderNumber, customerId, customerName, customerEmail, customerPhone, customerAddress, total, notes]
     );
     
     const orderId = orderRes.rows[0].id;
@@ -107,7 +248,10 @@ app.post('/api/orders', async (req, res) => {
     }
     
     await client.query('COMMIT');
-    res.status(201).json(orderRes.rows[0]);
+    res.status(201).json({ 
+      order: orderRes.rows[0],
+      message: 'Order placed and account created/updated successfully.' 
+    });
   } catch (err) {
     await client.query('ROLLBACK');
     console.error(err);

@@ -39,6 +39,15 @@ const initDB = () => {
       username TEXT UNIQUE NOT NULL,
       password_hash TEXT NOT NULL,
       role TEXT DEFAULT 'admin',
+      customer_id INTEGER,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS customers (
+      id SERIAL PRIMARY KEY,
+      name TEXT NOT NULL,
+      email TEXT UNIQUE NOT NULL,
+      phone TEXT,
+      address TEXT,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )`,
     `CREATE TABLE IF NOT EXISTS products (
@@ -56,6 +65,7 @@ const initDB = () => {
     `CREATE TABLE IF NOT EXISTS orders (
       id SERIAL PRIMARY KEY,
       order_number TEXT UNIQUE,
+      customer_id INTEGER REFERENCES customers(id),
       customer_name TEXT NOT NULL,
       customer_email TEXT NOT NULL,
       customer_phone TEXT,
@@ -71,6 +81,25 @@ const initDB = () => {
       product_id INTEGER REFERENCES products(id),
       quantity INTEGER NOT NULL,
       price_at_purchase REAL NOT NULL
+    )`,
+    `CREATE TABLE IF NOT EXISTS offers (
+      id SERIAL PRIMARY KEY,
+      title TEXT NOT NULL,
+      description TEXT,
+      discount_percent INTEGER,
+      code TEXT UNIQUE,
+      start_date TIMESTAMP,
+      end_date TIMESTAMP,
+      is_active BOOLEAN DEFAULT TRUE,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS notifications (
+      id SERIAL PRIMARY KEY,
+      customer_id INTEGER REFERENCES customers(id),
+      title TEXT NOT NULL,
+      message TEXT NOT NULL,
+      is_read BOOLEAN DEFAULT FALSE,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )`,
     `CREATE TABLE IF NOT EXISTS gallery (
       id SERIAL PRIMARY KEY,
@@ -94,6 +123,15 @@ const initDB = () => {
       username TEXT UNIQUE NOT NULL,
       password_hash TEXT NOT NULL,
       role TEXT DEFAULT 'admin',
+      customer_id INTEGER,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS customers (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      email TEXT UNIQUE NOT NULL,
+      phone TEXT,
+      address TEXT,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )`,
     `CREATE TABLE IF NOT EXISTS products (
@@ -111,6 +149,7 @@ const initDB = () => {
     `CREATE TABLE IF NOT EXISTS orders (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       order_number TEXT UNIQUE,
+      customer_id INTEGER,
       customer_name TEXT NOT NULL,
       customer_email TEXT NOT NULL,
       customer_phone TEXT,
@@ -118,7 +157,8 @@ const initDB = () => {
       status TEXT DEFAULT 'pending',
       total_amount REAL NOT NULL,
       notes TEXT,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY(customer_id) REFERENCES customers(id)
     )`,
     `CREATE TABLE IF NOT EXISTS order_items (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -128,6 +168,26 @@ const initDB = () => {
       price_at_purchase REAL NOT NULL,
       FOREIGN KEY(order_id) REFERENCES orders(id) ON DELETE CASCADE,
       FOREIGN KEY(product_id) REFERENCES products(id)
+    )`,
+    `CREATE TABLE IF NOT EXISTS offers (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      description TEXT,
+      discount_percent INTEGER,
+      code TEXT UNIQUE,
+      start_date TIMESTAMP,
+      end_date TIMESTAMP,
+      is_active BOOLEAN DEFAULT TRUE,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS notifications (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      customer_id INTEGER,
+      title TEXT NOT NULL,
+      message TEXT NOT NULL,
+      is_read BOOLEAN DEFAULT FALSE,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY(customer_id) REFERENCES customers(id)
     )`,
     `CREATE TABLE IF NOT EXISTS gallery (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -193,6 +253,15 @@ const initDB = () => {
           });
           stmt.finalize();
           console.log('Seeded products (SQLite)');
+        }
+      });
+
+      // Seed a test offer
+      db.get("SELECT count(*) as count FROM offers", (err, row) => {
+        if (!err && row.count === 0) {
+          db.run("INSERT INTO offers (title, description, discount_percent, code, is_active) VALUES (?, ?, ?, ?, ?)",
+            ['Welcome Discount', 'Get 10% off your first order with this code!', 10, 'WELCOME10', 1]);
+          console.log('Seeded test offer (SQLite)');
         }
       });
     });

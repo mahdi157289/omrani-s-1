@@ -9,11 +9,15 @@ export const ThemeProvider = ({ children }) => {
 
   useEffect(() => {
     // Remove all theme classes
-    document.body.classList.remove('theme-midnight', 'theme-rose', 'theme-emerald', 'theme-purple', 'theme-desert');
+    document.body.classList.remove('theme-midnight', 'theme-rose', 'theme-emerald', 'theme-purple', 'theme-desert', 'dark');
     
     // Add selected theme class
     if (theme !== 'default') {
       document.body.classList.add(`theme-${theme}`);
+    }
+    // Toggle dark mode for specific themes
+    if (['midnight', 'purple'].includes(theme)) {
+      document.body.classList.add('dark');
     }
   }, [theme]);
 

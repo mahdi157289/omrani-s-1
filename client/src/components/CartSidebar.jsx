@@ -175,6 +175,13 @@ const CartSidebar = () => {
                       ></textarea>
                     </div>
 
+                    <div className="bg-amber-50 p-3 rounded-xl border border-amber-100">
+                      <p className="text-xs text-amber-800 flex gap-2">
+                        <span>✨</span>
+                        {t('cart.account_notice') || "Un compte sera créé automatiquement avec votre email. Vous recevrez vos accès après validation."}
+                      </p>
+                    </div>
+
                     <div className="pt-4 border-t border-amber-100">
                       <div className="flex justify-between items-center mb-4">
                         <span className="text-stone-600">{t('cart.total')}</span>

@@ -20,9 +20,10 @@ const ScrollSection = ({ children, className = "" }) => {
     offset: ["start end", "center center", "end start"]
   });
 
-  const opacity = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]);
-  const blur = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], ["blur(10px)", "blur(0px)", "blur(0px)", "blur(10px)"]);
-  const scale = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0.98, 1, 1, 0.98]);
+  // Accelerate fade-out near the end of the section
+  const opacity = useTransform(scrollYProgress, [0, 0.1, 0.7, 0.92], [0, 1, 1, 0]);
+  const blur = useTransform(scrollYProgress, [0, 0.1, 0.7, 0.92], ["blur(10px)", "blur(0px)", "blur(0px)", "blur(10px)"]);
+  const scale = useTransform(scrollYProgress, [0, 0.1, 0.7, 0.92], [0.985, 1, 1, 0.985]);
 
   return (
     <motion.div
