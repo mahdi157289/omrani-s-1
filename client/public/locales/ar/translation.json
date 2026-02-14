@@ -89,7 +89,16 @@
     "empty_text": "ابدأ بإضافة بعض المعجنات اللذيذة!",
     "remove": "إزالة",
     "subtotal": "المجموع الفرعي",
-    "placeOrder": "إتمام الطلب"
+    "placeOrder": "إتمام الطلب",
+    "checkout": "الدفع",
+    "orderComplete": "اكتمل الطلب",
+    "thankYou": "شكراً لك!",
+    "orderSuccessMsg": "تم استلام طلبك. سنتصل بك قريباً.",
+    "backToCart": "العودة إلى السلة",
+    "phone": "رقم الهاتف",
+    "address": "عنوان التسليم",
+    "total": "الإجمالي",
+    "confirmOrder": "تأكيد الطلب"
   },
   "footer": {
     "title": "مقروض عمراني",
@@ -173,6 +182,12 @@
         "status": "الحالة",
         "total": "الإجمالي",
         "date": "التاريخ"
+      },
+      "status": {
+        "pending": "قيد الانتظار",
+        "preparing": "قيد التحضير",
+        "delivered": "تم التسليم",
+        "cancelled": "ملغي"
       }
     }
   },

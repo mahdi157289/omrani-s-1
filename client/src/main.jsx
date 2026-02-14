@@ -10,8 +10,8 @@ import { CartProvider } from './context/CartContext'
 import axios from 'axios'
 
 // Set base URL for API requests
-// If VITE_API_URL is set (production), use it. Otherwise use the hardcoded production URL.
-axios.defaults.baseURL = import.meta.env.VITE_API_URL || 'https://pastery-server.onrender.com';
+const isProd = import.meta.env.PROD;
+axios.defaults.baseURL = import.meta.env.VITE_API_URL || (isProd ? 'https://pastery-server.onrender.com' : 'http://localhost:5000');
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

@@ -88,7 +88,16 @@
     "empty_text": "Start adding some delicious pastries!",
     "remove": "Remove",
     "subtotal": "Subtotal",
-    "placeOrder": "Place Order"
+    "placeOrder": "Place Order",
+    "checkout": "Checkout",
+    "orderComplete": "Order Complete",
+    "thankYou": "Thank You!",
+    "orderSuccessMsg": "Your order has been received. We will contact you shortly.",
+    "backToCart": "Back to Cart",
+    "phone": "Phone Number",
+    "address": "Delivery Address",
+    "total": "Total",
+    "confirmOrder": "Confirm Order"
   },
   "footer": {
     "title": "Makroudh Omrani",
@@ -170,6 +179,12 @@
         "status": "Status",
         "total": "Total",
         "date": "Date"
+      },
+      "status": {
+        "pending": "Pending",
+        "preparing": "Preparing",
+        "delivered": "Delivered",
+        "cancelled": "Cancelled"
       }
     }
   },

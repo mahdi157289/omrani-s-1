@@ -85,18 +85,6 @@ const Navbar = () => {
               <Link to="/#packages" className="text-amber-100 font-medium nav-link py-2">{t('navbar.packages')}</Link>
               <Link to="/#heritage" className="text-amber-100 font-medium nav-link py-2">{t('navbar.heritage')}</Link>
               
-              <button 
-                onClick={() => setIsCartOpen(true)}
-                className="text-2xl p-2 hover:bg-amber-700/50 rounded-full transition-all duration-500 relative group opacity-100 scale-100 w-auto"
-              >
-                🛒
-                {totalItems > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                    {totalItems}
-                  </span>
-                )}
-              </button>
-              
               <Link to="/store" className="bg-gradient-to-r from-amber-100 to-amber-200 text-amber-900 px-6 py-2.5 rounded-full font-semibold visit-btn animate-bounce-small border border-amber-400/50 shimmer-gold">
                 <span className="flex items-center gap-2">
                   <span>🏮</span> {t('navbar.store')}

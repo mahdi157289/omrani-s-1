@@ -83,7 +83,7 @@ app.delete('/api/products/:id', async (req, res) => {
 
 // POST create order
 app.post('/api/orders', async (req, res) => {
-  const client = await db.pool.connect();
+  const client = await db.getClient();
   try {
     await client.query('BEGIN');
     const { customerName, customerEmail, customerPhone, customerAddress, items, total, notes } = req.body;
@@ -197,7 +197,7 @@ app.get('/api/settings', async (req, res) => {
 
 // POST update store settings
 app.post('/api/settings', async (req, res) => {
-  const client = await db.pool.connect();
+  const client = await db.getClient();
   try {
     await client.query('BEGIN');
     const settings = req.body; // Expect { storeName: '...', description: '...' }

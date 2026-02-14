@@ -1,3 +1,5 @@
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import Exhibits from '../components/Exhibits';
@@ -11,43 +13,80 @@ import CartSidebar from '../components/CartSidebar';
 import ThemeSwitcher from '../components/ThemeSwitcher';
 import SectionSeparator from '../components/SectionSeparator';
 
+const ScrollSection = ({ children, className = "" }) => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "center center", "end start"]
+  });
+
+  const opacity = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]);
+  const blur = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], ["blur(10px)", "blur(0px)", "blur(0px)", "blur(10px)"]);
+  const scale = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0.98, 1, 1, 0.98]);
+
+  return (
+    <motion.div
+      ref={ref}
+      style={{ opacity, filter: blur, scale }}
+      className={`relative ${className}`}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
 const Landing = () => {
   return (
-    <div className="min-h-screen font-sans transition-colors duration-500">
+    <div className="min-h-screen font-sans transition-colors duration-500 overflow-x-hidden">
       <Navbar />
       <CartSidebar />
       <ThemeSwitcher />
       
-      <Hero />
-      <div className="relative">
-        <SectionSeparator position="top" variant="wave" color="text-white" />
-        <Exhibits />
-      </div>
+      <ScrollSection>
+        <Hero />
+      </ScrollSection>
+
+      <ScrollSection>
+        <div className="relative">
+          <SectionSeparator position="top" variant="wave" color="text-white" />
+          <Exhibits />
+        </div>
+      </ScrollSection>
       
-      <div className="relative">
-        <SectionSeparator position="top" variant="curve" color="text-amber-50/30" />
-        <Media />
-      </div>
+      <ScrollSection>
+        <div className="relative">
+          <SectionSeparator position="top" variant="curve" color="text-amber-50/30" />
+          <Media />
+        </div>
+      </ScrollSection>
       
-      <div className="relative">
-        <SectionSeparator position="top" variant="wave" color="text-white" />
-        <Packages />
-      </div>
+      <ScrollSection>
+        <div className="relative">
+          <SectionSeparator position="top" variant="wave" color="text-white" />
+          <Packages />
+        </div>
+      </ScrollSection>
       
-      <div className="relative">
-        <SectionSeparator position="top" variant="curve" color="text-amber-50/30" />
-        <Heritage />
-      </div>
+      <ScrollSection>
+        <div className="relative">
+          <SectionSeparator position="top" variant="curve" color="text-amber-50/30" />
+          <Heritage />
+        </div>
+      </ScrollSection>
       
-      <div className="relative">
-        <SectionSeparator position="top" variant="wave" color="text-white" />
-        <Gallery />
-      </div>
+      <ScrollSection>
+        <div className="relative">
+          <SectionSeparator position="top" variant="wave" color="text-white" />
+          <Gallery />
+        </div>
+      </ScrollSection>
       
-      <div className="relative">
-        <SectionSeparator position="top" variant="curve" color="text-amber-50/30" />
-        <Visit />
-      </div>
+      <ScrollSection>
+        <div className="relative">
+          <SectionSeparator position="top" variant="curve" color="text-amber-50/30" />
+          <Visit />
+        </div>
+      </ScrollSection>
       
       <Footer />
     </div>

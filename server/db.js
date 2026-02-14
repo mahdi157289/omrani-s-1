@@ -71,6 +71,20 @@ const initDB = () => {
       product_id INTEGER REFERENCES products(id),
       quantity INTEGER NOT NULL,
       price_at_purchase REAL NOT NULL
+    )`,
+    `CREATE TABLE IF NOT EXISTS gallery (
+      id SERIAL PRIMARY KEY,
+      url TEXT NOT NULL,
+      type TEXT DEFAULT 'image',
+      title TEXT,
+      description TEXT,
+      thumbnail_url TEXT,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS store_settings (
+      key VARCHAR(50) PRIMARY KEY,
+      value TEXT,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )`
   ];
 
@@ -114,6 +128,20 @@ const initDB = () => {
       price_at_purchase REAL NOT NULL,
       FOREIGN KEY(order_id) REFERENCES orders(id) ON DELETE CASCADE,
       FOREIGN KEY(product_id) REFERENCES products(id)
+    )`,
+    `CREATE TABLE IF NOT EXISTS gallery (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      url TEXT NOT NULL,
+      type TEXT DEFAULT 'image',
+      title TEXT,
+      description TEXT,
+      thumbnail_url TEXT,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS store_settings (
+      key TEXT PRIMARY KEY,
+      value TEXT,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )`
   ];
 
@@ -217,7 +245,20 @@ const executeQuery = (text, params = []) => {
   });
 };
 
+const getClient = async () => {
+  if (pool) {
+    return await pool.connect();
+  }
+  // For SQLite, we just return the db object with a compatible interface
+  // but since SQLite is single-connection here, we don't need a pool
+  return {
+    query: executeQuery,
+    release: () => {}
+  };
+};
+
 module.exports = {
   query: executeQuery,
+  getClient,
   pool // Export pool for direct access if needed
 };

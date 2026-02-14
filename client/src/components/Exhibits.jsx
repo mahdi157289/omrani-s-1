@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { useCart } from '../context/CartContext';
 
 const Exhibits = () => {
   const { t } = useTranslation();
+  const { addToCart } = useCart();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -71,7 +73,18 @@ const Exhibits = () => {
                 <p className="text-stone-500 mt-3 leading-relaxed">{product.description}</p>
                 <div className="mt-4 flex items-center justify-between">
                   <span className="text-amber-700 font-bold text-lg">${Number(product.price).toFixed(2)}</span>
-                  <button className="bg-amber-100 text-amber-800 px-4 py-2 rounded-full text-sm font-medium hover:bg-amber-200 transition">
+                  <button 
+                    onClick={() => {
+                      addToCart({
+                        id: product.id,
+                        name: product.name,
+                        price: Number(product.price),
+                        image_url: product.image_url,
+                        emoji: product.emoji
+                      });
+                    }}
+                    className="bg-amber-100 text-amber-800 px-4 py-2 rounded-full text-sm font-medium hover:bg-amber-200 transition active:scale-95"
+                  >
                     {t('exhibits.addToCart')}
                   </button>
                 </div>

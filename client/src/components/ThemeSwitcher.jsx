@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
+import { useCart } from '../context/CartContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 const ThemeSwitcher = () => {
   const { theme, setTheme, themes } = useTheme();
+  const { setIsCartOpen, totalItems } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
 
@@ -15,6 +17,26 @@ const ThemeSwitcher = () => {
 
   return (
     <div className="fixed right-6 top-[40%] -translate-y-1/2 z-50 flex flex-col items-center gap-4">
+      {/* Floating Cart Button */}
+      <button 
+        onClick={() => setIsCartOpen(true)}
+        className="w-14 h-14 rounded-full bg-gradient-to-br from-amber-600 to-amber-800 border border-amber-400 flex items-center justify-center text-2xl shadow-[0_0_20px_rgba(251,191,36,0.5)] hover:shadow-[0_0_30px_rgba(251,191,36,0.8)] hover:scale-110 transition-all duration-300 active:scale-95 relative z-50 group"
+      >
+        🛒
+        {totalItems > 0 && (
+          <motion.span 
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-6 h-6 rounded-full flex items-center justify-center shadow-lg border-2 border-white"
+          >
+            {totalItems}
+          </motion.span>
+        )}
+        <span className="absolute right-full mr-4 bg-amber-950/90 text-amber-100 text-xs py-1 px-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-amber-500/30 pointer-events-none">
+          {t('cart.title')}
+        </span>
+      </button>
+
       <div className="relative">
         <button
           onClick={() => setIsOpen(!isOpen)}

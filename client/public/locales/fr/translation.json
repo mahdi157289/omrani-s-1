@@ -89,7 +89,16 @@
     "empty_text": "Commencez à ajouter de délicieuses pâtisseries !",
     "remove": "Retirer",
     "subtotal": "Sous-total",
-    "placeOrder": "Passer la Commande"
+    "placeOrder": "Passer la Commande",
+    "checkout": "Paiement",
+    "orderComplete": "Commande Terminée",
+    "thankYou": "Merci !",
+    "orderSuccessMsg": "Votre commande a été reçue. Nous vous contacterons bientôt.",
+    "backToCart": "Retour au Panier",
+    "phone": "Numéro de Téléphone",
+    "address": "Adresse de Livraison",
+    "total": "Total",
+    "confirmOrder": "Confirmer la Commande"
   },
   "footer": {
     "title": "Makroudh Omrani",
@@ -171,6 +180,12 @@
         "status": "Statut",
         "total": "Total",
         "date": "Date"
+      },
+      "status": {
+        "pending": "En attente",
+        "preparing": "En préparation",
+        "delivered": "Livré",
+        "cancelled": "Annulé"
       }
     }
   },
